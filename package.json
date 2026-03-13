@@ -1,0 +1,25 @@
+{
+  "name": "travel-leader-network",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "admin",
+    "mobile"
+  ],
+  "scripts": {
+    "dev": "concurrently -n frontend,backend \"npm run dev -w frontend\" \"npm run dev -w backend\"",
+    "dev:admin": "npm run dev -w admin",
+    "build": "npm run build -w frontend",
+    "build:admin": "npm run build -w admin"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "overrides": {
+    "nuxi": "3.12.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

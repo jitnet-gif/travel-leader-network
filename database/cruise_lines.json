@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Royal Caribbean",
+    "country": "United States"
+  },
+  {
+    "id": 2,
+    "name": "MSC Cruises",
+    "country": "Switzerland"
+  },
+  {
+    "id": 3,
+    "name": "Norwegian Cruise Line",
+    "country": "United States"
+  },
+  {
+    "id": 4,
+    "name": "Carnival Cruise Line",
+    "country": "United States"
+  },
+  {
+    "id": 5,
+    "name": "Celebrity Cruises",
+    "country": "United States"
+  },
+  {
+    "id": 6,
+    "name": "Princess Cruises",
+    "country": "United States"
+  },
+  {
+    "id": 7,
+    "name": "Holland America Line",
+    "country": "United States"
+  },
+  {
+    "id": 8,
+    "name": "Costa Cruises",
+    "country": "Italy"
+  },
+  {
+    "id": 9,
+    "name": "Disney Cruise Line",
+    "country": "United States"
+  },
+  {
+    "id": 10,
+    "name": "Adora Cruises",
+    "country": "China"
+  }
+]

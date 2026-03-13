@@ -1,0 +1,402 @@
+[
+  {
+    "id": 1,
+    "agency": "Blue Harbor Cruises",
+    "country": "Canada",
+    "tour_date": "2026-09-20",
+    "salary": 197,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 2,
+    "agency": "Blue Harbor Cruises",
+    "country": "Greece",
+    "tour_date": "2026-05-06",
+    "salary": 196,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 3,
+    "agency": "Skyline Journeys",
+    "country": "South Korea",
+    "tour_date": "2026-09-06",
+    "salary": 241,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 4,
+    "agency": "Pacific Gate Travels",
+    "country": "South Korea",
+    "tour_date": "2026-06-02",
+    "salary": 183,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 5,
+    "agency": "Summit Expeditions",
+    "country": "Japan",
+    "tour_date": "2026-04-19",
+    "salary": 255,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 6,
+    "agency": "Aurora Travel Group",
+    "country": "United States",
+    "tour_date": "2026-10-05",
+    "salary": 189,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 7,
+    "agency": "Aurora Travel Group",
+    "country": "Canada",
+    "tour_date": "2026-07-15",
+    "salary": 191,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 8,
+    "agency": "Global Travel Agency",
+    "country": "Italy",
+    "tour_date": "2026-06-14",
+    "salary": 239,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 9,
+    "agency": "Pacific Gate Travels",
+    "country": "Japan",
+    "tour_date": "2026-04-26",
+    "salary": 212,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 10,
+    "agency": "Blue Harbor Cruises",
+    "country": "United States",
+    "tour_date": "2026-08-09",
+    "salary": 220,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 11,
+    "agency": "Skyline Journeys",
+    "country": "France",
+    "tour_date": "2026-09-29",
+    "salary": 195,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 12,
+    "agency": "Skyline Journeys",
+    "country": "Thailand",
+    "tour_date": "2026-06-09",
+    "salary": 248,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 13,
+    "agency": "Pacific Gate Travels",
+    "country": "Italy",
+    "tour_date": "2026-06-03",
+    "salary": 185,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 14,
+    "agency": "Summit Expeditions",
+    "country": "Turkey",
+    "tour_date": "2026-05-22",
+    "salary": 226,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 15,
+    "agency": "Global Travel Agency",
+    "country": "Greece",
+    "tour_date": "2026-11-27",
+    "salary": 186,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 16,
+    "agency": "Blue Harbor Cruises",
+    "country": "Greece",
+    "tour_date": "2026-10-13",
+    "salary": 250,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 17,
+    "agency": "Pacific Gate Travels",
+    "country": "Canada",
+    "tour_date": "2026-08-16",
+    "salary": 206,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 18,
+    "agency": "Summit Expeditions",
+    "country": "Canada",
+    "tour_date": "2026-10-11",
+    "salary": 216,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 19,
+    "agency": "Pacific Gate Travels",
+    "country": "Australia",
+    "tour_date": "2026-05-04",
+    "salary": 272,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 20,
+    "agency": "Aurora Travel Group",
+    "country": "France",
+    "tour_date": "2026-10-29",
+    "salary": 258,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 21,
+    "agency": "Summit Expeditions",
+    "country": "Thailand",
+    "tour_date": "2026-11-18",
+    "salary": 198,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 22,
+    "agency": "Aurora Travel Group",
+    "country": "Singapore",
+    "tour_date": "2026-04-25",
+    "salary": 240,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 23,
+    "agency": "Global Travel Agency",
+    "country": "Australia",
+    "tour_date": "2026-10-19",
+    "salary": 256,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 24,
+    "agency": "Skyline Journeys",
+    "country": "Singapore",
+    "tour_date": "2026-07-27",
+    "salary": 211,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 25,
+    "agency": "Blue Harbor Cruises",
+    "country": "Turkey",
+    "tour_date": "2026-05-07",
+    "salary": 206,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 26,
+    "agency": "Aurora Travel Group",
+    "country": "Spain",
+    "tour_date": "2026-06-12",
+    "salary": 240,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 27,
+    "agency": "Global Travel Agency",
+    "country": "Italy",
+    "tour_date": "2026-05-26",
+    "salary": 224,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 28,
+    "agency": "Global Travel Agency",
+    "country": "Thailand",
+    "tour_date": "2026-05-12",
+    "salary": 242,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 29,
+    "agency": "Skyline Journeys",
+    "country": "Japan",
+    "tour_date": "2026-05-21",
+    "salary": 274,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 30,
+    "agency": "Pacific Gate Travels",
+    "country": "France",
+    "tour_date": "2026-10-12",
+    "salary": 255,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 31,
+    "agency": "Aurora Travel Group",
+    "country": "Italy",
+    "tour_date": "2026-06-23",
+    "salary": 272,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 32,
+    "agency": "Pacific Gate Travels",
+    "country": "France",
+    "tour_date": "2026-07-05",
+    "salary": 192,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 33,
+    "agency": "Summit Expeditions",
+    "country": "United States",
+    "tour_date": "2026-09-14",
+    "salary": 271,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 34,
+    "agency": "Summit Expeditions",
+    "country": "Singapore",
+    "tour_date": "2026-07-09",
+    "salary": 254,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 35,
+    "agency": "Pacific Gate Travels",
+    "country": "Australia",
+    "tour_date": "2026-11-24",
+    "salary": 194,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 36,
+    "agency": "Blue Harbor Cruises",
+    "country": "United States",
+    "tour_date": "2026-10-31",
+    "salary": 249,
+    "description": "Guide premium sightseeing tours with cultural highlights and dining."
+  },
+  {
+    "id": 37,
+    "agency": "Summit Expeditions",
+    "country": "Japan",
+    "tour_date": "2026-06-03",
+    "salary": 197,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 38,
+    "agency": "Blue Harbor Cruises",
+    "country": "Turkey",
+    "tour_date": "2026-04-24",
+    "salary": 197,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 39,
+    "agency": "Global Travel Agency",
+    "country": "Australia",
+    "tour_date": "2026-05-27",
+    "salary": 215,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 40,
+    "agency": "Skyline Journeys",
+    "country": "United States",
+    "tour_date": "2026-06-28",
+    "salary": 182,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 41,
+    "agency": "Global Travel Agency",
+    "country": "Greece",
+    "tour_date": "2026-11-26",
+    "salary": 193,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 42,
+    "agency": "Aurora Travel Group",
+    "country": "Australia",
+    "tour_date": "2026-06-11",
+    "salary": 199,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 43,
+    "agency": "Global Travel Agency",
+    "country": "South Korea",
+    "tour_date": "2026-04-16",
+    "salary": 225,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 44,
+    "agency": "Summit Expeditions",
+    "country": "Australia",
+    "tour_date": "2026-07-24",
+    "salary": 182,
+    "description": "Lead a multi-city itinerary and manage daily guest logistics."
+  },
+  {
+    "id": 45,
+    "agency": "Pacific Gate Travels",
+    "country": "South Korea",
+    "tour_date": "2026-07-12",
+    "salary": 238,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 46,
+    "agency": "Skyline Journeys",
+    "country": "Greece",
+    "tour_date": "2026-06-02",
+    "salary": 181,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 47,
+    "agency": "Pacific Gate Travels",
+    "country": "South Korea",
+    "tour_date": "2026-10-10",
+    "salary": 278,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 48,
+    "agency": "Global Travel Agency",
+    "country": "Canada",
+    "tour_date": "2026-09-21",
+    "salary": 228,
+    "description": "Manage airport-to-hotel transfers and on-tour communications."
+  },
+  {
+    "id": 49,
+    "agency": "Global Travel Agency",
+    "country": "Canada",
+    "tour_date": "2026-09-06",
+    "salary": 275,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  },
+  {
+    "id": 50,
+    "agency": "Global Travel Agency",
+    "country": "Italy",
+    "tour_date": "2026-08-12",
+    "salary": 193,
+    "description": "Coordinate embarkation, shore excursions, and daily briefings."
+  }
+]

@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Public+Sans:wght@300;400;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #__nuxt {
+  height: 100%;
+}
+
+body {
+  font-family: 'Public Sans', system-ui, sans-serif;
+  background: #f3f5f9;
+  color: #121826;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+}
