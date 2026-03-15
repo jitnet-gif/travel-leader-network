@@ -458,7 +458,10 @@ const startSim = () => {
 };
 
 const openInMaps = (poi: Poi) => {
-  const url = `https://www.google.com/maps/search/?api=1&query=${poi.lat},${poi.lng}`;
+  const query = poi.name
+    ? encodeURIComponent(poi.name)
+    : `${poi.lat},${poi.lng}`;
+  const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
   window.open(url, '_blank', 'noopener');
 };
 

@@ -4,9 +4,10 @@
       <Sidebar v-model:open="mobileOpen" />
       <div class="flex-1 lg:ml-0 flex flex-col min-h-screen">
         <Navbar @menu="mobileOpen = true" />
-        <main class="mx-auto w-full max-w-7xl px-6 py-10 flex-grow animate-fade-up">
+        <main class="mx-auto w-full max-w-7xl px-6 py-5 flex-grow animate-fade-up">
           <slot />
         </main>
+        <ScrollButtons />
         <footer class="border-t border-slate-100 dark:border-white/5 bg-white/50 dark:bg-ocean-900/50 backdrop-blur-sm">
           <div class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-xs font-bold uppercase tracking-widest text-slate-400 md:flex-row md:items-center md:justify-between">
             <span>{{ t('footer.copyright') }}</span>

@@ -11,7 +11,16 @@
       <AirportCard v-for="(airport, idx) in filtered" :key="airport.id ?? idx" :airport="airport" @select="openDetails" />
     </div>
 
-    <AirportDetailModal v-if="selectedAirport" :open="detailOpen" :airport="selectedAirport" @close="closeDetails" />
+    <AirportDetailModal
+      v-if="selectedAirport"
+      :open="detailOpen"
+      :airport="selectedAirport"
+      :current-index="selectedIndex"
+      :total="filtered.length"
+      @close="closeDetails"
+      @prev="navigateTo(selectedIndex - 1)"
+      @next="navigateTo(selectedIndex + 1)"
+    />
   </div>
 </template>
 
@@ -23,7 +32,7 @@ import { matchesQuery } from '~/composables/useSearch';
 const { t } = useI18n();
 const query = useGlobalSearch();
 const selectedAirport = ref<Airport | null>(null);
-
+const selectedIndex  = ref(0);
 const detailOpen = ref(false);
 
 const { data: airports } = await useFetch<Airport[]>('/api/airports');
@@ -35,12 +44,20 @@ const filtered = computed(() =>
 );
 
 const openDetails = (airport: Airport) => {
+  const idx = filtered.value.indexOf(airport);
+  selectedIndex.value = idx >= 0 ? idx : 0;
   selectedAirport.value = airport;
   detailOpen.value = true;
 };
 
+const navigateTo = (idx: number) => {
+  const list = filtered.value;
+  if (idx < 0 || idx >= list.length) return;
+  selectedIndex.value = idx;
+  selectedAirport.value = list[idx];
+};
+
 const closeDetails = () => {
   detailOpen.value = false;
-  // keep selectedAirport cached to avoid extra geocode calls; cleared on next open set
 };
 </script>

@@ -102,7 +102,6 @@
                     :place-name="`${airport.name}, ${airport.city}`"
                     :open-time="airport.open_time"
                     :close-time="airport.close_time"
-                    :facilities="facilityMarkers"
                     :show-marker="false"
                   />
                   <div v-else class="flex h-72 items-center justify-center bg-slate-50 text-sm text-black/50 dark:bg-slate-800 dark:text-white/50">
@@ -174,7 +173,7 @@
           </div>
 
           <!-- ── Indoor map tab ── -->
-          <div v-if="activeTab === 'indoor'" class="overflow-y-auto flex-1 min-h-0 p-4 sm:p-6">
+          <div v-if="activeTab === 'indoor'" class="flex-1 min-h-0 overflow-hidden flex flex-col">
             <ClientOnly>
               <AirportIndoorMap :airport="airport" />
             </ClientOnly>

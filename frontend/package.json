@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "deploy": "nuxt build && npx wrangler pages deploy dist --project-name travel-leader-network --branch main"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
@@ -17,6 +18,7 @@
     "pinia": "^2.1.7"
   },
   "devDependencies": {
+    "@vite-pwa/nuxt": "^1.1.1",
     "autoprefixer": "^10.4.19",
     "nuxi": "3.11.1",
     "postcss": "^8.4.38",

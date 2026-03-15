@@ -231,7 +231,8 @@ export default {
     indoorMap: 'Airport Indoor Map',
     tab: {
       location: 'Location',
-      indoor: 'Indoor Map'
+      indoor: 'Indoor Map',
+      immigration: 'Entry Tips'
     },
     indoor: {
       loading: 'Loading indoor facility data...',

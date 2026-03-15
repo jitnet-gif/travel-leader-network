@@ -1,8 +1,8 @@
 <template>
-  <div class="space-y-3">
+  <div class="h-full flex flex-col space-y-3">
     <!-- Leaflet Indoor Map (Main) -->
-    <div class="space-y-3">
-      <div class="flex items-center justify-between">
+    <div class="flex-1 flex flex-col space-y-3 min-h-0">
+      <div class="flex items-center justify-between px-4 sm:px-6 pt-4 sm:pt-6 shrink-0">
         <p class="text-sm font-semibold text-black/70 dark:text-white/70">{{ t('airport.indoorMap') }} - 실내 위치</p>
         <div class="flex flex-wrap items-center gap-1.5">
           <a
@@ -27,7 +27,7 @@
       </div>
 
       <!-- Map with floating floor controls -->
-      <div class="relative rounded-xl border border-black/10 dark:border-white/10 h-72 sm:h-96 shadow-md" style="overflow:visible">
+      <div class="relative flex-1 rounded-xl border border-black/10 dark:border-white/10 shadow-md mx-4 sm:mx-6 mb-4 sm:mb-6" style="overflow:visible">
         <ClientOnly>
           <LeafletMap
             v-if="mapCenter"
@@ -73,7 +73,7 @@
     </div>
 
     <!-- Facility quick-search links (Google Maps) -->
-    <div>
+    <div class="px-4 sm:px-6 pb-4 sm:pb-6 shrink-0">
       <p class="mb-2 text-xs font-semibold uppercase tracking-widest text-black/40 dark:text-white/40">
         {{ t('airport.indoor.facilitySearch') }}
       </p>

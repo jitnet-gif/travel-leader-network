@@ -12,4 +12,6 @@ export type Airport = {
   bus: boolean;
   lat?: number;
   lng?: number;
+  open_time?: string;
+  close_time?: string;
 };

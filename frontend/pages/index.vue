@@ -42,38 +42,38 @@ const modules = computed(() => [
 </script>
 
 <template>
-  <div class="space-y-24 pb-20">
+  <div class="space-y-10 pb-10">
     <!-- Hero Section -->
-    <section class="grid gap-16 lg:grid-cols-[1.1fr_0.9fr] items-center pt-8">
-      <div class="space-y-8">
-        <div class="flex items-center gap-2 mb-2">
+    <section class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] items-center pt-2">
+      <div class="space-y-5">
+        <div class="flex items-center gap-2">
           <div class="w-2 h-2 bg-sky-500 rounded-full animate-pulse"></div>
           <span class="text-[10px] font-bold tracking-[0.3em] text-sky-600 uppercase">{{ t('home.eyebrow') }}</span>
         </div>
-        <h1 class="text-5xl md:text-7xl font-display font-extrabold tracking-tight text-ocean-900 dark:text-white leading-[1.1]">
+        <h1 class="text-4xl md:text-6xl font-display font-extrabold tracking-tight text-ocean-900 dark:text-white leading-[1.1]">
            Precision <span class="text-sky-500">Logistics</span> for Global Leaders.
         </h1>
-        <p class="text-lg text-slate-500 dark:text-slate-400 max-w-xl leading-relaxed">
+        <p class="text-base text-slate-500 dark:text-slate-400 max-w-xl leading-relaxed">
           {{ t('home.subtitle') }}
         </p>
-        <div class="flex flex-wrap gap-4">
+        <div class="flex flex-wrap gap-3">
           <BaseButton to="/dashboard" size="lg">{{ t('home.buttons.dashboard') }}</BaseButton>
           <BaseButton variant="outline" to="/jobs" size="lg">{{ t('home.buttons.jobs') }}</BaseButton>
         </div>
-        
+
         <!-- Quick Stats -->
-        <div class="grid grid-cols-3 gap-6 pt-8 border-t border-slate-100 dark:border-white/5">
+        <div class="grid grid-cols-3 gap-4 pt-4 border-t border-slate-100 dark:border-white/5">
            <div>
-             <p class="text-2xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.stats.coverageValue') }}</p>
-             <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">{{ t('home.stats.coverage') }}</p>
+             <p class="text-xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.stats.coverageValue') }}</p>
+             <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-0.5">{{ t('home.stats.coverage') }}</p>
            </div>
            <div>
-             <p class="text-2xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.stats.networkValue') }}</p>
-             <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">{{ t('home.stats.network') }}</p>
+             <p class="text-xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.stats.networkValue') }}</p>
+             <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-0.5">{{ t('home.stats.network') }}</p>
            </div>
            <div>
-             <p class="text-2xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.stats.liveOpsValue') }}</p>
-             <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">{{ t('home.stats.liveOps') }}</p>
+             <p class="text-xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.stats.liveOpsValue') }}</p>
+             <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-0.5">{{ t('home.stats.liveOps') }}</p>
            </div>
         </div>
       </div>
@@ -81,22 +81,22 @@ const modules = computed(() => [
       <!-- Feature Visual Card -->
       <div class="relative">
         <div class="absolute -inset-4 bg-sky-500/10 blur-[100px] rounded-full"></div>
-        <div class="relative rounded-[3rem] bg-ocean-900 p-10 text-white shadow-2xl overflow-hidden">
-           <div class="flex justify-between items-start mb-12">
-              <span class="px-4 py-1.5 bg-white/10 rounded-full text-[10px] font-bold tracking-widest uppercase border border-white/10">{{ t('home.focus.eyebrow') }}</span>
-              <span class="material-symbols-outlined text-sky-500 text-4xl">travel_explore</span>
+        <div class="relative rounded-[2rem] bg-ocean-900 p-7 text-white shadow-2xl overflow-hidden">
+           <div class="flex justify-between items-start mb-6">
+              <span class="px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold tracking-widest uppercase border border-white/10">{{ t('home.focus.eyebrow') }}</span>
+              <span class="material-symbols-outlined text-sky-500 text-3xl">travel_explore</span>
            </div>
-           <h3 class="text-3xl font-display font-bold tracking-tight">{{ t('home.focus.title') }}</h3>
-           <p class="mt-4 text-slate-400 text-sm leading-relaxed">{{ t('home.focus.body') }}</p>
-           
-           <div class="mt-10 space-y-4">
-              <div class="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10">
+           <h3 class="text-2xl font-display font-bold tracking-tight">{{ t('home.focus.title') }}</h3>
+           <p class="mt-2 text-slate-400 text-sm leading-relaxed">{{ t('home.focus.body') }}</p>
+
+           <div class="mt-5 space-y-2.5">
+              <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">{{ t('home.focus.metrics.alerts') }}</span>
-                <span class="text-lg font-display font-bold text-sky-400">{{ t('home.focus.metrics.alertsValue') }}</span>
+                <span class="text-base font-display font-bold text-sky-400">{{ t('home.focus.metrics.alertsValue') }}</span>
               </div>
-              <div class="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">{{ t('home.focus.metrics.tours') }}</span>
-                <span class="text-lg font-display font-bold">{{ t('home.focus.metrics.toursValue') }}</span>
+                <span class="text-base font-display font-bold">{{ t('home.focus.metrics.toursValue') }}</span>
               </div>
            </div>
         </div>
@@ -104,26 +104,26 @@ const modules = computed(() => [
     </section>
 
     <!-- Modules Grid -->
-    <section class="space-y-12">
-      <div class="text-center max-w-3xl mx-auto space-y-4">
+    <section class="space-y-6">
+      <div class="text-center max-w-3xl mx-auto space-y-2">
         <p class="text-[10px] font-bold tracking-[0.3em] text-sky-600 uppercase">{{ t('home.modules.eyebrow') }}</p>
-        <h2 class="text-4xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.modules.title') }}</h2>
-        <p class="text-slate-500 dark:text-slate-400">{{ t('home.modules.subtitle') }}</p>
+        <h2 class="text-3xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.modules.title') }}</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">{{ t('home.modules.subtitle') }}</p>
       </div>
 
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <NuxtLink
           v-for="module in modules"
           :key="module.to"
           :to="module.to"
-          class="group p-8 rounded-[2.5rem] bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-ocean-900/5"
+          class="group p-6 rounded-[1.75rem] bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-ocean-900/5"
         >
-          <div class="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center mb-6 group-hover:bg-sky-500 group-hover:text-white transition-colors">
-            <span class="material-symbols-outlined text-2xl">{{ module.icon }}</span>
+          <div class="w-11 h-11 rounded-xl bg-slate-50 dark:bg-white/5 flex items-center justify-center mb-4 group-hover:bg-sky-500 group-hover:text-white transition-colors">
+            <span class="material-symbols-outlined text-xl">{{ module.icon }}</span>
           </div>
-          <h3 class="text-xl font-display font-bold text-ocean-900 dark:text-white group-hover:text-sky-600 transition-colors">{{ module.title }}</h3>
-          <p class="mt-3 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{{ module.body }}</p>
-          <div class="mt-8 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-sky-600 opacity-0 group-hover:opacity-100 transition-opacity">
+          <h3 class="text-lg font-display font-bold text-ocean-900 dark:text-white group-hover:text-sky-600 transition-colors">{{ module.title }}</h3>
+          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{{ module.body }}</p>
+          <div class="mt-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-sky-600 opacity-0 group-hover:opacity-100 transition-opacity">
              {{ t('common.open') }} <span class="material-symbols-outlined text-sm">arrow_forward</span>
           </div>
         </NuxtLink>
@@ -131,22 +131,22 @@ const modules = computed(() => [
     </section>
 
     <!-- Bottom Info -->
-    <section class="grid gap-8 lg:grid-cols-2">
-      <div class="p-10 rounded-[3rem] bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
-        <h3 class="text-2xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.stack.title') }}</h3>
-        <ul class="mt-6 space-y-4">
+    <section class="grid gap-5 lg:grid-cols-2">
+      <div class="p-7 rounded-[2rem] bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
+        <h3 class="text-xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.stack.title') }}</h3>
+        <ul class="mt-4 space-y-3">
           <li v-for="item in ta('home.stack.bullets')" :key="item" class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400 font-medium">
              <span class="w-1.5 h-1.5 bg-sky-500 rounded-full"></span>
              {{ item }}
           </li>
         </ul>
       </div>
-      <div class="p-10 rounded-[3rem] bg-white dark:bg-ocean-900 border border-slate-100 dark:border-white/5 shadow-premium">
-        <h3 class="text-2xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.stack.agencyTitle') }}</h3>
-        <p class="mt-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+      <div class="p-7 rounded-[2rem] bg-white dark:bg-ocean-900 border border-slate-100 dark:border-white/5 shadow-premium">
+        <h3 class="text-xl font-display font-bold text-ocean-900 dark:text-white">{{ t('home.stack.agencyTitle') }}</h3>
+        <p class="mt-3 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
           {{ t('home.stack.agencyBody') }}
         </p>
-        <div class="mt-8 flex flex-wrap gap-2">
+        <div class="mt-5 flex flex-wrap gap-2">
           <Tag v-for="tag in ta('home.stack.tags')" :key="tag">{{ tag }}</Tag>
         </div>
       </div>

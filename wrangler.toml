@@ -1,9 +1,3 @@
 name = "travel-leader-network"
 pages_build_output_dir = "frontend/dist"
 
-[env.production]
-vars = {
-  ENVIRONMENT = "production",
-  NUXT_PUBLIC_SUPABASE_URL = "https://hchhgxglpspbpyoaosao.supabase.co",
-  NUXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_j5yD6RUtwak4lBSrfo3bxw_KyEbc42G"
-}

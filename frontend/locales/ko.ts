@@ -231,7 +231,8 @@ export default {
     indoorMap: '공항 내부 지도',
     tab: {
       location: '위치 지도',
-      indoor: '공항 내부'
+      indoor: '공항 내부',
+      immigration: '입국 팁'
     },
     indoor: {
       loading: '내부 시설 데이터를 불러오는 중...',

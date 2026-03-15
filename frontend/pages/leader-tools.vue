@@ -11,6 +11,19 @@
       <div class="pointer-events-none absolute -bottom-8 left-1/3 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
     </div>
 
+    <!-- NotebookLM Briefing Banner -->
+    <div class="rounded-2xl border border-sky-200 dark:border-sky-800/40 bg-gradient-to-r from-sky-50 to-blue-50 dark:from-sky-900/20 dark:to-blue-900/20 px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <div class="flex-1">
+        <p class="text-xs font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">AI 투어 브리핑</p>
+        <p class="mt-0.5 text-sm font-semibold text-black/80 dark:text-white/80">공항·입국 정보를 NotebookLM용 문서로 자동 생성</p>
+        <p class="text-xs text-black/50 dark:text-white/40 mt-0.5">공항 선택 → 구조화 브리핑 생성 → NotebookLM에서 AI 오디오 요약 및 Q&A</p>
+      </div>
+      <NuxtLink
+        to="/guide/briefing"
+        class="shrink-0 rounded-xl bg-sky-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-sky-700"
+      >브리핑 생성하기 →</NuxtLink>
+    </div>
+
     <!-- AI Schedule Recommendation -->
     <AiSchedulePanel />
 

@@ -1,0 +1,2 @@
+import{I as r}from"../nitro/nitro.mjs";import{k as s,n as e}from"./server.mjs";import{u as o}from"./useUserRole-CGOAnWdi.mjs";import"../routes/renderer.mjs";import"../_/shared.esm-bundler.mjs";import"./useSupabase-B1s_DZxO.mjs";const m=s(async()=>{let s,m;const t=([s,m]=r(()=>o()),s=await s,m(),s);if("tour_leader"!==t&&"admin"!==t)return e("/dashboard")});export{m as default};
+//# sourceMappingURL=role-leader-B2APmFC6.mjs.map
