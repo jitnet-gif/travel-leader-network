@@ -97,98 +97,110 @@ const buildGoogleMapsUrl = (lat: number, lng: number) => {
 };
 
 const initMap = async () => {
-  if (!process.client || !mapContainer.value) return;
-  const L = await import('leaflet');
-
-  // Fix default marker icons in Vite/Nuxt
-  // @ts-ignore
-  delete L.Icon.Default.prototype._getIconUrl;
-  L.Icon.Default.mergeOptions({
-    iconRetinaUrl: new URL('leaflet/dist/images/marker-icon-2x.png', import.meta.url).href,
-    iconUrl:       new URL('leaflet/dist/images/marker-icon.png',    import.meta.url).href,
-    shadowUrl:     new URL('leaflet/dist/images/marker-shadow.png',  import.meta.url).href
-  });
-
-  const start = toLL(props.center);
-
-  map = L.map(mapContainer.value, {
-    // ── Touch / gesture controls ──────────────────────────
-    dragging:         true,   // one-finger pan
-    touchZoom:        true,   // two-finger pinch zoom
-    doubleClickZoom:  true,
-    scrollWheelZoom:  false,  // disable scroll-wheel on desktop (avoids page-scroll conflict)
-    tap:              false,  // disable tap plugin (causes ghost-click on iOS)
-    // ─────────────────────────────────────────────────────
-    zoomControl:      false,  // we add it bottom-left manually
-  }).setView(start, props.zoom);
-
-  // Zoom control — bottom left so it doesn't overlap our buttons
-  L.control.zoom({ position: 'bottomleft' }).addTo(map);
-
-  // Tile layer with place names (OpenStreetMap)
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    maxZoom: 19,
-  }).addTo(map);
-
-  // Marker with place-name popup
-  const popupHtml = props.placeName
-    ? `<div style="font-weight:600;font-size:13px;line-height:1.4">${props.placeName}</div>
-       <div style="font-size:11px;color:#555;margin-top:2px">${start[0].toFixed(4)}, ${start[1].toFixed(4)}</div>`
-    : `<div style="font-size:12px;color:#555">${start[0].toFixed(4)}, ${start[1].toFixed(4)}</div>`;
-
-  marker = L.marker(start)
-    .addTo(map)
-    .bindPopup(popupHtml, { closeButton: false, offset: [0, -28] })
-    .openPopup();
-
-  // Clicking marker → Google Maps
-  marker.on('click', () => {
-    window.open(buildGoogleMapsUrl(start[0], start[1]), '_blank', 'noopener');
-  });
-
-  // Clicking map → Google Maps (at clicked point)
-  map.on('click', (e: any) => {
-    window.open(buildGoogleMapsUrl(e.latlng.lat, e.latlng.lng), '_blank', 'noopener');
-  });
-
-  // Add facility markers
-  const facilityMarkers: any[] = [];
-  if (props.facilities && props.facilities.length > 0) {
-    props.facilities.forEach((facility) => {
-      const facilityMarker = L.circleMarker([facility.lat, facility.lng], {
-        radius: 8,
-        fillColor: facility.color,
-        color: 'white',
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0.8
-      }).addTo(map);
-
-      const facilityPopup = `<div style="font-weight:600;font-size:13px;line-height:1.4">${facility.icon} ${facility.name}</div>
-         <div style="font-size:11px;color:#555;margin-top:4px">클릭하여 Google Maps에서 검색</div>`;
-
-      facilityMarker.bindPopup(facilityPopup, { closeButton: false, offset: [0, -28] });
-
-      facilityMarker.on('click', () => {
-        window.open(
-          `https://www.google.com/maps/search/${encodeURIComponent(`${facility.name} ${props.placeName}`)}/@${props.center![1]},${props.center![0]},18z`,
-          '_blank',
-          'noopener'
-        );
-      });
-
-      facilityMarkers.push(facilityMarker);
-    });
+  if (!process.client || !mapContainer.value) {
+    console.warn('[LeafletMap] Not client-side or no container');
+    return;
   }
 
-  // Show hint briefly on first touch
-  map.on('touchstart', () => {
-    if (showHint.value) return;
-    showHint.value = true;
-    if (hintTimer) clearTimeout(hintTimer);
-    hintTimer = setTimeout(() => { showHint.value = false; }, 2000);
-  });
+  try {
+    const L = await import('leaflet');
+
+    // Fix default marker icons in Vite/Nuxt
+    // @ts-ignore
+    delete L.Icon.Default.prototype._getIconUrl;
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: new URL('leaflet/dist/images/marker-icon-2x.png', import.meta.url).href,
+      iconUrl:       new URL('leaflet/dist/images/marker-icon.png',    import.meta.url).href,
+      shadowUrl:     new URL('leaflet/dist/images/marker-shadow.png',  import.meta.url).href
+    });
+
+    const start = toLL(props.center);
+    console.log('[LeafletMap] Init start=', start, 'zoom=', props.zoom, 'place=', props.placeName);
+
+    map = L.map(mapContainer.value, {
+      // ── Touch / gesture controls ──────────────────────────
+      dragging:         true,   // one-finger pan
+      touchZoom:        true,   // two-finger pinch zoom
+      doubleClickZoom:  true,
+      scrollWheelZoom:  false,  // disable scroll-wheel on desktop (avoids page-scroll conflict)
+      tap:              false,  // disable tap plugin (causes ghost-click on iOS)
+      // ─────────────────────────────────────────────────────
+      zoomControl:      false,  // we add it bottom-left manually
+    }).setView(start, props.zoom);
+
+    // Zoom control — bottom left so it doesn't overlap our buttons
+    L.control.zoom({ position: 'bottomleft' }).addTo(map);
+
+    // Tile layer with place names (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
+    }).addTo(map);
+
+    // Marker with place-name popup
+    const popupHtml = props.placeName
+      ? `<div style="font-weight:600;font-size:13px;line-height:1.4">${props.placeName}</div>
+         <div style="font-size:11px;color:#555;margin-top:2px">${start[0].toFixed(4)}, ${start[1].toFixed(4)}</div>`
+      : `<div style="font-size:12px;color:#555">${start[0].toFixed(4)}, ${start[1].toFixed(4)}</div>`;
+
+    marker = L.marker(start)
+      .addTo(map)
+      .bindPopup(popupHtml, { closeButton: false, offset: [0, -28] })
+      .openPopup();
+
+    // Clicking marker → Google Maps
+    marker.on('click', () => {
+      window.open(buildGoogleMapsUrl(start[0], start[1]), '_blank', 'noopener');
+    });
+
+    // Clicking map → Google Maps (at clicked point)
+    map.on('click', (e: any) => {
+      window.open(buildGoogleMapsUrl(e.latlng.lat, e.latlng.lng), '_blank', 'noopener');
+    });
+
+    // Add facility markers
+    const facilityMarkers: any[] = [];
+    if (props.facilities && props.facilities.length > 0) {
+      console.log('[LeafletMap] Adding', props.facilities.length, 'facility markers');
+      props.facilities.forEach((facility) => {
+        const facilityMarker = L.circleMarker([facility.lat, facility.lng], {
+          radius: 8,
+          fillColor: facility.color,
+          color: 'white',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.8
+        }).addTo(map);
+
+        const facilityPopup = `<div style="font-weight:600;font-size:13px;line-height:1.4">${facility.icon} ${facility.name}</div>
+           <div style="font-size:11px;color:#555;margin-top:4px">클릭하여 Google Maps에서 검색</div>`;
+
+        facilityMarker.bindPopup(facilityPopup, { closeButton: false, offset: [0, -28] });
+
+        facilityMarker.on('click', () => {
+          window.open(
+            `https://www.google.com/maps/search/${encodeURIComponent(`${facility.name} ${props.placeName}`)}/@${props.center![1]},${props.center![0]},18z`,
+            '_blank',
+            'noopener'
+          );
+        });
+
+        facilityMarkers.push(facilityMarker);
+      });
+    }
+
+    // Show hint briefly on first touch
+    map.on('touchstart', () => {
+      if (showHint.value) return;
+      showHint.value = true;
+      if (hintTimer) clearTimeout(hintTimer);
+      hintTimer = setTimeout(() => { showHint.value = false; }, 2000);
+    });
+
+    console.log('[LeafletMap] Initialized successfully');
+  } catch (error) {
+    console.error('[LeafletMap] Initialization error:', error);
+  }
 };
 
 onMounted(initMap);

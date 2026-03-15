@@ -2,7 +2,22 @@
   <div class="mx-auto max-w-lg">
     <SectionHeader :eyebrow="t('login.eyebrow')" :title="t('login.title')" :subtitle="t('login.subtitle')" />
     <Card>
-      <form class="space-y-4" @submit.prevent="onSubmit">
+      <!-- Email Confirmation State -->
+      <div v-if="showEmailConfirmation" class="space-y-4 text-center">
+        <div class="rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+          <p class="mb-2 text-lg font-semibold text-blue-900 dark:text-blue-100">✅ 확인 이메일이 전송되었습니다</p>
+          <p class="text-sm text-blue-700 dark:text-blue-200">{{ email }}로 전송된 확인 링크를 클릭해주세요</p>
+        </div>
+        <div class="border-t pt-4">
+          <p class="mb-3 text-sm text-black/60 dark:text-white/60">아직 이메일을 받지 못하셨나요?</p>
+          <BaseButton variant="outline" @click="resetToLogin">
+            다시 로그인하기
+          </BaseButton>
+        </div>
+      </div>
+
+      <!-- Login/Register Form -->
+      <form v-else class="space-y-4" @submit.prevent="onSubmit">
         <div>
           <label class="text-xs uppercase tracking-[0.2em] text-black/50">{{ t('login.emailLabel') }}</label>
           <input
@@ -49,10 +64,18 @@
           <BaseButton type="submit" :disabled="loading">
             {{ loading ? t('login.signingIn') : t('login.signIn') }}
           </BaseButton>
-          <BaseButton variant="outline" type="button" :disabled="loading" @click="onRegister">
-            {{ loading ? t('login.signingIn') : t('login.createAccount') }}
+          <BaseButton variant="outline" type="button" :disabled="loading" @click="isRegistering = !isRegistering">
+            {{ isRegistering ? t('login.backToLogin') : t('login.createAccount') }}
           </BaseButton>
         </div>
+
+        <!-- Info help text -->
+        <p class="text-xs text-black/50 dark:text-white/50">
+          {{ isRegistering
+            ? '회원가입 후 이메일 확인이 필요합니다. 스팸 폴더도 확인해주세요.'
+            : '로그인 후 대시보드에 접근할 수 있습니다.'
+          }}
+        </p>
       </form>
     </Card>
   </div>
@@ -69,45 +92,100 @@ const role = ref<'tour_leader' | 'agency' | 'admin'>('tour_leader');
 const errorMsg = ref('');
 const successMsg = ref('');
 const loading = ref(false);
+const isRegistering = ref(false);
+const showEmailConfirmation = ref(false);
 
 const clearMessages = () => {
   errorMsg.value = '';
   successMsg.value = '';
 };
 
-const onSubmit = async () => {
+const resetToLogin = () => {
+  showEmailConfirmation.value = false;
+  isRegistering.value = false;
   clearMessages();
-  loading.value = true;
-  const { error } = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value
-  });
-  loading.value = false;
-  if (error) {
-    errorMsg.value = error.message;
-    return;
-  }
-  init();
-  await navigateTo('/dashboard');
 };
 
-const onRegister = async () => {
+const onSubmit = async () => {
   clearMessages();
+
+  if (isRegistering.value) {
+    await onRegister();
+  } else {
+    await onLogin();
+  }
+};
+
+const onLogin = async () => {
   if (!email.value || !password.value) {
     errorMsg.value = t('login.emailPasswordRequired');
     return;
   }
+
   loading.value = true;
-  const { error } = await supabase.auth.signUp({
-    email: email.value,
-    password: password.value,
-    options: { data: { role: role.value } }
-  });
-  loading.value = false;
-  if (error) {
-    errorMsg.value = error.message;
-  } else {
-    successMsg.value = t('login.confirmEmail');
+  try {
+    const { error, data } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value
+    });
+
+    if (error) {
+      errorMsg.value = error.message;
+      console.error('[Login] SignIn error:', error);
+      return;
+    }
+
+    if (data?.user) {
+      console.log('[Login] SignIn successful');
+      init();
+      await navigateTo('/dashboard');
+    }
+  } catch (e) {
+    console.error('[Login] Unexpected error:', e);
+    errorMsg.value = t('login.unexpectedError') || 'An unexpected error occurred';
+  } finally {
+    loading.value = false;
+  }
+};
+
+const onRegister = async () => {
+  if (!email.value || !password.value) {
+    errorMsg.value = t('login.emailPasswordRequired');
+    return;
+  }
+
+  if (password.value.length < 6) {
+    errorMsg.value = '비밀번호는 최소 6자 이상이어야 합니다';
+    return;
+  }
+
+  loading.value = true;
+  try {
+    const { error, data } = await supabase.auth.signUp({
+      email: email.value,
+      password: password.value,
+      options: {
+        data: { role: role.value },
+        emailRedirectTo: `${window.location.origin}/auth/callback`
+      }
+    });
+
+    if (error) {
+      errorMsg.value = error.message;
+      console.error('[Login] SignUp error:', error);
+      return;
+    }
+
+    if (data?.user) {
+      console.log('[Login] SignUp successful, showing email confirmation');
+      showEmailConfirmation.value = true;
+      successMsg.value = t('login.confirmEmail') || '확인 이메일이 전송되었습니다';
+    }
+  } catch (e) {
+    console.error('[Login] SignUp error:', e);
+    errorMsg.value = t('login.unexpectedError') || 'An unexpected error occurred';
+  } finally {
+    loading.value = false;
   }
 };
 </script>
