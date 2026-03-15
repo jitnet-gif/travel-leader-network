@@ -159,7 +159,7 @@ const initMap = async () => {
     });
 
     // Add facility markers
-    const facilityMarkers: any[] = [];
+    facilityMarkers = [];
     if (props.facilities && props.facilities.length > 0) {
       console.log('[LeafletMap] Adding', props.facilities.length, 'facility markers');
       props.facilities.forEach((facility) => {
