@@ -168,6 +168,20 @@ const FLOOR_DATA: Record<string, FloorDef[]> = {
     { label: '4F', desc: '보안·게이트' },
     { label: '5F', desc: '레스토랑·라운지' },
   ],
+  IST: [
+    { label: 'B1', desc: '지하철·셔틀·주차' },
+    { label: '1F', desc: '도착·수하물' },
+    { label: '2F', desc: '환승·연결' },
+    { label: '3F', desc: '출발 체크인' },
+    { label: '4F', desc: '보안·게이트·면세' },
+  ],
+  YVR: [
+    { label: 'B2', desc: '철도·수하물 청구' },
+    { label: 'B1', desc: '주차·렌트카' },
+    { label: '0F', desc: '국제선 도착' },
+    { label: '1F', desc: '국내선·출발' },
+    { label: '2F', desc: '출발 체크인·라운지' },
+  ],
 };
 
 const DEFAULT_FLOORS: FloorDef[] = [
@@ -221,6 +235,7 @@ const OFFICIAL_URLS: Record<string, string> = {
   DOH: 'https://www.hamadairport.com/en/at-the-airport/maps-and-directions',
   SYD: 'https://www.sydneyairport.com.au/info-sheet/terminal-map',
   NBO: 'https://www.kenyaairports.go.ke/jkia/passenger-services/airport-guide/',
+  YVR: 'https://www.yvr.ca/en/passengers/airport-maps-and-information',
 };
 
 const officialUrl = computed(() => OFFICIAL_URLS[props.airport.iata] ?? null);
