@@ -57,8 +57,14 @@ const navigateTo = (idx: number) => {
   selectedIndex.value = idx;
   selectedAirport.value = list[idx];
   nextTick(() => {
-    const card = gridRef.value?.children[idx] as HTMLElement | undefined;
-    card?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    const container = gridRef.value;
+    const card = container?.children[idx] as HTMLElement | undefined;
+    if (!container || !card) return;
+    // Manual scroll: position card near the top of the scrollable container
+    const containerRect = container.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const offset = cardRect.top - containerRect.top + container.scrollTop - 8;
+    container.scrollTo({ top: offset, behavior: 'smooth' });
   });
 };
 

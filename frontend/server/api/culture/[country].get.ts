@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 
 type Severity = 'info' | 'warning' | 'important';
-type Section = 'dress' | 'alcohol' | 'customs' | 'etiquette';
+type Section = 'weather' | 'dress' | 'alcohol' | 'etiquette' | 'customs';
 
 interface CultureRule {
   id: string;
@@ -36,41 +36,44 @@ export default defineEventHandler(async (event): Promise<CultureResult> => {
   if (cached && Date.now() - cached.ts < TTL) return cached.data;
 
   const today = new Date().toISOString().slice(0, 10);
+  const month = new Date().getMonth() + 1; // current month for seasonal clothing
 
   const client = new Anthropic({ apiKey });
 
   const message = await client.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 2048,
+    max_tokens: 2560,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 4 } as any],
-    system: `You are a travel culture expert. Use web search to find current (${today}) dress code rules, alcohol import allowances, and cultural etiquette for visitors to the specified country.
+    tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 } as any],
+    system: `You are a travel culture and weather expert. Use web search to find current (${today}, month=${month}) dress code rules, seasonal weather, recommended clothing, alcohol import rules, and cultural etiquette for visitors to the specified country.
 Return ONLY a valid JSON object — no markdown fences, no extra text:
 {
   "country": "string",
   "generatedAt": "${today}",
-  "summary": "One-sentence Korean overview of the country's dress/alcohol culture",
+  "summary": "One-sentence Korean overview of climate and dress culture",
   "rules": [
     {
       "id": "short-unique-slug",
-      "section": "dress|alcohol|customs|etiquette",
+      "section": "weather|dress|alcohol|etiquette|customs",
       "severity": "info|warning|important",
       "title": "Korean title (concise, ≤40 chars)",
-      "detail": "Korean explanation (3–5 sentences, specific amounts/rules)",
+      "detail": "Korean explanation (3–5 sentences, specific and actionable)",
       "source": "Source name in Korean",
       "sourceUrl": "https://..."
     }
   ]
 }
-Include 5–7 rules covering:
-- Dress code for religious sites, public places, beaches (section: dress)
-- Alcohol import duty-free allowance in litres/bottles (section: alcohol)
-- Public drinking rules (section: alcohol)
-- Cultural taboos or local etiquette tips (section: etiquette)
-Prioritize practical information for Korean group tour leaders.`,
+Include 7–9 rules covering ALL of these sections:
+- section "weather": current season climate (month ${month}), temperature range, humidity, rainfall — give specific °C ranges
+- section "dress": recommended clothing for current season (month ${month}) — specific items e.g. 가벼운 면 소재, 레이어링, 우산 필수, 선크림 SPF50+
+- section "dress": dress code for religious sites, conservative areas, beaches
+- section "alcohol": duty-free import allowance (specific litres/bottles)
+- section "alcohol": public drinking laws
+- section "etiquette": 1–2 important cultural taboos or greeting customs
+Prioritize practical, specific information for Korean group tour leaders.`,
     messages: [{
       role: 'user',
-      content: `Search for ${country}'s 2025–2026 rules on: dress code requirements (religious sites, beaches, public), alcohol import allowances (duty-free limits), public drinking laws, and key cultural etiquette. Provide specific amounts and legal requirements.`,
+      content: `Search for ${country} in month ${month}: (1) current weather and temperature in major cities, (2) recommended clothing for tourists this season, (3) dress code rules for religious/public places, (4) alcohol import duty-free limits, (5) public drinking laws, (6) key cultural etiquette for Korean tourists.`,
     }],
   });
 

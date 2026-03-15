@@ -96,7 +96,7 @@ const props = defineProps<{ airport: Airport }>();
 const expanded = ref<string | null>(null);
 
 type Severity = 'info' | 'warning' | 'important';
-type Section = 'dress' | 'alcohol' | 'customs' | 'etiquette';
+type Section = 'weather' | 'dress' | 'alcohol' | 'etiquette' | 'customs';
 
 interface CultureRule {
   id: string;
@@ -116,7 +116,8 @@ interface CultureResult {
 }
 
 const SECTIONS: { key: Section; icon: string; label: string }[] = [
-  { key: 'dress',     icon: '👗', label: '복장 규정' },
+  { key: 'weather',   icon: '🌤️', label: '날씨 · 기후' },
+  { key: 'dress',     icon: '👗', label: '추천 복장' },
   { key: 'alcohol',   icon: '🍷', label: '주류 반입·음주 규정' },
   { key: 'etiquette', icon: '🙏', label: '문화 에티켓' },
   { key: 'customs',   icon: '🛃', label: '기타 관습' },
