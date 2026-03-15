@@ -1,32 +1,5 @@
 <template>
   <div class="space-y-3">
-    <!-- Floor selector -->
-    <div class="space-y-1.5">
-      <div class="flex items-center gap-2">
-        <span class="text-xs font-semibold text-black/40 dark:text-white/40 shrink-0">층 선택</span>
-        <div class="flex gap-1.5 overflow-x-auto pb-0.5 scrollbar-hide">
-          <button
-            v-for="floor in floors"
-            :key="floor.label"
-            type="button"
-            class="shrink-0 rounded-full border px-3 py-1 text-xs font-bold transition"
-            :class="selectedFloor?.label === floor.label
-              ? 'border-ocean bg-ocean text-white'
-              : 'border-black/15 text-black/60 hover:border-ocean/50 hover:text-ocean dark:border-white/20 dark:text-white/50'"
-            :title="floor.desc"
-            @click="selectedFloor = selectedFloor?.label === floor.label ? null : floor"
-          >
-            {{ floor.label }}
-          </button>
-        </div>
-      </div>
-      <Transition name="fade-slide">
-        <p v-if="selectedFloor" class="text-xs text-ocean/80 dark:text-ocean/70 pl-1">
-          {{ selectedFloor.label }} — {{ selectedFloor.desc }}
-        </p>
-      </Transition>
-    </div>
-
     <!-- Leaflet Indoor Map (Main) -->
     <div class="space-y-3">
       <div class="flex items-center justify-between">
@@ -53,42 +26,49 @@
         </div>
       </div>
 
-      <!-- Map + Floor Info Layout -->
-      <div class="flex flex-col lg:flex-row lg:gap-4 lg:items-start">
-        <!-- Leaflet Map (Left/Top) -->
-        <div class="relative overflow-hidden rounded-xl border border-black/10 dark:border-white/10 h-72 sm:h-96 lg:flex-1 shadow-md">
-          <ClientOnly>
-            <LeafletMap
-              v-if="resolvedCoords"
-              :center="resolvedCoords"
-              :zoom="selectedFloor ? 21 : 16"
-              :place-name="`${airport.name}${selectedFloor ? ` - ${selectedFloor.label}` : ''}`"
-              :facilities="facilityMarkers"
-            />
-            <div v-else class="flex h-full items-center justify-center bg-slate-50 text-sm text-black/50 dark:bg-slate-800 dark:text-white/50">
-              <span>{{ t('airport.indoor.loading') }}</span>
-            </div>
-          </ClientOnly>
+      <!-- Map with floating floor controls -->
+      <div class="relative rounded-xl border border-black/10 dark:border-white/10 h-72 sm:h-96 shadow-md" style="overflow:visible">
+        <ClientOnly>
+          <LeafletMap
+            v-if="mapCenter"
+            :center="mapCenter"
+            :zoom="selectedFloor ? 21 : 16"
+            :place-name="`${airport.name}${selectedFloor ? ` - ${selectedFloor.label}` : ''}`"
+            :facilities="facilityMarkers"
+          />
+          <div v-else class="flex h-full items-center justify-center bg-slate-50 text-sm text-black/50 dark:bg-slate-800 dark:text-white/50 rounded-xl">
+            <span>{{ t('airport.indoor.loading') }}</span>
+          </div>
+        </ClientOnly>
+
+        <!-- Floating floor selector (left side, vertical) -->
+        <div class="absolute left-2 top-2 z-[1000] flex flex-col gap-1">
+          <button
+            v-for="floor in floors"
+            :key="floor.label"
+            type="button"
+            class="rounded-lg px-2 py-1 text-[11px] font-bold shadow-md transition active:scale-95 border"
+            :class="selectedFloor?.label === floor.label
+              ? 'bg-ocean border-ocean text-white shadow-ocean/30'
+              : 'bg-white/90 dark:bg-slate-800/90 border-black/10 dark:border-white/15 text-black/70 dark:text-white/70 hover:bg-white dark:hover:bg-slate-700 backdrop-blur-sm'"
+            :title="floor.desc"
+            @click="selectedFloor = selectedFloor?.label === floor.label ? null : floor"
+          >
+            {{ floor.label }}
+          </button>
         </div>
 
-        <!-- Floor Info Card (Right/Bottom on mobile, Right on desktop) -->
-        <div v-if="selectedFloor" class="lg:w-56 lg:flex-shrink-0">
-          <div class="rounded-xl bg-gradient-to-br from-ocean/10 to-sky/10 border border-ocean/30 p-4 space-y-3">
-            <div>
-              <p class="text-xs font-semibold text-black/50 dark:text-white/50 mb-1">현재 층</p>
-              <p class="text-2xl font-bold text-ocean">{{ selectedFloor.label }}</p>
-            </div>
-            <div class="border-t border-ocean/20 pt-3">
-              <p class="text-xs font-semibold text-black/50 dark:text-white/50 mb-2">시설 안내</p>
-              <p class="text-sm text-black/70 dark:text-white/70 leading-relaxed">{{ selectedFloor.desc }}</p>
-            </div>
-            <div class="flex gap-2 text-2xl">
-              <span>🗺️</span>
-              <span>📍</span>
-              <span>🚪</span>
+        <!-- Floating floor description badge (top center) -->
+        <Transition name="fade-slide">
+          <div
+            v-if="selectedFloor"
+            class="absolute top-2 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none"
+          >
+            <div class="rounded-full bg-ocean px-3 py-1 text-xs font-semibold text-white shadow-md whitespace-nowrap backdrop-blur-sm">
+              {{ selectedFloor.label }} — {{ selectedFloor.desc }}
             </div>
           </div>
-        </div>
+        </Transition>
       </div>
     </div>
 
@@ -307,11 +287,19 @@ const PRECISE_COORDS: Record<string, [number, number]> = {
   EZE: [-34.8222, -58.5358],
 };
 
+// [lat, lng] for Google Maps URLs and facility offset calculations
 const resolvedCoords = computed<[number, number] | null>(() => {
   const iata = props.airport.iata?.toUpperCase();
   if (PRECISE_COORDS[iata]) return PRECISE_COORDS[iata];
   if (props.airport.lat && props.airport.lng) return [props.airport.lat, props.airport.lng];
   return null;
+});
+
+// LeafletMap expects [lng, lat] — swap from resolvedCoords
+const mapCenter = computed<[number, number] | null>(() => {
+  const c = resolvedCoords.value;
+  if (!c) return null;
+  return [c[1], c[0]];
 });
 
 // ─── Google Maps URLs ─────────────────────────────────────────────────────────

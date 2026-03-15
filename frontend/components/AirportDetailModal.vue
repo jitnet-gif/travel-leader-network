@@ -8,18 +8,61 @@
       >
         <div class="mt-2 w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-soft dark:bg-slate-900 sm:mt-6 flex flex-col max-h-[92vh] sm:max-h-[88vh] min-h-0">
           <div class="flex items-start justify-between border-b border-black/5 px-4 py-3 sm:px-6 sm:py-4 dark:border-white/10 shrink-0">
-            <div>
-              <p class="text-[11px] uppercase tracking-[0.2em] text-black/50 dark:text-white/50">{{ airport.iata }}</p>
-              <h3 class="text-xl font-display leading-tight">{{ airport.name }}</h3>
-              <p class="text-sm text-black/60 dark:text-white/60">{{ airport.city }}, {{ airport.country }}</p>
+            <div class="flex items-start gap-3 min-w-0">
+              <!-- Prev / Next arrows -->
+              <div v-if="total > 1" class="flex flex-col gap-1 shrink-0 mt-0.5">
+                <button
+                  type="button"
+                  :disabled="currentIndex <= 0"
+                  class="flex h-6 w-6 items-center justify-center rounded-lg border border-black/10 dark:border-white/15 text-black/50 dark:text-white/40 transition hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-25 disabled:cursor-not-allowed"
+                  title="이전 공항"
+                  @click="emit('prev')"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 15-6-6-6 6"/></svg>
+                </button>
+                <button
+                  type="button"
+                  :disabled="currentIndex >= total - 1"
+                  class="flex h-6 w-6 items-center justify-center rounded-lg border border-black/10 dark:border-white/15 text-black/50 dark:text-white/40 transition hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-25 disabled:cursor-not-allowed"
+                  title="다음 공항"
+                  @click="emit('next')"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+              </div>
+              <div class="min-w-0">
+                <p class="text-[11px] uppercase tracking-[0.2em] text-black/50 dark:text-white/50">
+                  {{ airport.iata }}<span v-if="total > 1" class="ml-2 font-normal normal-case tracking-normal">{{ currentIndex + 1 }} / {{ total }}</span>
+                </p>
+                <h3 class="text-xl font-display leading-tight">{{ airport.name }}</h3>
+                <p class="text-sm text-black/60 dark:text-white/60">{{ airport.city }}, {{ airport.country }}</p>
+              </div>
             </div>
-            <button
-              type="button"
-              class="rounded-full border border-black/10 px-3 py-1.5 text-xs font-semibold text-black/70 transition hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-primary/40 dark:border-white/20 dark:text-white/70 dark:hover:bg-white/5"
-              @click="emit('close')"
-            >
-              {{ t('common.close') }}
-            </button>
+            <div class="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                class="relative rounded-full border border-ocean/40 bg-ocean/5 px-3 py-1.5 text-xs font-semibold text-ocean transition hover:bg-ocean/10 focus:outline-none dark:border-ocean/30 dark:bg-ocean/10"
+                :title="copied ? '복사됨!' : 'NotebookLM용 브리핑 복사'"
+                @click="copyBriefing"
+              >
+                <span v-if="copied">✅ 복사됨</span>
+                <span v-else>📋 브리핑 복사</span>
+              </button>
+              <a
+                href="https://notebooklm.google.com"
+                target="_blank"
+                rel="noopener"
+                class="rounded-full border border-black/10 px-3 py-1.5 text-xs font-semibold text-black/60 transition hover:bg-black/5 dark:border-white/20 dark:text-white/50 dark:hover:bg-white/5"
+                title="NotebookLM 열기"
+              >🔗 NLM</a>
+              <button
+                type="button"
+                class="rounded-full border border-black/10 px-3 py-1.5 text-xs font-semibold text-black/70 transition hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-primary/40 dark:border-white/20 dark:text-white/70 dark:hover:bg-white/5"
+                @click="emit('close')"
+              >
+                {{ t('common.close') }}
+              </button>
+            </div>
           </div>
 
           <!-- Tab bar -->
@@ -50,13 +93,17 @@
                   {{ t('airport.openInMaps') }}
                 </a>
               </div>
-              <div class="overflow-hidden rounded-xl border border-black/10 dark:border-white/10">
+              <div class="rounded-xl border border-black/10 dark:border-white/10" style="overflow:visible">
                 <ClientOnly>
                   <LeafletMap
                     v-if="coords"
                     :center="coords as [number, number]"
                     :zoom="14"
                     :place-name="`${airport.name}, ${airport.city}`"
+                    :open-time="airport.open_time"
+                    :close-time="airport.close_time"
+                    :facilities="facilityMarkers"
+                    :show-marker="false"
                   />
                   <div v-else class="flex h-72 items-center justify-center bg-slate-50 text-sm text-black/50 dark:bg-slate-800 dark:text-white/50">
                     <span v-if="coordsLoading">{{ t('airport.loadingMap') }}</span>
@@ -69,32 +116,6 @@
             <!-- Right: Info cards — independently scrollable -->
             <div class="space-y-3 lg:flex-1 lg:overflow-y-auto lg:pr-1">
               <p class="text-sm font-semibold text-black/70 dark:text-white/70">{{ t('airport.quickFacts') }}</p>
-              <div class="rounded-xl border border-black/10 bg-slate-50 p-4 text-sm text-black/70 dark:border-white/10 dark:bg-slate-800/60 dark:text-white/70">
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.terminals', { count: airport.terminals }) }}</span>
-                  <span class="font-semibold">{{ airport.terminals }}</span>
-                </div>
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.smokingAreas') }}</span>
-                  <span class="font-semibold">{{ airport.smoking_area ? t('common.yes') : t('common.no') }}</span>
-                </div>
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.lounges') }}</span>
-                  <span class="font-semibold">{{ airport.lounge ? t('common.available') : t('common.limited') }}</span>
-                </div>
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.subway') }}</span>
-                  <span class="font-semibold">{{ airport.subway ? t('common.connected') : t('common.no') }}</span>
-                </div>
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.taxi') }}</span>
-                  <span class="font-semibold">{{ airport.taxi ? t('common.yes') : t('common.no') }}</span>
-                </div>
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.bus') }}</span>
-                  <span class="font-semibold">{{ airport.bus ? t('common.yes') : t('common.no') }}</span>
-                </div>
-              </div>
               <div class="rounded-xl border border-black/10 bg-white p-4 text-sm text-black/70 shadow-sm dark:border-white/10 dark:bg-slate-800/80 dark:text-white/70">
                 <div class="flex items-center justify-between">
                   <p class="font-semibold text-black/80 dark:text-white/80">{{ t('airport.liveLookup') }}</p>
@@ -123,6 +144,32 @@
                   <p v-if="realtimeResult.status"><span class="font-semibold">{{ t('airport.status') }}:</span> {{ realtimeResult.status }}</p>
                 </div>
               </div>
+              <div class="rounded-xl border border-black/10 bg-slate-50 p-4 text-sm text-black/70 dark:border-white/10 dark:bg-slate-800/60 dark:text-white/70">
+                <div class="flex items-center justify-between py-1">
+                  <span>{{ t('airport.terminals', { count: airport.terminals }) }}</span>
+                  <span class="font-semibold">{{ airport.terminals }}</span>
+                </div>
+                <div class="flex items-center justify-between py-1">
+                  <span>{{ t('airport.smokingAreas') }}</span>
+                  <span class="font-semibold">{{ airport.smoking_area ? t('common.yes') : t('common.no') }}</span>
+                </div>
+                <div class="flex items-center justify-between py-1">
+                  <span>{{ t('airport.lounges') }}</span>
+                  <span class="font-semibold">{{ airport.lounge ? t('common.available') : t('common.limited') }}</span>
+                </div>
+                <div class="flex items-center justify-between py-1">
+                  <span>{{ t('airport.subway') }}</span>
+                  <span class="font-semibold">{{ airport.subway ? t('common.connected') : t('common.no') }}</span>
+                </div>
+                <div class="flex items-center justify-between py-1">
+                  <span>{{ t('airport.taxi') }}</span>
+                  <span class="font-semibold">{{ airport.taxi ? t('common.yes') : t('common.no') }}</span>
+                </div>
+                <div class="flex items-center justify-between py-1">
+                  <span>{{ t('airport.bus') }}</span>
+                  <span class="font-semibold">{{ airport.bus ? t('common.yes') : t('common.no') }}</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -132,6 +179,9 @@
               <AirportIndoorMap :airport="airport" />
             </ClientOnly>
           </div>
+
+          <!-- ── Immigration tips tab ── -->
+          <AirportImmigrationTips v-if="activeTab === 'immigration'" :airport="airport" />
         </div>
       </div>
     </Transition>
@@ -140,6 +190,7 @@
 
 <script setup lang="ts">
 import type { Airport } from '~/types/airport';
+import { generateAirportBriefing } from '~/composables/useBriefingExport';
 
 type RealtimeInfo = {
   baggageBelt: string | null;
@@ -148,14 +199,67 @@ type RealtimeInfo = {
   status: string | null;
 };
 
-const props = defineProps<{ airport: Airport; open: boolean }>();
-const emit = defineEmits<{ (e: 'close'): void }>();
+type FacilityMarker = {
+  name: string;
+  lat: number;
+  lng: number;
+  icon: string;
+  color: string;
+  category?: string;
+};
+
+const props = defineProps<{
+  airport: Airport;
+  open: boolean;
+  currentIndex?: number;
+  total?: number;
+}>();
+const emit = defineEmits<{
+  (e: 'close'): void;
+  (e: 'prev'): void;
+  (e: 'next'): void;
+}>();
 
 const { t } = useI18n();
 
-const TABS = ['location', 'indoor'] as const;
+// ── Facility categories ────────────────────────────────────────────────────────
+const CATEGORIES = [
+  { key: 'restroom',   icon: '🚻', color: '#3b82f6', query: 'restroom toilet' },
+  { key: 'gate',       icon: '✈️',  color: '#8b5cf6', query: 'gate departure' },
+  { key: 'transit',    icon: '🔄', color: '#06b6d4', query: 'transit transfer' },
+  { key: 'lounge',     icon: '🛋️',  color: '#f59e0b', query: 'lounge' },
+  { key: 'smoking',    icon: '🚬', color: '#6b7280', query: 'smoking area' },
+  { key: 'baggage',    icon: '🧳', color: '#10b981', query: 'baggage claim' },
+  { key: 'info',       icon: 'ℹ️',  color: '#0ea5e9', query: 'information desk' },
+  { key: 'exchange',   icon: '💱', color: '#f97316', query: 'currency exchange' },
+  { key: 'restaurant', icon: '🍽️',  color: '#ef4444', query: 'restaurant food' },
+  { key: 'prayer',     icon: '🙏', color: '#a855f7', query: 'prayer room chapel' },
+] as const;
+
+// ── Briefing export ──────────────────────────────────────────────────────────
+const copied = ref(false);
+const copyBriefing = async () => {
+  const text = generateAirportBriefing(props.airport);
+  try {
+    await navigator.clipboard.writeText(text);
+    copied.value = true;
+    setTimeout(() => { copied.value = false; }, 2500);
+  } catch {
+    // fallback
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    copied.value = true;
+    setTimeout(() => { copied.value = false; }, 2500);
+  }
+};
+
+const TABS = ['location', 'indoor', 'immigration'] as const;
 type TabKey = typeof TABS[number];
-const activeTab = ref<TabKey>('indoor');
+const activeTab = ref<TabKey>('location');
 
 const coords = ref<[number, number] | null>(null);
 const coordsLoading = ref(false);
@@ -168,6 +272,31 @@ const realtimeLoading = ref(false);
 const mapsLink = computed(() => {
   const query = [props.airport.name, props.airport.city, props.airport.country].filter(Boolean).join(' ');
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+});
+
+// ── Facility markers ───────────────────────────────────────────────────────────
+const facilityMarkers = computed<FacilityMarker[]>(() => {
+  if (!coords.value) return [];
+
+  const [baseLng, baseLat] = coords.value;
+
+  // Generate facility markers with slight offsets from airport center
+  return CATEGORIES.map((cat, idx) => {
+    // Create a radius from airport center with slight offset per category
+    const angle = (idx / CATEGORIES.length) * Math.PI * 2;
+    const radius = 0.004; // ~400m from center
+    const lat = baseLat + Math.sin(angle) * radius;
+    const lng = baseLng + Math.cos(angle) * radius;
+
+    return {
+      name: cat.key.charAt(0).toUpperCase() + cat.key.slice(1),
+      lat,
+      lng,
+      icon: cat.icon,
+      color: cat.color,
+      category: cat.key
+    };
+  });
 });
 
 const fetchCoords = async () => {
@@ -222,6 +351,16 @@ watch(
 onMounted(() => {
   if (props.open) fetchCoords();
 });
+
+// Keyboard arrow navigation
+const onKeyDown = (e: KeyboardEvent) => {
+  if (!props.open) return;
+  if (e.key === 'ArrowUp')   { e.preventDefault(); emit('prev'); }
+  if (e.key === 'ArrowDown') { e.preventDefault(); emit('next'); }
+  if (e.key === 'Escape')    emit('close');
+};
+onMounted(()        => window.addEventListener('keydown', onKeyDown));
+onBeforeUnmount(()  => window.removeEventListener('keydown', onKeyDown));
 
 const lookupRealtime = async () => {
   realtimeError.value = null;
