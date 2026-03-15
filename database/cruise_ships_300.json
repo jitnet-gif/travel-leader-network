@@ -298,5 +298,375 @@
     "drink_package": 45,
     "specialty_dining": 28,
     "id": 30
+  },
+  {
+    "cruise_line": "Royal Caribbean",
+    "ship_name": "Utopia of the Seas",
+    "capacity": 5610,
+    "service_charge": 18,
+    "wifi_price": 20,
+    "drink_package": 109,
+    "specialty_dining": 45,
+    "id": 31
+  },
+  {
+    "cruise_line": "Royal Caribbean",
+    "ship_name": "Harmony of the Seas",
+    "capacity": 5479,
+    "service_charge": 18,
+    "wifi_price": 20,
+    "drink_package": 109,
+    "specialty_dining": 45,
+    "id": 32
+  },
+  {
+    "cruise_line": "Royal Caribbean",
+    "ship_name": "Allure of the Seas",
+    "capacity": 5484,
+    "service_charge": 18,
+    "wifi_price": 20,
+    "drink_package": 105,
+    "specialty_dining": 40,
+    "id": 33
+  },
+  {
+    "cruise_line": "Royal Caribbean",
+    "ship_name": "Quantum of the Seas",
+    "capacity": 4180,
+    "service_charge": 18,
+    "wifi_price": 20,
+    "drink_package": 105,
+    "specialty_dining": 40,
+    "id": 34
+  },
+  {
+    "cruise_line": "Royal Caribbean",
+    "ship_name": "Ovation of the Seas",
+    "capacity": 4180,
+    "service_charge": 18,
+    "wifi_price": 20,
+    "drink_package": 105,
+    "specialty_dining": 40,
+    "id": 35
+  },
+  {
+    "cruise_line": "Royal Caribbean",
+    "ship_name": "Anthem of the Seas",
+    "capacity": 4180,
+    "service_charge": 18,
+    "wifi_price": 20,
+    "drink_package": 105,
+    "specialty_dining": 40,
+    "id": 36
+  },
+  {
+    "cruise_line": "Carnival Cruise Line",
+    "ship_name": "Mardi Gras",
+    "capacity": 5282,
+    "service_charge": 16,
+    "wifi_price": 15,
+    "drink_package": 64,
+    "specialty_dining": 32,
+    "id": 37
+  },
+  {
+    "cruise_line": "Carnival Cruise Line",
+    "ship_name": "Carnival Horizon",
+    "capacity": 3954,
+    "service_charge": 16,
+    "wifi_price": 15,
+    "drink_package": 59,
+    "specialty_dining": 30,
+    "id": 38
+  },
+  {
+    "cruise_line": "Carnival Cruise Line",
+    "ship_name": "Carnival Vista",
+    "capacity": 3954,
+    "service_charge": 16,
+    "wifi_price": 15,
+    "drink_package": 59,
+    "specialty_dining": 30,
+    "id": 39
+  },
+  {
+    "cruise_line": "Carnival Cruise Line",
+    "ship_name": "Carnival Radiance",
+    "capacity": 3015,
+    "service_charge": 16,
+    "wifi_price": 15,
+    "drink_package": 55,
+    "specialty_dining": 28,
+    "id": 40
+  },
+  {
+    "cruise_line": "Carnival Cruise Line",
+    "ship_name": "Carnival Sunrise",
+    "capacity": 2984,
+    "service_charge": 16,
+    "wifi_price": 15,
+    "drink_package": 55,
+    "specialty_dining": 28,
+    "id": 41
+  },
+  {
+    "cruise_line": "Norwegian Cruise Line",
+    "ship_name": "Norwegian Bliss",
+    "capacity": 4004,
+    "service_charge": 20,
+    "wifi_price": 29,
+    "drink_package": 119,
+    "specialty_dining": 50,
+    "id": 42
+  },
+  {
+    "cruise_line": "Norwegian Cruise Line",
+    "ship_name": "Norwegian Escape",
+    "capacity": 4266,
+    "service_charge": 20,
+    "wifi_price": 29,
+    "drink_package": 119,
+    "specialty_dining": 50,
+    "id": 43
+  },
+  {
+    "cruise_line": "Norwegian Cruise Line",
+    "ship_name": "Norwegian Joy",
+    "capacity": 3804,
+    "service_charge": 20,
+    "wifi_price": 29,
+    "drink_package": 109,
+    "specialty_dining": 45,
+    "id": 44
+  },
+  {
+    "cruise_line": "Norwegian Cruise Line",
+    "ship_name": "Norwegian Getaway",
+    "capacity": 3998,
+    "service_charge": 20,
+    "wifi_price": 29,
+    "drink_package": 109,
+    "specialty_dining": 45,
+    "id": 45
+  },
+  {
+    "cruise_line": "MSC Cruises",
+    "ship_name": "MSC Bellissima",
+    "capacity": 4488,
+    "service_charge": 14,
+    "wifi_price": 14,
+    "drink_package": 49,
+    "specialty_dining": 25,
+    "id": 46
+  },
+  {
+    "cruise_line": "MSC Cruises",
+    "ship_name": "MSC Meraviglia",
+    "capacity": 4488,
+    "service_charge": 14,
+    "wifi_price": 14,
+    "drink_package": 49,
+    "specialty_dining": 25,
+    "id": 47
+  },
+  {
+    "cruise_line": "MSC Cruises",
+    "ship_name": "MSC Virtuosa",
+    "capacity": 6334,
+    "service_charge": 14,
+    "wifi_price": 14,
+    "drink_package": 49,
+    "specialty_dining": 25,
+    "id": 48
+  },
+  {
+    "cruise_line": "MSC Cruises",
+    "ship_name": "MSC Musica",
+    "capacity": 2550,
+    "service_charge": 13,
+    "wifi_price": 12,
+    "drink_package": 42,
+    "specialty_dining": 20,
+    "id": 49
+  },
+  {
+    "cruise_line": "Celebrity Cruises",
+    "ship_name": "Celebrity Ascent",
+    "capacity": 3260,
+    "service_charge": 18,
+    "wifi_price": 25,
+    "drink_package": 89,
+    "specialty_dining": 45,
+    "id": 50
+  },
+  {
+    "cruise_line": "Celebrity Cruises",
+    "ship_name": "Celebrity Millennium",
+    "capacity": 2218,
+    "service_charge": 18,
+    "wifi_price": 25,
+    "drink_package": 79,
+    "specialty_dining": 40,
+    "id": 51
+  },
+  {
+    "cruise_line": "Celebrity Cruises",
+    "ship_name": "Celebrity Reflection",
+    "capacity": 3046,
+    "service_charge": 18,
+    "wifi_price": 25,
+    "drink_package": 85,
+    "specialty_dining": 42,
+    "id": 52
+  },
+  {
+    "cruise_line": "Holland America Line",
+    "ship_name": "Eurodam",
+    "capacity": 2104,
+    "service_charge": 17,
+    "wifi_price": 20,
+    "drink_package": 64,
+    "specialty_dining": 33,
+    "id": 53
+  },
+  {
+    "cruise_line": "Holland America Line",
+    "ship_name": "Oosterdam",
+    "capacity": 1916,
+    "service_charge": 17,
+    "wifi_price": 20,
+    "drink_package": 59,
+    "specialty_dining": 30,
+    "id": 54
+  },
+  {
+    "cruise_line": "Holland America Line",
+    "ship_name": "Zuiderdam",
+    "capacity": 1916,
+    "service_charge": 17,
+    "wifi_price": 20,
+    "drink_package": 59,
+    "specialty_dining": 30,
+    "id": 55
+  },
+  {
+    "cruise_line": "Holland America Line",
+    "ship_name": "Westerdam",
+    "capacity": 1916,
+    "service_charge": 17,
+    "wifi_price": 20,
+    "drink_package": 59,
+    "specialty_dining": 30,
+    "id": 56
+  },
+  {
+    "cruise_line": "Princess Cruises",
+    "ship_name": "Enchanted Princess",
+    "capacity": 3660,
+    "service_charge": 16,
+    "wifi_price": 15,
+    "drink_package": 64,
+    "specialty_dining": 29,
+    "id": 57
+  },
+  {
+    "cruise_line": "Princess Cruises",
+    "ship_name": "Majestic Princess",
+    "capacity": 3560,
+    "service_charge": 16,
+    "wifi_price": 15,
+    "drink_package": 64,
+    "specialty_dining": 29,
+    "id": 58
+  },
+  {
+    "cruise_line": "Princess Cruises",
+    "ship_name": "Crown Princess",
+    "capacity": 3080,
+    "service_charge": 16,
+    "wifi_price": 15,
+    "drink_package": 59,
+    "specialty_dining": 27,
+    "id": 59
+  },
+  {
+    "cruise_line": "Princess Cruises",
+    "ship_name": "Ruby Princess",
+    "capacity": 3080,
+    "service_charge": 16,
+    "wifi_price": 15,
+    "drink_package": 59,
+    "specialty_dining": 27,
+    "id": 60
+  },
+  {
+    "cruise_line": "Princess Cruises",
+    "ship_name": "Emerald Princess",
+    "capacity": 3080,
+    "service_charge": 16,
+    "wifi_price": 15,
+    "drink_package": 59,
+    "specialty_dining": 27,
+    "id": 61
+  },
+  {
+    "cruise_line": "Disney Cruise Line",
+    "ship_name": "Disney Treasure",
+    "capacity": 6000,
+    "service_charge": 21,
+    "wifi_price": 25,
+    "drink_package": null,
+    "specialty_dining": 55,
+    "id": 62
+  },
+  {
+    "cruise_line": "Disney Cruise Line",
+    "ship_name": "Disney Magic",
+    "capacity": 2400,
+    "service_charge": 21,
+    "wifi_price": 25,
+    "drink_package": null,
+    "specialty_dining": 50,
+    "id": 63
+  },
+  {
+    "cruise_line": "Disney Cruise Line",
+    "ship_name": "Disney Wonder",
+    "capacity": 2400,
+    "service_charge": 21,
+    "wifi_price": 25,
+    "drink_package": null,
+    "specialty_dining": 50,
+    "id": 64
+  },
+  {
+    "cruise_line": "Costa Cruises",
+    "ship_name": "Costa Diadema",
+    "capacity": 3780,
+    "service_charge": 12,
+    "wifi_price": 13,
+    "drink_package": 39,
+    "specialty_dining": 22,
+    "id": 65
+  },
+  {
+    "cruise_line": "Costa Cruises",
+    "ship_name": "Costa Fascinosa",
+    "capacity": 3780,
+    "service_charge": 12,
+    "wifi_price": 13,
+    "drink_package": 39,
+    "specialty_dining": 22,
+    "id": 66
+  },
+  {
+    "cruise_line": "Costa Cruises",
+    "ship_name": "Costa Firenze",
+    "capacity": 5200,
+    "service_charge": 12,
+    "wifi_price": 13,
+    "drink_package": 42,
+    "specialty_dining": 24,
+    "id": 67
   }
 ]

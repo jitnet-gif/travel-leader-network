@@ -33,12 +33,25 @@ export const useSupabaseI18nTable = <T extends Record<string, unknown>>(options:
     loading.value = true;
 
     const selectFields = options.fields.join(',');
+
+    // Try join with i18n table first
     const { data: rows, error: supabaseError } = await $supabase
       .from(options.table)
       .select(`*, ${options.i18nTable}(lang, ${selectFields})`);
 
+    // If i18n table doesn't exist (PGRST200), fall back to base table
     if (supabaseError) {
-      error.value = supabaseError.message;
+      if (supabaseError.code === 'PGRST200' || supabaseError.code === 'PGRST205') {
+        const { data: baseRows, error: baseError } = await $supabase
+          .from(options.table)
+          .select('*');
+        if (!baseError && baseRows) {
+          data.value = baseRows as T[];
+          usingFallback.value = false;
+        }
+      } else {
+        error.value = supabaseError.message;
+      }
       loading.value = false;
       return;
     }
@@ -47,11 +60,11 @@ export const useSupabaseI18nTable = <T extends Record<string, unknown>>(options:
       const merged = rows.map((row: Record<string, unknown>) => {
         const translations = (row[options.i18nTable] as TranslationRecord[]) || [];
         const current = translations.find((item) => item.lang === lang.value);
-        const fallback = translations.find((item) => item.lang === 'en');
+        const fallbackTr = translations.find((item) => item.lang === 'en');
 
         const mergedRow = {
           ...row,
-          ...pickFields<T>(fallback, options.fields),
+          ...pickFields<T>(fallbackTr, options.fields),
           ...pickFields<T>(current, options.fields)
         } as Record<string, unknown>;
 

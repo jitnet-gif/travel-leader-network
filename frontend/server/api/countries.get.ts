@@ -1,20 +1,11 @@
 import { defineEventHandler, getQuery } from 'h3';
-import { useRuntimeConfig } from '#imports';
+import countries from '../data/countries';
 
-export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event);
-  const base = config.public.apiBase || 'http://localhost:4000';
-  const query = getQuery(event);
-
-  const url = new URL('/api/countries', base);
-  Object.entries(query).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) url.searchParams.set(key, String(value));
-  });
-
-  try {
-    return await $fetch(url.toString());
-  } catch (err: any) {
-    console.error('[proxy] /api/countries failed', err?.message || err);
-    return [];
-  }
+export default defineEventHandler((event) => {
+  const { q } = getQuery(event);
+  if (!q) return countries;
+  const needle = String(q).toLowerCase();
+  return (countries as any[]).filter((c) =>
+    String(c.name || '').toLowerCase().includes(needle)
+  );
 });

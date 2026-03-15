@@ -43,7 +43,7 @@ type Country = {
 };
 
 const { t } = useI18n();
-const query = ref('');
+const query = useGlobalSearch();
 
 const { data: countries } = await useFetch<Country[]>('/api/countries');
 

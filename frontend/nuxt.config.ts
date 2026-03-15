@@ -15,6 +15,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     aerodataboxKey: process.env.AERODATABOX_KEY || '',
+    anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:4000',
       supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || '',

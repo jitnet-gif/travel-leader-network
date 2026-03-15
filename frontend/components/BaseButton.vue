@@ -1,21 +1,9 @@
-<template>
-  <component
-    :is="tag"
-    :to="to"
-    :type="tag === 'button' ? type : undefined"
-    class="inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition"
-    :class="variantClass"
-  >
-    <slot />
-  </component>
-</template>
-
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
     to?: string;
-    variant?: 'primary' | 'ghost' | 'outline';
-    size?: 'sm' | 'md';
+    variant?: 'primary' | 'ghost' | 'outline' | 'white';
+    size?: 'sm' | 'md' | 'lg';
     type?: 'button' | 'submit' | 'reset';
   }>(),
   {
@@ -25,16 +13,37 @@ const props = withDefaults(
   }
 );
 
-const tag = computed(() => (props.to ? 'NuxtLink' : 'button'));
+const tag = computed(() => (props.to ? resolveComponent('NuxtLink') : 'button'));
 
 const variantClass = computed(() => {
-  const size = props.size === 'sm' ? 'text-xs px-3 py-1.5' : 'text-sm px-4 py-2';
+  const sizes = {
+    sm: 'px-4 py-2 text-xs',
+    md: 'px-6 py-2.5 text-sm',
+    lg: 'px-8 py-3.5 text-base'
+  };
+  
+  const base = `inline-flex items-center justify-center gap-2 rounded-xl font-bold transition-all duration-300 ${sizes[props.size]}`;
+  
   if (props.variant === 'ghost') {
-    return `${size} text-ink hover:text-ocean hover:bg-sky/60`;
+    return `${base} text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5`;
   }
   if (props.variant === 'outline') {
-    return `${size} border border-ocean/40 text-ocean hover:bg-sky/60`;
+    return `${base} border border-slate-200 dark:border-white/10 text-ocean-900 dark:text-white hover:bg-slate-50 dark:hover:bg-white/5`;
   }
-  return `${size} bg-ocean text-white hover:bg-[#0a5a6a] shadow-soft`;
+  if (props.variant === 'white') {
+    return `${base} bg-white text-ocean-900 shadow-lg hover:shadow-xl hover:-translate-y-0.5`;
+  }
+  return `${base} bg-ocean-900 dark:bg-sky-500 text-white shadow-lg hover:bg-sky-600 dark:hover:bg-sky-400 hover:shadow-xl hover:-translate-y-0.5`;
 });
 </script>
+
+<template>
+  <component
+    :is="tag"
+    :to="to"
+    :type="tag === 'button' ? type : undefined"
+    :class="variantClass"
+  >
+    <slot />
+  </component>
+</template>

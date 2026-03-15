@@ -206,9 +206,9 @@ app.get('/api/cruise-lines', async (req, res) => {
 
 app.get('/api/cruise-ships', async (req, res) => {
   const q = req.query.q;
-  if (!supabaseReady) return res.json(filterList(fallback.cruiseShips, q, ['ship', 'cruise_line']));
-  let query = supabase.from('cruise_ships').select('*').order('ship');
-  if (q) query = query.ilike('ship', `%${q}%`);
+  if (!supabaseReady) return res.json(filterList(fallback.cruiseShips, q, ['ship_name', 'cruise_line']));
+  let query = supabase.from('cruise_ships').select('*').order('ship_name');
+  if (q) query = query.ilike('ship_name', `%${q}%`);
   return handleList(res, query);
 });
 
@@ -411,7 +411,7 @@ ${notes ? `- 특이사항: ${notes}` : ''}
 
 실제 현지 물가를 기반으로 정확한 숫자를 제공하세요. 크루즈의 경우 기항지별 입장료, 교통비, 가이드비를 실제 가격으로 기재하세요.
 
-다음 JSON 구조로 정확히 응답하세요:
+다음 JSON 구조로 정확히 응답하세요. schedule의 각 items는 가능한 한 상세하게 작성하세요:
 {
   "destination": "목적지명",
   "duration": 숫자,
@@ -423,9 +423,12 @@ ${notes ? `- 특이사항: ${notes}` : ''}
         {
           "time": "HH:MM",
           "activity": "활동명",
-          "location": "장소명",
+          "location": "장소명 (구체적 주소 또는 랜드마크)",
           "type": "transport|activity|meal|accommodation",
-          "notes": "선택사항 메모"
+          "duration": "소요시간 (예: 2시간, 45분)",
+          "cost": 숫자 (1인당 비용, 없으면 0),
+          "description": "활동에 대한 구체적 설명 (2-3문장: 무엇을 하는지, 주의사항, 팁 등)",
+          "notes": "투어 리더 운영 메모 (예: 집합 장소, 주의사항, 대기 포인트)"
         }
       ]
     }
@@ -456,7 +459,7 @@ ${notes ? `- Notes: ${notes}` : ''}
 
 Provide accurate numbers based on real local pricing. For cruises, include actual entrance fees, transport costs, and guide fees per port.
 
-Respond with exactly this JSON structure:
+Respond with exactly this JSON structure. Make each schedule item as detailed as possible:
 {
   "destination": "destination name",
   "duration": number,
@@ -468,9 +471,12 @@ Respond with exactly this JSON structure:
         {
           "time": "HH:MM",
           "activity": "activity name",
-          "location": "location name",
+          "location": "specific location name or landmark",
           "type": "transport|activity|meal|accommodation",
-          "notes": "optional note"
+          "duration": "time required (e.g. 2 hours, 45 min)",
+          "cost": number (cost per person, 0 if free),
+          "description": "2-3 sentence description: what to do, highlights, practical tips",
+          "notes": "tour leader operational note (meeting point, headcount reminder, etc.)"
         }
       ]
     }

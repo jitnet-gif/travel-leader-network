@@ -43,7 +43,7 @@ type Job = {
 };
 
 const { t, ta, lang } = useI18n();
-const query = ref('');
+const query = useGlobalSearch();
 
 const fallbackJobs = computed<Job[]>(() =>
   lang.value === 'ko'

@@ -6,8 +6,8 @@
         class="fixed inset-0 z-40 flex items-start justify-center bg-black/30 p-4 backdrop-blur-sm"
         @click.self="emit('close')"
       >
-        <div class="mt-6 w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-soft dark:bg-slate-900">
-          <div class="flex items-start justify-between border-b border-black/5 px-6 py-4 dark:border-white/10">
+        <div class="mt-2 w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-soft dark:bg-slate-900 sm:mt-6 flex flex-col max-h-[92vh] sm:max-h-[88vh] min-h-0">
+          <div class="flex items-start justify-between border-b border-black/5 px-4 py-3 sm:px-6 sm:py-4 dark:border-white/10 shrink-0">
             <div>
               <p class="text-[11px] uppercase tracking-[0.2em] text-black/50 dark:text-white/50">{{ airport.iata }}</p>
               <h3 class="text-xl font-display leading-tight">{{ airport.name }}</h3>
@@ -23,7 +23,7 @@
           </div>
 
           <!-- Tab bar -->
-          <div class="flex border-b border-black/10 px-6 dark:border-white/10">
+          <div class="flex border-b border-black/10 px-4 sm:px-6 dark:border-white/10 shrink-0">
             <button
               v-for="tab in TABS"
               :key="tab"
@@ -35,10 +35,10 @@
             >{{ t(`airport.tab.${tab}`) }}</button>
           </div>
 
-          <div class="grid gap-6 p-6 lg:grid-cols-[1.1fr_0.9fr]">
-            <!-- ── Location map tab ── -->
-            <template v-if="activeTab === 'location'">
-            <div class="space-y-3">
+          <!-- ── Location map tab ── -->
+          <div v-if="activeTab === 'location'" class="flex flex-col lg:flex-row lg:flex-1 lg:min-h-0 gap-4 overflow-y-auto lg:overflow-hidden p-4 sm:gap-6 sm:p-6">
+            <!-- Left: Map (fixed, no independent scroll) -->
+            <div class="space-y-3 lg:w-[55%] lg:shrink-0">
               <div class="flex items-center justify-between">
                 <p class="text-sm font-semibold text-black/70 dark:text-white/70">{{ t('airport.locationMap') }}</p>
                 <a
@@ -52,7 +52,12 @@
               </div>
               <div class="overflow-hidden rounded-xl border border-black/10 dark:border-white/10">
                 <ClientOnly>
-                  <LeafletMap v-if="coords" :center="coords as [number, number]" :zoom="9" />
+                  <LeafletMap
+                    v-if="coords"
+                    :center="coords as [number, number]"
+                    :zoom="14"
+                    :place-name="`${airport.name}, ${airport.city}`"
+                  />
                   <div v-else class="flex h-72 items-center justify-center bg-slate-50 text-sm text-black/50 dark:bg-slate-800 dark:text-white/50">
                     <span v-if="coordsLoading">{{ t('airport.loadingMap') }}</span>
                     <span v-else>{{ t('airport.mapUnavailable') }}</span>
@@ -61,7 +66,8 @@
               </div>
             </div>
 
-            <div class="space-y-3">
+            <!-- Right: Info cards — independently scrollable -->
+            <div class="space-y-3 lg:flex-1 lg:overflow-y-auto lg:pr-1">
               <p class="text-sm font-semibold text-black/70 dark:text-white/70">{{ t('airport.quickFacts') }}</p>
               <div class="rounded-xl border border-black/10 bg-slate-50 p-4 text-sm text-black/70 dark:border-white/10 dark:bg-slate-800/60 dark:text-white/70">
                 <div class="flex items-center justify-between py-1">
@@ -118,16 +124,13 @@
                 </div>
               </div>
             </div>
-            </template>
+          </div>
 
-            <!-- ── Indoor map tab ── -->
-            <template v-if="activeTab === 'indoor'">
-              <div class="lg:col-span-2">
-                <ClientOnly>
-                  <AirportIndoorMap :airport="airport" />
-                </ClientOnly>
-              </div>
-            </template>
+          <!-- ── Indoor map tab ── -->
+          <div v-if="activeTab === 'indoor'" class="overflow-y-auto flex-1 min-h-0 p-4 sm:p-6">
+            <ClientOnly>
+              <AirportIndoorMap :airport="airport" />
+            </ClientOnly>
           </div>
         </div>
       </div>
@@ -152,7 +155,7 @@ const { t } = useI18n();
 
 const TABS = ['location', 'indoor'] as const;
 type TabKey = typeof TABS[number];
-const activeTab = ref<TabKey>('location');
+const activeTab = ref<TabKey>('indoor');
 
 const coords = ref<[number, number] | null>(null);
 const coordsLoading = ref(false);

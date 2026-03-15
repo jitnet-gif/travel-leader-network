@@ -31,7 +31,8 @@ export default {
     active: '운항 중',
     uploadComplete: '업로드 완료.',
     supabaseOk: 'Supabase 연결됨',
-    supabaseMissing: 'Supabase 미설정'
+    supabaseMissing: 'Supabase 미설정',
+    noResults: '검색 결과가 없습니다.'
   },
   nav: {
     home: '홈',
@@ -49,7 +50,12 @@ export default {
     operationalPulse: '운영 상태',
     systemsOnline: '모든 시스템 정상',
     toursActive: '18개국 42개 투어 진행 중.',
-    alertsPending: '긴급 알림 3건 검토 필요.'
+    alertsPending: '긴급 알림 3건 검토 필요.',
+    logout: '로그아웃',
+    login: '로그인',
+    roleTourLeader: '투어 리더',
+    roleAgency: '에이전시',
+    roleAdmin: '관리자'
   },
   footer: {
     copyright: 'Travel Leader Network (c) 2026',
@@ -241,7 +247,9 @@ export default {
       info: '안내소',
       exchange: '환전소',
       restaurant: '식당',
-      prayer: '기도실'
+      prayer: '기도실',
+      openGoogle: '구글 지도에서 보기',
+      facilitySearch: '시설 빠른 검색'
     }
   },
   cruise: {
@@ -261,6 +269,9 @@ export default {
     featuredTitle: '주요 선박',
     featuredSubtitle: '운영 가격과 수용 인원 정보.',
     viewPorts: '크루즈 항구 보기',
+    searchPlaceholder: '크루즈 라인, 선박명 검색...',
+    shipsCount: '척',
+    linesCount: '개 라인',
     capacity: '수용 인원: {{count}}명',
     serviceCharge: '${{amount}} 서비스',
     drinkPackage: '음료 패키지',
@@ -274,7 +285,9 @@ export default {
     shuttleBus: '셔틀 버스',
     taxiStands: '택시 승차장',
     meetingPoint: '집결지',
-    safetyAlerts: '안전 알림'
+    safetyAlerts: '안전 알림',
+    searchPlaceholder: '항구, 도시, 국가 검색...',
+    portsCount: '개 항구'
   },
   jobs: {
     eyebrow: '채용 마켓',
@@ -590,7 +603,9 @@ export default {
       admin: '관리자'
     },
     signIn: '로그인',
+    signingIn: '처리 중...',
     createAccount: '계정 만들기',
-    confirmEmail: '가입 확인을 위해 이메일을 확인하세요.'
+    confirmEmail: '가입 확인을 위해 이메일을 확인하세요.',
+    emailPasswordRequired: '이메일과 비밀번호를 입력해주세요.'
   }
 };

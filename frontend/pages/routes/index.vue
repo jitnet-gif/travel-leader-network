@@ -47,7 +47,7 @@ import { matchesQuery } from '~/composables/useSearch';
 
 const api = useApiClient();
 const { t, lang } = useI18n();
-const query = ref('');
+const query = useGlobalSearch();
 const routes = ref<Array<Record<string, unknown>>>([]);
 const usingFallback = ref(true);
 

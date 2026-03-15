@@ -3,7 +3,7 @@
     <div class="flex items-start justify-between gap-4">
       <div>
         <p class="text-xs uppercase tracking-[0.2em] text-black/50 dark:text-white/50">{{ cruise.cruise_line }}</p>
-        <h3 class="text-lg font-display">{{ cruise.ship }}</h3>
+        <h3 class="text-lg font-display">{{ cruise.ship_name }}</h3>
         <p class="mt-1 text-sm text-black/60 dark:text-white/60">
           {{ t('cruise.capacity', { count: cruise.capacity }) }}
         </p>
@@ -32,7 +32,7 @@
 <script setup lang="ts">
 type CruiseShip = {
   cruise_line: string;
-  ship: string;
+  ship_name: string;
   capacity: number;
   service_charge: number;
   wifi_price: number;

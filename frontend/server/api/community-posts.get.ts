@@ -1,20 +1,11 @@
 import { defineEventHandler, getQuery } from 'h3';
-import { useRuntimeConfig } from '#imports';
+import posts from '../data/community-posts';
 
-export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event);
-  const base = config.public.apiBase || 'http://localhost:4000';
-  const query = getQuery(event);
-
-  const url = new URL('/api/community-posts', base);
-  Object.entries(query).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) url.searchParams.set(key, String(value));
-  });
-
-  try {
-    return await $fetch(url.toString());
-  } catch (err: any) {
-    console.error('[proxy] GET /api/community-posts failed', err?.message || err);
-    return [];
-  }
+export default defineEventHandler((event) => {
+  const { q } = getQuery(event);
+  if (!q) return posts;
+  const needle = String(q).toLowerCase();
+  return (posts as any[]).filter((p) =>
+    String(p.title || '').toLowerCase().includes(needle)
+  );
 });

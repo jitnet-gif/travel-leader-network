@@ -1,6 +1,6 @@
 -- Auto-generated seed data for Travel Leader Network
 begin;
-truncate table route_briefs, cruise_ships, cruise_terminals, cruise_ports, cruise_lines, airports, embassies, countries, tour_applications, tour_jobs, agencies, community_posts, users restart identity cascade;
+truncate table route_briefs, cruise_ships_i18n, cruise_ships, cruise_terminals, cruise_ports_i18n, cruise_ports, cruise_lines_i18n, cruise_lines, airports_i18n, airports, embassies, countries_i18n, countries, tour_applications, tour_jobs_i18n, tour_jobs, community_posts_i18n, community_posts restart identity cascade;
 insert into countries (name, iso_code, visa_requirements, entry_forms, immigration_tips, prohibited_items, emergency_numbers) values
 ('Japan','JA','Visa policy varies by nationality.','Online entry form required for most arrivals.','Carry hotel booking and onward ticket.','Weapons, narcotics, and restricted agricultural items.','Police 112, Ambulance 112'),
 ('Philippines','PH','Visa policy varies by nationality.','Online entry form required for most arrivals.','Carry hotel booking and onward ticket.','Weapons, narcotics, and restricted agricultural items.','Police 112, Ambulance 112'),

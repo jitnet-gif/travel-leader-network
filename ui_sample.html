@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Leader Network - High Fidelity UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ocean: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            600: '#0284c7',
+                            900: '#0f172a',
+                        },
+                        ivory: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .card-glow:hover { box-shadow: 0 0 20px rgba(56, 189, 248, 0.15); }
+        .bento-item { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bento-item:hover { transform: translateY(-6px); }
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up { animation: fade-up 0.6s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-ivory text-ocean-900 min-h-screen p-4 md:p-8 lg:p-12 font-sans">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 animate-fade-up">
+            <div>
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-2 h-2 bg-sky-500 rounded-full animate-pulse"></div>
+                    <span class="text-xs font-bold tracking-[0.2em] text-sky-600 uppercase">Premium Operations Control</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-display font-extrabold tracking-tight text-ocean-900">
+                    Leader<span class="text-sky-500">Node</span>
+                </h1>
+            </div>
+            <div class="flex items-center gap-6 mt-6 md:mt-0">
+                <div class="hidden md:block text-right">
+                    <p class="text-sm font-bold text-ocean-900">Incheon Int'l (ICN)</p>
+                    <p class="text-xs text-slate-500">Partly Cloudy • 14°C</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-200 flex items-center justify-center relative cursor-pointer hover:bg-slate-50 transition-colors">
+                    <i data-lucide="bell" class="w-5 h-5 text-slate-600"></i>
+                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+                </div>
+                <div class="flex items-center gap-3 pl-6 border-l border-slate-200">
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-ocean-900 leading-none">Hana Lee</p>
+                        <p class="text-[10px] font-bold text-sky-600 uppercase mt-1 tracking-wider">Senior Leader</p>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" class="w-12 h-12 rounded-2xl object-cover ring-2 ring-sky-500/20" alt="Profile">
+                </div>
+            </div>
+        </header>
+
+        <!-- Bento Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            
+            <!-- Main Featured Card (2x2) -->
+            <div class="md:col-span-2 md:row-span-2 rounded-[2.5rem] bg-ocean-900 p-10 text-white relative overflow-hidden bento-item animate-fade-up shadow-2xl shadow-ocean-900/20">
+                <div class="relative z-10 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <span class="px-4 py-1.5 bg-white/10 rounded-full text-[10px] font-bold tracking-widest uppercase border border-white/10">Next Sailing</span>
+                            <div class="flex -space-x-3">
+                                <img src="https://i.pravatar.cc/150?u=1" class="w-8 h-8 rounded-full border-2 border-ocean-900" alt="">
+                                <img src="https://i.pravatar.cc/150?u=2" class="w-8 h-8 rounded-full border-2 border-ocean-900" alt="">
+                                <div class="w-8 h-8 rounded-full border-2 border-ocean-900 bg-sky-500 flex items-center justify-center text-[10px] font-bold">+24</div>
+                            </div>
+                        </div>
+                        <h2 class="text-5xl font-display font-bold mt-8 leading-none tracking-tight">Wonder of <br>the Seas</h2>
+                        <p class="text-slate-400 mt-4 max-w-xs text-sm leading-relaxed">Royal Caribbean • Western Mediterranean Departure from Barcelona Terminal B.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mt-12">
+                        <div class="p-6 rounded-3xl bg-white/5 border border-white/10">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Boarding Time</p>
+                            <p class="text-2xl font-display font-bold mt-2">11:30 AM</p>
+                        </div>
+                        <div class="p-6 rounded-3xl bg-sky-500 text-white shadow-lg shadow-sky-500/20">
+                            <p class="text-[10px] font-bold text-sky-100 uppercase tracking-widest">Confirmed Guests</p>
+                            <p class="text-2xl font-display font-bold mt-2">2,482</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Abstract Design Elements -->
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-sky-500/20 blur-[100px] rounded-full"></div>
+                <div class="absolute right-10 top-20 opacity-10 rotate-12">
+                    <i data-lucide="anchor" class="w-48 h-48"></i>
+                </div>
+            </div>
+
+            <!-- Risk Alert Card -->
+            <div class="rounded-[2.5rem] bg-amber-50 p-8 border border-amber-100 bento-item animate-fade-up shadow-sm">
+                <div class="w-12 h-12 bg-amber-500 text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-amber-500/20">
+                    <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-display font-bold text-amber-900">Security Update</h3>
+                <p class="text-amber-800/60 text-sm mt-3 leading-relaxed">New immigration protocols for Japan-entry cruise passengers effective next Monday.</p>
+                <button class="mt-6 text-sm font-bold text-amber-600 flex items-center gap-2 hover:gap-3 transition-all">
+                    Read Protocol <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Weather/Quick Link Card -->
+            <div class="rounded-[2.5rem] bg-white p-8 border border-slate-100 bento-item animate-fade-up shadow-sm card-glow">
+                <div class="w-12 h-12 bg-sky-100 text-sky-600 rounded-2xl flex items-center justify-center mb-6">
+                    <i data-lucide="wind" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-display font-bold">Port Winds</h3>
+                <div class="mt-4 flex items-baseline gap-2">
+                    <span class="text-3xl font-display font-bold">12</span>
+                    <span class="text-sm font-bold text-slate-400 uppercase">Knots / NE</span>
+                </div>
+                <p class="text-slate-500 text-xs mt-2 uppercase font-bold tracking-widest">Yokohama Port (JP)</p>
+            </div>
+
+            <!-- Map Integration Card (Small Wide) -->
+            <div class="md:col-span-2 rounded-[2.5rem] bg-slate-200 p-8 relative overflow-hidden group bento-item animate-fade-up shadow-sm min-h-[220px]" style="background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80') center/cover;">
+                <div class="absolute inset-0 bg-ocean-900/40 group-hover:bg-ocean-900/50 transition-colors"></div>
+                <div class="relative z-10 flex flex-col h-full justify-between">
+                    <div class="flex justify-between items-start text-white">
+                        <h4 class="text-2xl font-display font-bold">Global Route Briefs</h4>
+                        <div class="w-10 h-10 rounded-full glass flex items-center justify-center">
+                            <i data-lucide="map-pin" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <p class="text-white/80 text-sm max-w-[200px]">Access 500+ verified city and port transit itineraries.</p>
+                        <button class="px-6 py-2.5 bg-white text-ocean-900 rounded-xl font-bold text-xs hover:bg-sky-500 hover:text-white transition-all">Explore Directory</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Marketplace Preview -->
+        <section class="mt-16 animate-fade-up">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h2 class="text-3xl font-display font-bold">Premium Marketplace</h2>
+                    <p class="text-slate-500 text-sm mt-2">Verified opportunities for high-tier tour leaders.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-white transition-colors">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
+                    <button class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-white transition-colors">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Job Card 1 -->
+                <div class="group p-2 bg-white rounded-[2rem] border border-slate-100 flex gap-6 hover:shadow-xl transition-all card-glow cursor-pointer">
+                    <div class="w-40 h-40 rounded-3xl overflow-hidden flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=300&h=300&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="">
+                    </div>
+                    <div class="py-4 pr-6 flex flex-col justify-between flex-grow">
+                        <div>
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] font-bold text-sky-600 uppercase tracking-widest">Japan • 7 Days</span>
+                                <span class="text-lg font-display font-extrabold">$2,100</span>
+                            </div>
+                            <h4 class="text-xl font-display font-bold mt-2 group-hover:text-sky-600 transition-colors tracking-tight leading-tight">Spring Sakura VIP Leader</h4>
+                            <p class="text-slate-500 text-sm mt-2 line-clamp-2">Exclusive 28-pax luxury group covering Tokyo, Hakone, and Kyoto private villas.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500"></i>
+                            <span class="text-xs font-bold text-slate-400">Verified Agency</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Card 2 -->
+                <div class="group p-2 bg-white rounded-[2rem] border border-slate-100 flex gap-6 hover:shadow-xl transition-all card-glow cursor-pointer">
+                    <div class="w-40 h-40 rounded-3xl overflow-hidden flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1516483642775-9a5c7697b0ad?w=300&h=300&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="">
+                    </div>
+                    <div class="py-4 pr-6 flex flex-col justify-between flex-grow">
+                        <div>
+                            <div class="flex justify-between items-start">
+                                <span class="text-[10px] font-bold text-sky-600 uppercase tracking-widest">Spain • 12 Days</span>
+                                <span class="text-lg font-display font-extrabold">$3,200</span>
+                            </div>
+                            <h4 class="text-xl font-display font-bold mt-2 group-hover:text-sky-600 transition-colors tracking-tight leading-tight">Med-Cruise Senior Escort</h4>
+                            <p class="text-slate-500 text-sm mt-2 line-clamp-2">Manage embarkation and shore excursion logistics for high-occupancy sailing.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="clock" class="w-4 h-4 text-sky-500"></i>
+                            <span class="text-xs font-bold text-slate-400">Applications closing soon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

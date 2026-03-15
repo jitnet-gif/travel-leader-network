@@ -1,20 +1,13 @@
 import { defineEventHandler, getQuery } from 'h3';
-import { useRuntimeConfig } from '#imports';
+import airports from '../data/airports';
 
-export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event);
-  const base = config.public.apiBase || 'http://localhost:4000';
-  const query = getQuery(event);
-
-  const url = new URL('/api/airports', base);
-  Object.entries(query).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) url.searchParams.set(key, String(value));
-  });
-
-  try {
-    return await $fetch(url.toString());
-  } catch (err: any) {
-    console.error('[proxy] /api/airports failed', err?.message || err);
-    return [];
-  }
+export default defineEventHandler((event) => {
+  const { q } = getQuery(event);
+  if (!q) return airports;
+  const needle = String(q).toLowerCase();
+  return (airports as any[]).filter((a) =>
+    ['name', 'iata', 'city', 'country'].some((k) =>
+      String(a[k] || '').toLowerCase().includes(needle)
+    )
+  );
 });

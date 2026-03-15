@@ -1,6 +1,6 @@
 export default defineNuxtRouteMiddleware(async () => {
   const role = await useUserRole();
-  if (role !== 'leader' && role !== 'admin') {
+  if (role !== 'tour_leader' && role !== 'admin') {
     return navigateTo('/dashboard');
   }
 });

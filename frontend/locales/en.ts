@@ -31,7 +31,8 @@ export default {
     active: 'Active',
     uploadComplete: 'Upload complete.',
     supabaseOk: 'Supabase ready',
-    supabaseMissing: 'Supabase not configured'
+    supabaseMissing: 'Supabase not configured',
+    noResults: 'No results found.'
   },
   nav: {
     home: 'Home',
@@ -49,7 +50,12 @@ export default {
     operationalPulse: 'Operational Pulse',
     systemsOnline: 'All systems online',
     toursActive: '42 tours active across 18 countries.',
-    alertsPending: '3 urgent alerts pending review.'
+    alertsPending: '3 urgent alerts pending review.',
+    logout: 'Sign Out',
+    login: 'Sign In',
+    roleTourLeader: 'Tour Leader',
+    roleAgency: 'Agency',
+    roleAdmin: 'Admin'
   },
   footer: {
     copyright: 'Travel Leader Network (c) 2026',
@@ -241,7 +247,9 @@ export default {
       info: 'Information',
       exchange: 'Currency Exchange',
       restaurant: 'Restaurants',
-      prayer: 'Prayer Room'
+      prayer: 'Prayer Room',
+      openGoogle: 'Open in Google Maps',
+      facilitySearch: 'Facility Quick Search'
     }
   },
   cruise: {
@@ -261,6 +269,9 @@ export default {
     featuredTitle: 'Featured cruise ships',
     featuredSubtitle: 'Operational pricing and capacity details.',
     viewPorts: 'View cruise ports',
+    searchPlaceholder: 'Search cruise lines, ships...',
+    shipsCount: 'ships',
+    linesCount: 'lines',
     capacity: 'Capacity: {{count}} guests',
     serviceCharge: '${{amount}} service',
     drinkPackage: 'Drink package',
@@ -274,7 +285,9 @@ export default {
     shuttleBus: 'Shuttle bus',
     taxiStands: 'Taxi stands',
     meetingPoint: 'Meeting point',
-    safetyAlerts: 'Safety alerts'
+    safetyAlerts: 'Safety alerts',
+    searchPlaceholder: 'Search ports, cities, countries...',
+    portsCount: 'ports'
   },
   jobs: {
     eyebrow: 'Job Marketplace',
@@ -590,7 +603,9 @@ export default {
       admin: 'Admin'
     },
     signIn: 'Sign In',
+    signingIn: 'Please wait...',
     createAccount: 'Create Account',
-    confirmEmail: 'Check your email to confirm sign-up.'
+    confirmEmail: 'Check your email to confirm sign-up.',
+    emailPasswordRequired: 'Please enter email and password.'
   }
 };

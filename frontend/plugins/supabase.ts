@@ -4,8 +4,10 @@ type SupabaseStub = {
   auth: {
     signInWithPassword: (args: Record<string, unknown>) => Promise<{ data: null; error: Error }>;
     signUp: (args: Record<string, unknown>) => Promise<{ data: null; error: Error }>;
+    signOut: () => Promise<{ error: null }>;
     getUser: () => Promise<{ data: { user: null }; error: null }>;
     getSession: () => Promise<{ data: { session: null }; error: null }>;
+    onAuthStateChange: (cb: (event: string, session: null) => void) => { data: { subscription: { unsubscribe: () => void } } };
   };
   storage: {
     from: (bucket: string) => {
@@ -24,8 +26,10 @@ const createSupabaseStub = (): SupabaseStub => ({
       data: null,
       error: new Error('Supabase is not configured. Set NUXT_PUBLIC_SUPABASE_URL and NUXT_PUBLIC_SUPABASE_ANON_KEY.')
     }),
+    signOut: async () => ({ error: null }),
     getUser: async () => ({ data: { user: null }, error: null }),
-    getSession: async () => ({ data: { session: null }, error: null })
+    getSession: async () => ({ data: { session: null }, error: null }),
+    onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
   },
   storage: {
     from: () => ({

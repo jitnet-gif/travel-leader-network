@@ -26,7 +26,7 @@ type Post = {
 };
 
 const { t, lang } = useI18n();
-const query = ref('');
+const query = useGlobalSearch();
 
 const fallbackPosts = computed<Post[]>(() =>
   lang.value === 'ko'

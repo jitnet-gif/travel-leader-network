@@ -21,10 +21,9 @@ import type { Airport } from '~/types/airport';
 import { matchesQuery } from '~/composables/useSearch';
 
 const { t } = useI18n();
-const query = ref('');
+const query = useGlobalSearch();
 const selectedAirport = ref<Airport | null>(null);
 
-onMounted(() => { query.value = ''; });
 const detailOpen = ref(false);
 
 const { data: airports } = await useFetch<Airport[]>('/api/airports');
