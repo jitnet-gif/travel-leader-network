@@ -14,6 +14,7 @@
           <NuxtLink class="block rounded-lg px-3 py-2 hover:bg-frost" to="/airports">Airport Management</NuxtLink>
           <NuxtLink class="block rounded-lg px-3 py-2 hover:bg-frost" to="/cruise">Cruise Management</NuxtLink>
           <NuxtLink class="block rounded-lg px-3 py-2 hover:bg-frost" to="/community">Community Moderation</NuxtLink>
+          <NuxtLink class="block rounded-lg px-3 py-2 hover:bg-frost" to="/cache">캐시 자동 업데이트</NuxtLink>
         </nav>
       </aside>
       <main class="rounded-3xl bg-white p-8 shadow">
