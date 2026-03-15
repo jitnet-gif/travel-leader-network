@@ -337,7 +337,7 @@ type FacilityMarker = {
 
 const facilityMarkers = computed<FacilityMarker[]>(() => {
   const c = resolvedCoords.value;
-  if (!c || !selectedFloor.value) return [];
+  if (!c) return [];
 
   const [baseLat, baseLng] = c;
 
