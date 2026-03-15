@@ -114,7 +114,7 @@
 
             <!-- Right: Info cards — independently scrollable -->
             <div class="space-y-3 lg:flex-1 lg:overflow-y-auto lg:pr-1">
-              <p class="text-sm font-semibold text-black/70 dark:text-white/70">{{ t('airport.quickFacts') }}</p>
+              <!-- Live flight lookup -->
               <div class="rounded-xl border border-black/10 bg-white p-4 text-sm text-black/70 shadow-sm dark:border-white/10 dark:bg-slate-800/80 dark:text-white/70">
                 <div class="flex items-center justify-between">
                   <p class="font-semibold text-black/80 dark:text-white/80">{{ t('airport.liveLookup') }}</p>
@@ -143,32 +143,15 @@
                   <p v-if="realtimeResult.status"><span class="font-semibold">{{ t('airport.status') }}:</span> {{ realtimeResult.status }}</p>
                 </div>
               </div>
-              <div class="rounded-xl border border-black/10 bg-slate-50 p-4 text-sm text-black/70 dark:border-white/10 dark:bg-slate-800/60 dark:text-white/70">
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.terminals', { count: airport.terminals }) }}</span>
-                  <span class="font-semibold">{{ airport.terminals }}</span>
-                </div>
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.smokingAreas') }}</span>
-                  <span class="font-semibold">{{ airport.smoking_area ? t('common.yes') : t('common.no') }}</span>
-                </div>
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.lounges') }}</span>
-                  <span class="font-semibold">{{ airport.lounge ? t('common.available') : t('common.limited') }}</span>
-                </div>
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.subway') }}</span>
-                  <span class="font-semibold">{{ airport.subway ? t('common.connected') : t('common.no') }}</span>
-                </div>
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.taxi') }}</span>
-                  <span class="font-semibold">{{ airport.taxi ? t('common.yes') : t('common.no') }}</span>
-                </div>
-                <div class="flex items-center justify-between py-1">
-                  <span>{{ t('airport.bus') }}</span>
-                  <span class="font-semibold">{{ airport.bus ? t('common.yes') : t('common.no') }}</span>
-                </div>
+
+              <!-- Terminal count badge -->
+              <div class="flex items-center justify-between rounded-xl border border-black/10 bg-slate-50 px-4 py-2.5 text-sm dark:border-white/10 dark:bg-slate-800/60">
+                <span class="text-black/60 dark:text-white/60">{{ t('airport.terminals', { count: airport.terminals }) }}</span>
+                <span class="font-bold text-black/80 dark:text-white/80">{{ airport.terminals }}</span>
               </div>
+
+              <!-- Detailed facility info fetched via Claude web search -->
+              <AirportFacilityInfo :airport="airport" />
             </div>
           </div>
 

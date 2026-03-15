@@ -32,7 +32,7 @@
           <LeafletMap
             v-if="mapCenter"
             :center="mapCenter"
-            :zoom="selectedFloor ? 21 : 16"
+            :zoom="selectedFloor ? 19 : 14"
             :place-name="`${airport.name}${selectedFloor ? ` - ${selectedFloor.label}` : ''}`"
             :facilities="facilityMarkers"
           />
@@ -199,10 +199,8 @@ const floors = computed(() =>
 
 const selectedFloor = ref<FloorDef | null>(null);
 
-// Auto-select first floor on mount and when airport changes
-watch(floors, (newFloors) => {
-  selectedFloor.value = newFloors[0] ?? null;
-}, { immediate: true });
+// Reset floor selection when airport changes (landing shows full overview)
+watch(() => props.airport, () => { selectedFloor.value = null; });
 
 // ─── Facility categories ──────────────────────────────────────────────────────
 const CATEGORIES = [
