@@ -44,11 +44,25 @@ const filtered = computed(() =>
   )
 );
 
+// Scroll the grid so the card at idx is visible near the top
+const scrollToCard = (idx: number) => {
+  nextTick(() => {
+    const container = gridRef.value;
+    const card = container?.children[idx] as HTMLElement | undefined;
+    if (!container || !card) return;
+    const containerRect = container.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    const offset = cardRect.top - containerRect.top + container.scrollTop - 8;
+    container.scrollTo({ top: offset, behavior: 'smooth' });
+  });
+};
+
 const openDetails = (airport: Airport) => {
   const idx = filtered.value.indexOf(airport);
   selectedIndex.value = idx >= 0 ? idx : 0;
   selectedAirport.value = airport;
   detailOpen.value = true;
+  scrollToCard(selectedIndex.value); // highlight selected card in grid
 };
 
 const navigateTo = (idx: number) => {
@@ -56,16 +70,7 @@ const navigateTo = (idx: number) => {
   if (idx < 0 || idx >= list.length) return;
   selectedIndex.value = idx;
   selectedAirport.value = list[idx];
-  nextTick(() => {
-    const container = gridRef.value;
-    const card = container?.children[idx] as HTMLElement | undefined;
-    if (!container || !card) return;
-    // Manual scroll: position card near the top of the scrollable container
-    const containerRect = container.getBoundingClientRect();
-    const cardRect = card.getBoundingClientRect();
-    const offset = cardRect.top - containerRect.top + container.scrollTop - 8;
-    container.scrollTo({ top: offset, behavior: 'smooth' });
-  });
+  scrollToCard(idx); // keep grid in sync with arrow navigation
 };
 
 const closeDetails = () => {
