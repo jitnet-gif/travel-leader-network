@@ -7,18 +7,21 @@ interface FacilityDetail {
   category: FacilityCategory;
   icon: string;
   title: string;
-  detail: string; // Korean, 3-5 sentences with specific locations/instructions
+  location: string; // e.g. "T1 1층 5번 게이트 옆", "제2터미널 B2 지하"
+  detail: string;   // Korean, step-by-step practical guide
+  sourceUrl: string;
 }
 
 export interface AirportDetailResult {
   iata: string;
   name: string;
+  officialSiteUrl: string;
   generatedAt: string;
   facilities: FacilityDetail[];
 }
 
 const detailCache = new Map<string, { data: AirportDetailResult; ts: number }>();
-const TTL = 6 * 60 * 60 * 1000; // 6 hours (facility info changes rarely)
+const TTL = 6 * 60 * 60 * 1000; // 6 hours
 
 export default defineEventHandler(async (event): Promise<AirportDetailResult> => {
   const config = useRuntimeConfig(event);
@@ -36,37 +39,44 @@ export default defineEventHandler(async (event): Promise<AirportDetailResult> =>
 
   const message = await client.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 2560,
+    max_tokens: 3072,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 } as any],
-    system: `You are an airport facility expert. Search for detailed, practical facility information for the specified airport as of ${today}.
+    tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 6 } as any],
+    system: `You are an airport facility specialist. Search the official airport website and travel guides to find precise, step-by-step facility location information as of ${today}.
+
 Return ONLY a valid JSON object — no markdown fences:
 {
   "iata": "string",
-  "name": "Full airport name in English",
+  "name": "Full airport name",
+  "officialSiteUrl": "https://official-airport-website.com",
   "generatedAt": "${today}",
   "facilities": [
     {
       "id": "slug",
       "category": "smoking|taxi|bus|subway|lounge|baggage|info|parking|general",
-      "icon": "single emoji",
+      "icon": "emoji",
       "title": "Korean facility name",
-      "detail": "Korean detailed instructions (3–5 sentences). Include: exact floor/zone locations, operating hours if relevant, costs if applicable, number of facilities, and practical tips for tour leaders managing a group."
+      "location": "정확한 위치 (터미널·층·구역 명시, 예: T1 1층 7번 출구 앞)",
+      "detail": "한국어 이용 방법 (4–6문장). 반드시 포함: ① 정확한 위치 (층·게이트·구역), ② 운영시간, ③ 비용/요금, ④ 소요시간, ⑤ 투어 리더 팁 (단체 그룹 이동 시 주의사항)",
+      "sourceUrl": "https://source-page-url"
     }
   ]
 }
-Include ALL of these categories (if available at this airport):
-- smoking: 흡연실 — number of rooms, exact locations by terminal/floor/zone
-- taxi: 택시 승차장 — exact terminal/level location, approximate fare to city center, estimated time
-- bus: 버스 터미널 — exact location, which bus lines, fare, journey time to city center
-- subway: 지하철/철도 연결 — line name, station, fare, journey time to city center
-- lounge: 라운지 — names, locations, access requirements (card/class)
-- baggage: 수하물 — carousel locations, storage services
-- info: 안내 데스크 — location, languages spoken
-- parking: 주차장 — short-term/long-term rates, location`,
+
+Search for each of these facilities and provide SPECIFIC floor/zone/gate locations from the official airport website:
+1. 🚬 **흡연실** — exact floors and zones for each terminal, total count, smoking pod locations
+2. 🚕 **택시 승차장** — exact terminal/level/exit number, estimated fare to city center (KRW or local currency), travel time
+3. 🚌 **버스 터미널** — exact location, bus line numbers/names to city center, fare, journey time, operator website
+4. 🚇 **지하철/공항철도** — line name, station name, exact floor/entrance, fare to major city station, journey time
+5. 🛋️ **라운지** — names, terminal locations, access requirements (card types, class)
+6. 🧳 **수하물 찾는 곳** — which level, carousel numbering system, storage/delivery services
+7. ℹ️ **안내 데스크 / 관광 안내소** — exact locations, languages spoken
+8. 🅿️ **주차장** — short-term lot location, hourly/daily rates
+
+Use the official airport website as primary source. Include at least 6 facilities.`,
     messages: [{
       role: 'user',
-      content: `Search for ${iata} airport's detailed facility guide: smoking room locations and count, taxi pickup points and fares, bus terminal location and routes to city, subway/rail connections, lounges, baggage claim, information desks. I need specific floor numbers, zone letters, and practical group tour instructions in Korean.`,
+      content: `Search the official ${iata} airport website and reliable travel sources for exact facility locations: (1) smoking room floors and zones, (2) taxi pickup exact exit/level with fare to city center, (3) bus terminal exact location with routes and fares to city, (4) subway/rail station exact entrance and fare, (5) lounges with access info, (6) baggage claim level. Provide step-by-step Korean instructions with specific terminal, floor, and gate/exit numbers.`,
     }],
   });
 

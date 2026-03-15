@@ -31,14 +31,30 @@
           @click="expanded = expanded === f.id ? null : f.id"
         >
           <span class="shrink-0 text-xl leading-none mt-0.5">{{ f.icon }}</span>
-          <span class="flex-1 text-sm font-semibold text-black/80 dark:text-white/80 leading-snug">{{ f.title }}</span>
+          <span class="flex-1 min-w-0">
+            <span class="block text-sm font-semibold text-black/80 dark:text-white/80 leading-snug">{{ f.title }}</span>
+            <span v-if="f.location" class="block text-[11px] text-ocean/80 dark:text-ocean/70 mt-0.5 leading-tight truncate">📍 {{ f.location }}</span>
+          </span>
           <span class="shrink-0 mt-1 text-black/30 dark:text-white/30 transition-transform" :class="expanded === f.id ? 'rotate-180' : ''">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
           </span>
         </button>
         <Transition name="expand">
-          <div v-if="expanded === f.id" class="px-4 pb-3 pt-1 bg-slate-50/60 dark:bg-slate-800/30 border-t border-black/5 dark:border-white/5">
+          <div v-if="expanded === f.id" class="px-4 pb-4 pt-2 bg-slate-50/60 dark:bg-slate-800/30 border-t border-black/5 dark:border-white/5 space-y-2">
+            <p v-if="f.location" class="inline-flex items-center gap-1 rounded-full bg-ocean/10 px-2.5 py-0.5 text-xs font-semibold text-ocean">
+              📍 {{ f.location }}
+            </p>
             <p class="text-sm text-black/65 dark:text-white/60 leading-relaxed whitespace-pre-line">{{ f.detail }}</p>
+            <a
+              v-if="f.sourceUrl"
+              :href="f.sourceUrl"
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-1 text-xs font-semibold text-ocean hover:underline"
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              공식 사이트
+            </a>
           </div>
         </Transition>
       </div>
@@ -82,7 +98,9 @@ interface FacilityDetail {
   category: string;
   icon: string;
   title: string;
+  location?: string;
   detail: string;
+  sourceUrl?: string;
 }
 
 interface AirportDetailResult {
