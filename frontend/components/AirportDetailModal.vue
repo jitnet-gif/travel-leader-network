@@ -181,6 +181,9 @@
 
           <!-- ── Immigration tips tab ── -->
           <AirportImmigrationTips v-if="activeTab === 'immigration'" :airport="airport" />
+
+          <!-- ── Culture / dress & drinks tab ── -->
+          <AirportCultureTips v-if="activeTab === 'culture'" :airport="airport" />
         </div>
       </div>
     </Transition>
@@ -256,7 +259,7 @@ const copyBriefing = async () => {
   }
 };
 
-const TABS = ['location', 'indoor', 'immigration'] as const;
+const TABS = ['location', 'indoor', 'immigration', 'culture'] as const;
 type TabKey = typeof TABS[number];
 const activeTab = ref<TabKey>('location');
 

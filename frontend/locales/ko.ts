@@ -232,7 +232,8 @@ export default {
     tab: {
       location: '위치 지도',
       indoor: '공항 내부',
-      immigration: '입국 팁'
+      immigration: '입국 팁',
+      culture: '복장·주류'
     },
     indoor: {
       loading: '내부 시설 데이터를 불러오는 중...',

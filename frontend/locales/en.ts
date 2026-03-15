@@ -232,7 +232,8 @@ export default {
     tab: {
       location: 'Location',
       indoor: 'Indoor Map',
-      immigration: 'Entry Tips'
+      immigration: 'Entry Tips',
+      culture: 'Dress & Drinks'
     },
     indoor: {
       loading: 'Loading indoor facility data...',
