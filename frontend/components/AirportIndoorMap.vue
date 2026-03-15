@@ -52,23 +52,44 @@
           </a>
         </div>
       </div>
-      <div class="relative overflow-hidden rounded-xl border border-black/10 dark:border-white/10 h-72 sm:h-96 shadow-md">
-        <ClientOnly>
-          <LeafletMap
-            v-if="resolvedCoords"
-            :center="resolvedCoords"
-            :zoom="selectedFloor ? 21 : 16"
-            :place-name="`${airport.name}${selectedFloor ? ` - ${selectedFloor.label}` : ''}`"
-            :facilities="facilityMarkers"
-          />
-          <div v-else class="flex h-full items-center justify-center bg-slate-50 text-sm text-black/50 dark:bg-slate-800 dark:text-white/50">
-            <span>{{ t('airport.indoor.loading') }}</span>
+
+      <!-- Map + Floor Info Layout -->
+      <div class="flex flex-col lg:flex-row lg:gap-4 lg:items-start">
+        <!-- Leaflet Map (Left/Top) -->
+        <div class="relative overflow-hidden rounded-xl border border-black/10 dark:border-white/10 h-72 sm:h-96 lg:flex-1 shadow-md">
+          <ClientOnly>
+            <LeafletMap
+              v-if="resolvedCoords"
+              :center="resolvedCoords"
+              :zoom="selectedFloor ? 21 : 16"
+              :place-name="`${airport.name}${selectedFloor ? ` - ${selectedFloor.label}` : ''}`"
+              :facilities="facilityMarkers"
+            />
+            <div v-else class="flex h-full items-center justify-center bg-slate-50 text-sm text-black/50 dark:bg-slate-800 dark:text-white/50">
+              <span>{{ t('airport.indoor.loading') }}</span>
+            </div>
+          </ClientOnly>
+        </div>
+
+        <!-- Floor Info Card (Right/Bottom on mobile, Right on desktop) -->
+        <div v-if="selectedFloor" class="lg:w-56 lg:flex-shrink-0">
+          <div class="rounded-xl bg-gradient-to-br from-ocean/10 to-sky/10 border border-ocean/30 p-4 space-y-3">
+            <div>
+              <p class="text-xs font-semibold text-black/50 dark:text-white/50 mb-1">현재 층</p>
+              <p class="text-2xl font-bold text-ocean">{{ selectedFloor.label }}</p>
+            </div>
+            <div class="border-t border-ocean/20 pt-3">
+              <p class="text-xs font-semibold text-black/50 dark:text-white/50 mb-2">시설 안내</p>
+              <p class="text-sm text-black/70 dark:text-white/70 leading-relaxed">{{ selectedFloor.desc }}</p>
+            </div>
+            <div class="flex gap-2 text-2xl">
+              <span>🗺️</span>
+              <span>📍</span>
+              <span>🚪</span>
+            </div>
           </div>
-        </ClientOnly>
+        </div>
       </div>
-      <p v-if="selectedFloor" class="text-xs text-ocean/80 dark:text-ocean/70 px-2 py-1 bg-ocean/5 dark:bg-ocean/10 rounded-lg">
-        📍 {{ selectedFloor.label }} 층: {{ selectedFloor.desc }}
-      </p>
     </div>
 
     <!-- Facility quick-search links (Google Maps) -->
