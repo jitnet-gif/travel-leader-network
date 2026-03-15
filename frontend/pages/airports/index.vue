@@ -7,7 +7,7 @@
       <BaseButton variant="outline" to="/cruise-ports">{{ t('airports.button') }}</BaseButton>
     </div>
 
-    <div class="section-grid max-h-[70vh] md:max-h-[78vh] overflow-y-auto overscroll-contain pr-2 md:pr-3">
+    <div ref="gridRef" class="section-grid max-h-[70vh] md:max-h-[78vh] overflow-y-auto overscroll-contain pr-2 md:pr-3">
       <AirportCard v-for="(airport, idx) in filtered" :key="airport.id ?? idx" :airport="airport" @select="openDetails" />
     </div>
 
@@ -34,6 +34,7 @@ const query = useGlobalSearch();
 const selectedAirport = ref<Airport | null>(null);
 const selectedIndex  = ref(0);
 const detailOpen = ref(false);
+const gridRef = ref<HTMLDivElement | null>(null);
 
 const { data: airports } = await useFetch<Airport[]>('/api/airports');
 
@@ -55,6 +56,10 @@ const navigateTo = (idx: number) => {
   if (idx < 0 || idx >= list.length) return;
   selectedIndex.value = idx;
   selectedAirport.value = list[idx];
+  nextTick(() => {
+    const card = gridRef.value?.children[idx] as HTMLElement | undefined;
+    card?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  });
 };
 
 const closeDetails = () => {

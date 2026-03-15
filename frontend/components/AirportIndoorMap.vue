@@ -199,7 +199,10 @@ const floors = computed(() =>
 
 const selectedFloor = ref<FloorDef | null>(null);
 
-watch(() => props.airport, () => { selectedFloor.value = null; });
+// Auto-select first floor on mount and when airport changes
+watch(floors, (newFloors) => {
+  selectedFloor.value = newFloors[0] ?? null;
+}, { immediate: true });
 
 // ─── Facility categories ──────────────────────────────────────────────────────
 const CATEGORIES = [

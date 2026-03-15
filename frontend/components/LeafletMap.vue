@@ -115,6 +115,10 @@ const addFacilities = (facilities: Facility[], name: string) => {
     );
     facilityMarkers.push(fm);
   });
+
+  // Fit map to show all facility markers
+  const group = L.featureGroup(facilityMarkers);
+  map.fitBounds(group.getBounds().pad(0.2));
 };
 
 const initMap = async () => {
