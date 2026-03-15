@@ -11,10 +11,7 @@ export default defineNuxtConfig({
   },
   nitro: {
     compatibilityDate: '2026-03-12',
-    preset: 'cloudflare-pages',
-    rollupConfig: {
-      external: ['#internal/nuxt/paths']
-    }
+    preset: 'cloudflare-pages'
   },
   runtimeConfig: {
     aerodataboxKey: process.env.AERODATABOX_KEY || '',
