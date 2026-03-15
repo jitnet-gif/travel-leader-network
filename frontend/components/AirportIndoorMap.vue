@@ -52,7 +52,7 @@
       </Transition>
     </div>
 
-    <!-- Official Airport Map (실제 실내도) -->
+    <!-- Official Airport Map (실제 실내도) - 정보가 있을 때만 -->
     <div v-if="officialUrl" class="rounded-xl bg-gradient-to-br from-ocean/10 to-sky/10 border border-ocean/30 p-4 text-center">
       <p class="text-xs font-semibold text-black/50 dark:text-white/50 mb-2">{{ t('airport.indoor.officialSite') }}</p>
       <a
@@ -66,10 +66,23 @@
       <p class="mt-2 text-xs text-black/40 dark:text-white/40">정확한 실내 배치도, 시설, 게이트 정보</p>
     </div>
 
-    <!-- Position Map (Leaflet - 위치 확인용) -->
-    <div class="space-y-2 mt-4">
-      <p class="text-xs font-semibold text-black/40 dark:text-white/40">{{ airport.name }} 위치</p>
-      <div class="relative overflow-hidden rounded-xl border border-black/10 dark:border-white/10 h-48 sm:h-64">
+    <!-- Position Map (Leaflet - 위치 확인용) - 정보 없을 때는 더 크게 표시 -->
+    <div :class="officialUrl ? 'space-y-2 mt-4' : 'space-y-3'">
+      <div class="flex items-center justify-between">
+        <p class="text-xs font-semibold text-black/40 dark:text-white/40">
+          {{ officialUrl ? `${airport.name} 위치` : `${airport.name} 위치지도` }}
+        </p>
+        <a
+          v-if="resolvedCoords"
+          :href="googleMapsUrl"
+          target="_blank"
+          rel="noopener"
+          class="text-xs font-semibold text-ocean hover:underline"
+        >
+          🗺️ {{ t('airport.openInMaps') }}
+        </a>
+      </div>
+      <div :class="officialUrl ? 'relative overflow-hidden rounded-xl border border-black/10 dark:border-white/10 h-48 sm:h-64' : 'relative overflow-hidden rounded-xl border border-black/10 dark:border-white/10 h-64 sm:h-80'">
         <ClientOnly>
           <LeafletMap
             v-if="resolvedCoords"
