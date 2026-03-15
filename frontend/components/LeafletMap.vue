@@ -39,16 +39,27 @@
 </template>
 
 <script setup lang="ts">
+type Facility = {
+  name: string;
+  lat: number;
+  lng: number;
+  icon: string;
+  color: string;
+  category?: string;
+};
+
 const props = withDefaults(
   defineProps<{
     center?: [number, number]; // [lng, lat]
     zoom?: number;
     placeName?: string;        // fallback label & URL if coords imprecise
+    facilities?: Facility[];    // nearby facilities/shops
   }>(),
   {
     center: () => [139.734, 35.666],
     zoom: 13,
-    placeName: ''
+    placeName: '',
+    facilities: () => []
   }
 );
 
@@ -57,6 +68,7 @@ const showHint = ref(false);
 
 let map: any = null;
 let marker: any = null;
+let facilityMarkers: any[] = [];
 let hintTimer: ReturnType<typeof setTimeout> | null = null;
 
 // [lng, lat] → [lat, lng] for Leaflet
@@ -140,6 +152,36 @@ const initMap = async () => {
     window.open(buildGoogleMapsUrl(e.latlng.lat, e.latlng.lng), '_blank', 'noopener');
   });
 
+  // Add facility markers
+  const facilityMarkers: any[] = [];
+  if (props.facilities && props.facilities.length > 0) {
+    props.facilities.forEach((facility) => {
+      const facilityMarker = L.circleMarker([facility.lat, facility.lng], {
+        radius: 8,
+        fillColor: facility.color,
+        color: 'white',
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.8
+      }).addTo(map);
+
+      const facilityPopup = `<div style="font-weight:600;font-size:13px;line-height:1.4">${facility.icon} ${facility.name}</div>
+         <div style="font-size:11px;color:#555;margin-top:4px">클릭하여 Google Maps에서 검색</div>`;
+
+      facilityMarker.bindPopup(facilityPopup, { closeButton: false, offset: [0, -28] });
+
+      facilityMarker.on('click', () => {
+        window.open(
+          `https://www.google.com/maps/search/${encodeURIComponent(`${facility.name} ${props.placeName}`)}/@${props.center![1]},${props.center![0]},18z`,
+          '_blank',
+          'noopener'
+        );
+      });
+
+      facilityMarkers.push(facilityMarker);
+    });
+  }
+
   // Show hint briefly on first touch
   map.on('touchstart', () => {
     if (showHint.value) return;
@@ -153,12 +195,13 @@ onMounted(initMap);
 
 onBeforeUnmount(() => {
   if (hintTimer) clearTimeout(hintTimer);
+  facilityMarkers.forEach(m => m.remove());
   if (map) { map.remove(); map = null; marker = null; }
 });
 
 watch(
-  () => [props.center, props.zoom, props.placeName] as const,
-  ([nextCenter, nextZoom, nextName]) => {
+  () => [props.center, props.zoom, props.placeName, props.facilities] as const,
+  ([nextCenter, nextZoom, nextName, nextFacilities]) => {
     if (!map || !nextCenter) return;
     const ll = toLL(nextCenter as [number, number]);
     map.setView(ll, nextZoom ?? map.getZoom());
@@ -170,6 +213,38 @@ watch(
         : `<div style="font-size:12px;color:#555">${ll[0].toFixed(4)}, ${ll[1].toFixed(4)}</div>`;
       marker.getPopup()?.setContent(html);
       marker.openPopup();
+    }
+
+    // Update facility markers
+    facilityMarkers.forEach(m => m.remove());
+    facilityMarkers = [];
+
+    if (nextFacilities && nextFacilities.length > 0) {
+      nextFacilities.forEach((facility) => {
+        const facilityMarker = L.circleMarker([facility.lat, facility.lng], {
+          radius: 8,
+          fillColor: facility.color,
+          color: 'white',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.8
+        }).addTo(map);
+
+        const facilityPopup = `<div style="font-weight:600;font-size:13px;line-height:1.4">${facility.icon} ${facility.name}</div>
+           <div style="font-size:11px;color:#555;margin-top:4px">클릭하여 Google Maps에서 검색</div>`;
+
+        facilityMarker.bindPopup(facilityPopup, { closeButton: false, offset: [0, -28] });
+
+        facilityMarker.on('click', () => {
+          window.open(
+            `https://www.google.com/maps/search/${encodeURIComponent(`${facility.name} ${nextName}`)}/@${ll[0]},${ll[1]},18z`,
+            '_blank',
+            'noopener'
+          );
+        });
+
+        facilityMarkers.push(facilityMarker);
+      });
     }
   }
 );

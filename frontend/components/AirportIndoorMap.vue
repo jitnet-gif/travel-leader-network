@@ -1,30 +1,5 @@
 <template>
   <div class="space-y-3">
-
-    <!-- Header row -->
-    <div class="flex flex-wrap items-center justify-between gap-2">
-      <p class="text-sm font-semibold text-black/70 dark:text-white/70">{{ t('airport.indoorMap') }}</p>
-      <div class="flex flex-wrap items-center gap-1.5">
-        <a
-          :href="googleMapsUrl"
-          target="_blank"
-          rel="noopener"
-          class="flex items-center gap-1 rounded-full border border-ocean/40 px-3 py-1 text-xs font-semibold text-ocean hover:bg-ocean/5 transition"
-        >
-          🗺️ {{ t('airport.indoor.openGoogle') }}
-        </a>
-        <a
-          v-if="officialUrl"
-          :href="officialUrl"
-          target="_blank"
-          rel="noopener"
-          class="flex items-center gap-1 rounded-full border border-black/15 px-3 py-1 text-xs font-semibold text-black/60 hover:bg-black/5 dark:border-white/20 dark:text-white/60 dark:hover:bg-white/5 transition"
-        >
-          🏢 {{ t('airport.indoor.officialSite') }}
-        </a>
-      </div>
-    </div>
-
     <!-- Floor selector -->
     <div class="space-y-1.5">
       <div class="flex items-center gap-2">
@@ -52,49 +27,48 @@
       </Transition>
     </div>
 
-    <!-- Official Airport Map (실제 실내도) - 정보가 있을 때만 -->
-    <div v-if="officialUrl" class="rounded-xl bg-gradient-to-br from-ocean/10 to-sky/10 border border-ocean/30 p-4 text-center">
-      <p class="text-xs font-semibold text-black/50 dark:text-white/50 mb-2">{{ t('airport.indoor.officialSite') }}</p>
-      <a
-        :href="officialUrl"
-        target="_blank"
-        rel="noopener"
-        class="inline-flex items-center gap-2 rounded-full bg-ocean px-5 py-2.5 text-sm font-bold text-white shadow-md hover:bg-ocean/90 transition active:scale-95"
-      >
-        🏢 공항 실내도 보기 (공식)
-      </a>
-      <p class="mt-2 text-xs text-black/40 dark:text-white/40">정확한 실내 배치도, 시설, 게이트 정보</p>
-    </div>
-
-    <!-- Position Map (Leaflet - 위치 확인용) - 정보 없을 때는 더 크게 표시 -->
-    <div :class="officialUrl ? 'space-y-2 mt-4' : 'space-y-3'">
+    <!-- Leaflet Indoor Map (Main) -->
+    <div class="space-y-3">
       <div class="flex items-center justify-between">
-        <p class="text-xs font-semibold text-black/40 dark:text-white/40">
-          {{ officialUrl ? `${airport.name} 위치` : `${airport.name} 위치지도` }}
-        </p>
-        <a
-          v-if="resolvedCoords"
-          :href="googleMapsUrl"
-          target="_blank"
-          rel="noopener"
-          class="text-xs font-semibold text-ocean hover:underline"
-        >
-          🗺️ {{ t('airport.openInMaps') }}
-        </a>
+        <p class="text-sm font-semibold text-black/70 dark:text-white/70">{{ t('airport.indoorMap') }} - 실내 위치</p>
+        <div class="flex flex-wrap items-center gap-1.5">
+          <a
+            v-if="resolvedCoords"
+            :href="googleMapsUrl"
+            target="_blank"
+            rel="noopener"
+            class="text-xs font-semibold text-ocean hover:underline"
+          >
+            🗺️ Google Maps
+          </a>
+          <a
+            v-if="officialUrl"
+            :href="officialUrl"
+            target="_blank"
+            rel="noopener"
+            class="text-xs font-semibold text-ocean hover:underline"
+          >
+            🏢 공식 실내도
+          </a>
+        </div>
       </div>
-      <div :class="officialUrl ? 'relative overflow-hidden rounded-xl border border-black/10 dark:border-white/10 h-48 sm:h-64' : 'relative overflow-hidden rounded-xl border border-black/10 dark:border-white/10 h-64 sm:h-80'">
+      <div class="relative overflow-hidden rounded-xl border border-black/10 dark:border-white/10 h-72 sm:h-96 shadow-md">
         <ClientOnly>
           <LeafletMap
             v-if="resolvedCoords"
             :center="resolvedCoords"
-            :zoom="selectedFloor ? 20 : 15"
-            :place-name="airport.name"
+            :zoom="selectedFloor ? 21 : 16"
+            :place-name="`${airport.name}${selectedFloor ? ` - ${selectedFloor.label}` : ''}`"
+            :facilities="facilityMarkers"
           />
           <div v-else class="flex h-full items-center justify-center bg-slate-50 text-sm text-black/50 dark:bg-slate-800 dark:text-white/50">
             <span>{{ t('airport.indoor.loading') }}</span>
           </div>
         </ClientOnly>
       </div>
+      <p v-if="selectedFloor" class="text-xs text-ocean/80 dark:text-ocean/70 px-2 py-1 bg-ocean/5 dark:bg-ocean/10 rounded-lg">
+        📍 {{ selectedFloor.label }} 층: {{ selectedFloor.desc }}
+      </p>
     </div>
 
     <!-- Facility quick-search links (Google Maps) -->
@@ -326,4 +300,39 @@ const facilitySearchUrl = (cat: { query: string }) => {
   }
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
 };
+
+// ─── Facility markers for Leaflet map ──────────────────────────────────────────
+type FacilityMarker = {
+  name: string;
+  lat: number;
+  lng: number;
+  icon: string;
+  color: string;
+  category?: string;
+};
+
+const facilityMarkers = computed<FacilityMarker[]>(() => {
+  const c = resolvedCoords.value;
+  if (!c || !selectedFloor.value) return [];
+
+  const [baseLat, baseLng] = c;
+
+  // Generate facility markers with slight offsets from airport center
+  return CATEGORIES.map((cat, idx) => {
+    // Create a radius from airport center with slight offset per category
+    const angle = (idx / CATEGORIES.length) * Math.PI * 2;
+    const radius = 0.004; // ~400m from center
+    const lat = baseLat + Math.sin(angle) * radius;
+    const lng = baseLng + Math.cos(angle) * radius;
+
+    return {
+      name: cat.key.charAt(0).toUpperCase() + cat.key.slice(1),
+      lat,
+      lng,
+      icon: cat.icon,
+      color: cat.color,
+      category: cat.key
+    };
+  });
+});
 </script>
