@@ -1,0 +1,72 @@
+[
+  {
+    "day": 1,
+    "city": "Barcelona",
+    "activities": [
+      "City tour",
+      "Local food experience",
+      "Landmark visit",
+      "Shopping time"
+    ]
+  },
+  {
+    "day": 2,
+    "city": "Vancouver",
+    "activities": [
+      "City tour",
+      "Local food experience",
+      "Landmark visit",
+      "Shopping time"
+    ]
+  },
+  {
+    "day": 3,
+    "city": "Sydney",
+    "activities": [
+      "City tour",
+      "Local food experience",
+      "Landmark visit",
+      "Shopping time"
+    ]
+  },
+  {
+    "day": 4,
+    "city": "Los Angeles",
+    "activities": [
+      "City tour",
+      "Local food experience",
+      "Landmark visit",
+      "Shopping time"
+    ]
+  },
+  {
+    "day": 5,
+    "city": "Paris",
+    "activities": [
+      "City tour",
+      "Local food experience",
+      "Landmark visit",
+      "Shopping time"
+    ]
+  },
+  {
+    "day": 6,
+    "city": "Tokyo",
+    "activities": [
+      "City tour",
+      "Local food experience",
+      "Landmark visit",
+      "Shopping time"
+    ]
+  },
+  {
+    "day": 7,
+    "city": "Athens",
+    "activities": [
+      "City tour",
+      "Local food experience",
+      "Landmark visit",
+      "Shopping time"
+    ]
+  }
+]

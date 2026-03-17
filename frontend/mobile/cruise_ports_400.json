@@ -1,0 +1,978 @@
+[
+  {
+    "id": 1,
+    "name": "Vancouver Cruise Port",
+    "country": "Canada",
+    "shuttle_bus": false,
+    "taxi": false,
+    "meeting_point": "Main terminal gate"
+  },
+  {
+    "id": 2,
+    "name": "Dubai Cruise Port",
+    "country": "United Arab Emirates",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Terminal B arrivals gate"
+  },
+  {
+    "id": 3,
+    "name": "Singapore Cruise Port",
+    "country": "Singapore",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Main terminal gate"
+  },
+  {
+    "id": 4,
+    "name": "Athens Cruise Port",
+    "country": "Greece",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Terminal B arrivals gate"
+  },
+  {
+    "id": 5,
+    "name": "Istanbul Cruise Port",
+    "country": "Turkey",
+    "shuttle_bus": true,
+    "taxi": false,
+    "meeting_point": "Pier entrance signage"
+  },
+  {
+    "id": 6,
+    "name": "Barcelona Cruise Port",
+    "country": "Spain",
+    "shuttle_bus": true,
+    "taxi": false,
+    "meeting_point": "Arrivals hall information desk"
+  },
+  {
+    "id": 7,
+    "name": "Seattle Cruise Port",
+    "country": "United States",
+    "shuttle_bus": false,
+    "taxi": false,
+    "meeting_point": "Arrivals hall information desk"
+  },
+  {
+    "id": 8,
+    "name": "Los Angeles Cruise Port",
+    "country": "United States",
+    "shuttle_bus": false,
+    "taxi": false,
+    "meeting_point": "Arrivals hall information desk"
+  },
+  {
+    "id": 9,
+    "name": "Stockholm Cruise Port",
+    "country": "Sweden",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Main terminal gate"
+  },
+  {
+    "id": 10,
+    "name": "Shanghai Cruise Port",
+    "country": "China",
+    "shuttle_bus": false,
+    "taxi": false,
+    "meeting_point": "Terminal B arrivals gate"
+  },
+  {
+    "id": 11,
+    "name": "Hong Kong Cruise Port",
+    "country": "Hong Kong",
+    "shuttle_bus": true,
+    "taxi": false,
+    "meeting_point": "Main terminal gate"
+  },
+  {
+    "id": 12,
+    "name": "Lisbon Cruise Port",
+    "country": "Portugal",
+    "shuttle_bus": false,
+    "taxi": false,
+    "meeting_point": "Terminal B arrivals gate"
+  },
+  {
+    "id": 13,
+    "name": "Sydney Cruise Port",
+    "country": "Australia",
+    "shuttle_bus": true,
+    "taxi": false,
+    "meeting_point": "Pier entrance signage"
+  },
+  {
+    "id": 14,
+    "name": "Tokyo Cruise Port",
+    "country": "Japan",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Pier entrance signage"
+  },
+  {
+    "id": 15,
+    "name": "Venice Cruise Port",
+    "country": "Italy",
+    "shuttle_bus": false,
+    "taxi": false,
+    "meeting_point": "Pier entrance signage"
+  },
+  {
+    "id": 16,
+    "name": "Miami Cruise Port",
+    "country": "United States",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Arrivals hall information desk"
+  },
+  {
+    "id": 17,
+    "name": "Naples Cruise Port",
+    "country": "Italy",
+    "shuttle_bus": true,
+    "taxi": false,
+    "meeting_point": "Main terminal gate"
+  },
+  {
+    "id": 18,
+    "name": "Rome Cruise Port",
+    "country": "Italy",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Arrivals hall information desk"
+  },
+  {
+    "id": 19,
+    "name": "Copenhagen Cruise Port",
+    "country": "Denmark",
+    "shuttle_bus": true,
+    "taxi": false,
+    "meeting_point": "Arrivals hall information desk"
+  },
+  {
+    "name": "Port Everglades (Fort Lauderdale)",
+    "country": "United States",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Cruise Terminal Blvd, berths 1-29",
+    "id": 20
+  },
+  {
+    "name": "PortMiami",
+    "country": "United States",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Dodge Island, Terminal entrances A-G",
+    "id": 21
+  },
+  {
+    "name": "Manhattan Cruise Terminal",
+    "country": "United States",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Pier 88/90/92, W 46th–52nd St",
+    "id": 22
+  },
+  {
+    "name": "Port Canaveral",
+    "country": "United States",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Cruise Terminal Dr, Cocoa Beach",
+    "id": 23
+  },
+  {
+    "name": "Galveston Cruise Port",
+    "country": "United States",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Terminal 1 & 2, Galveston Island",
+    "id": 24
+  },
+  {
+    "name": "Port of New Orleans",
+    "country": "United States",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Julia Street Cruise Terminal",
+    "id": 25
+  },
+  {
+    "name": "Baltimore Cruise Terminal",
+    "country": "United States",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "South Locust Point Marine Terminal",
+    "id": 26
+  },
+  {
+    "name": "Tampa Cruise Port",
+    "country": "United States",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Channelside Dr, Terminal 2/3/6",
+    "id": 27
+  },
+  {
+    "name": "Port of Charleston",
+    "country": "United States",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Union Pier Terminal",
+    "id": 28
+  },
+  {
+    "name": "San Francisco Cruise Terminal",
+    "country": "United States",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Pier 27, The Embarcadero",
+    "id": 29
+  },
+  {
+    "name": "San Diego Cruise Terminal",
+    "country": "United States",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "B Street Pier",
+    "id": 30
+  },
+  {
+    "name": "Honolulu Cruise Terminal",
+    "country": "United States",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Pier 2, Aloha Tower Marketplace",
+    "id": 31
+  },
+  {
+    "name": "Port of Buenos Aires",
+    "country": "Argentina",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Terminal Norte, Dársena F",
+    "id": 32
+  },
+  {
+    "name": "Port of Santos",
+    "country": "Brazil",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Valongo Cruise Terminal",
+    "id": 33
+  },
+  {
+    "name": "Port of Rio de Janeiro",
+    "country": "Brazil",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Pier Mauá Cruise Terminal",
+    "id": 34
+  },
+  {
+    "name": "Port of Valparaíso",
+    "country": "Chile",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Terminal de Cruceros, Muelle Prat",
+    "id": 35
+  },
+  {
+    "name": "Port of Cartagena",
+    "country": "Colombia",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Manga Cruise Terminal",
+    "id": 36
+  },
+  {
+    "name": "Bridgetown Cruise Terminal",
+    "country": "Barbados",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Bridgetown Harbour",
+    "id": 37
+  },
+  {
+    "name": "San Juan Cruise Port",
+    "country": "Puerto Rico",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Pier 3, Old San Juan",
+    "id": 38
+  },
+  {
+    "name": "Nassau Cruise Port",
+    "country": "Bahamas",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Prince George Wharf",
+    "id": 39
+  },
+  {
+    "name": "George Town Cruise Terminal",
+    "country": "Cayman Islands",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "North Terminal, Harbour Dr",
+    "id": 40
+  },
+  {
+    "name": "Montego Bay Cruise Port",
+    "country": "Jamaica",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Montego Bay Cruise Terminal",
+    "id": 41
+  },
+  {
+    "name": "Puerto Vallarta Cruise Terminal",
+    "country": "Mexico",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Terminal Marítima",
+    "id": 42
+  },
+  {
+    "name": "Cozumel Cruise Port",
+    "country": "Mexico",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Punta Langosta / Puerto Maya / SSA terminals",
+    "id": 43
+  },
+  {
+    "name": "Ensenada Cruise Port",
+    "country": "Mexico",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Muelle 1, Blvd Teniente Azueta",
+    "id": 44
+  },
+  {
+    "name": "Southampton Cruise Port",
+    "country": "United Kingdom",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Western/Eastern/City Docks terminals",
+    "id": 45
+  },
+  {
+    "name": "Dover Cruise Port",
+    "country": "United Kingdom",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Cruise Terminal 1 & 2",
+    "id": 46
+  },
+  {
+    "name": "Tilbury Cruise Terminal",
+    "country": "United Kingdom",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Tilbury, Essex – Passenger Terminal",
+    "id": 47
+  },
+  {
+    "name": "Hamburg Cruise Center",
+    "country": "Germany",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "HCC Altona / HCC Steinwerder",
+    "id": 48
+  },
+  {
+    "name": "Bremerhaven Cruise Terminal",
+    "country": "Germany",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Columbus Cruise Center, Am Strom 2",
+    "id": 49
+  },
+  {
+    "name": "Kiel Cruise Terminal",
+    "country": "Germany",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Ostuferhafen Cruise Terminal",
+    "id": 50
+  },
+  {
+    "name": "Warnemünde Cruise Port",
+    "country": "Germany",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Am Passagierkai 1",
+    "id": 51
+  },
+  {
+    "name": "Amsterdam Cruise Port",
+    "country": "Netherlands",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Passenger Terminal Amsterdam, NDSM Wharf",
+    "id": 52
+  },
+  {
+    "name": "Genoa Cruise Port",
+    "country": "Italy",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Stazione Marittima Ponte dei Mille",
+    "id": 53
+  },
+  {
+    "name": "Savona Cruise Port",
+    "country": "Italy",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Palacrociere Terminal",
+    "id": 54
+  },
+  {
+    "name": "Livorno Cruise Port",
+    "country": "Italy",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Porto di Livorno, Varco Galvani",
+    "id": 55
+  },
+  {
+    "name": "Civitavecchia Cruise Port",
+    "country": "Italy",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Stazione Marittima di Civitavecchia",
+    "id": 56
+  },
+  {
+    "name": "Palermo Cruise Terminal",
+    "country": "Italy",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Molo Vittorio Veneto",
+    "id": 57
+  },
+  {
+    "name": "Marseille Cruise Port",
+    "country": "France",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Gare Maritime, Quai de la Joliette",
+    "id": 58
+  },
+  {
+    "name": "Bordeaux Cruise Terminal",
+    "country": "France",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Quai des Chartrons",
+    "id": 59
+  },
+  {
+    "name": "Palma de Mallorca Cruise Port",
+    "country": "Spain",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Moll Adossat terminals",
+    "id": 60
+  },
+  {
+    "name": "Málaga Cruise Port",
+    "country": "Spain",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Puerto de Málaga, Muelle 3",
+    "id": 61
+  },
+  {
+    "name": "Bilbao Cruise Terminal",
+    "country": "Spain",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Getxo Cruise Terminal",
+    "id": 62
+  },
+  {
+    "name": "Porto (Leixões) Cruise Terminal",
+    "country": "Portugal",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Terminal de Cruzeiros de Leixões",
+    "id": 63
+  },
+  {
+    "name": "Dubrovnik Cruise Port",
+    "country": "Croatia",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Gruž Harbour Cruise Terminal",
+    "id": 64
+  },
+  {
+    "name": "Split Cruise Terminal",
+    "country": "Croatia",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Obala kneza Domagoja",
+    "id": 65
+  },
+  {
+    "name": "Kotor Cruise Terminal",
+    "country": "Montenegro",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Old Town Quay",
+    "id": 66
+  },
+  {
+    "name": "Piraeus Cruise Terminal",
+    "country": "Greece",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Mega Harbour Gate E1/E2",
+    "id": 67
+  },
+  {
+    "name": "Corfu Cruise Terminal",
+    "country": "Greece",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "New Port of Corfu",
+    "id": 68
+  },
+  {
+    "name": "Santorini Cruise Anchorage",
+    "country": "Greece",
+    "shuttle_bus": false,
+    "taxi": false,
+    "meeting_point": "Tender service from Athinios Port",
+    "id": 69
+  },
+  {
+    "name": "Mykonos Cruise Port",
+    "country": "Greece",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "New Port of Mykonos",
+    "id": 70
+  },
+  {
+    "name": "Heraklion Cruise Port",
+    "country": "Greece",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Port of Heraklion",
+    "id": 71
+  },
+  {
+    "name": "Valletta Cruise Port",
+    "country": "Malta",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Valletta Waterfront",
+    "id": 72
+  },
+  {
+    "name": "Oslo Cruise Terminal",
+    "country": "Norway",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Revierkaia / Akershuskaia",
+    "id": 73
+  },
+  {
+    "name": "Bergen Cruise Terminal",
+    "country": "Norway",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Skoltenkaien / Jekteviken",
+    "id": 74
+  },
+  {
+    "name": "Helsinki Cruise Terminal",
+    "country": "Finland",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Olympia Terminal / Hernesaari",
+    "id": 75
+  },
+  {
+    "name": "Tallinn Cruise Terminal",
+    "country": "Estonia",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Passenger Port D-Terminal",
+    "id": 76
+  },
+  {
+    "name": "Riga Cruise Terminal",
+    "country": "Latvia",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Andrejosta Cruise Terminal",
+    "id": 77
+  },
+  {
+    "name": "Abu Dhabi Cruise Terminal",
+    "country": "UAE",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Zayed Port Cruise Terminal",
+    "id": 78
+  },
+  {
+    "name": "Doha Cruise Terminal",
+    "country": "Qatar",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Doha Port",
+    "id": 79
+  },
+  {
+    "name": "Muscat Cruise Terminal",
+    "country": "Oman",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Muttrah Cruise Terminal",
+    "id": 80
+  },
+  {
+    "name": "Aqaba Cruise Port",
+    "country": "Jordan",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Aqaba International Cruise Terminal",
+    "id": 81
+  },
+  {
+    "name": "Haifa Cruise Port",
+    "country": "Israel",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Haifa Port – Cruise Terminal",
+    "id": 82
+  },
+  {
+    "name": "Limassol Cruise Port",
+    "country": "Cyprus",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "New Port of Limassol",
+    "id": 83
+  },
+  {
+    "name": "Casablanca Cruise Terminal",
+    "country": "Morocco",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Terminal Passagers de Casablanca",
+    "id": 84
+  },
+  {
+    "name": "Mombasa Cruise Terminal",
+    "country": "Kenya",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Kilindini Harbour",
+    "id": 85
+  },
+  {
+    "name": "Victoria Cruise Terminal",
+    "country": "Seychelles",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Victoria Harbour, Mahé",
+    "id": 86
+  },
+  {
+    "name": "Port Louis Cruise Terminal",
+    "country": "Mauritius",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Quay D, Port Louis Harbour",
+    "id": 87
+  },
+  {
+    "name": "Cape Town Cruise Terminal",
+    "country": "South Africa",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "E Berth, V&A Waterfront",
+    "id": 88
+  },
+  {
+    "name": "Durban Cruise Terminal",
+    "country": "South Africa",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Passenger Terminal, Maydon Wharf",
+    "id": 89
+  },
+  {
+    "name": "Yokohama Cruise Terminal",
+    "country": "Japan",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Osanbashi International Passenger Terminal",
+    "id": 90
+  },
+  {
+    "name": "Kobe Cruise Terminal",
+    "country": "Japan",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Kobe Port Cruise Terminal",
+    "id": 91
+  },
+  {
+    "name": "Osaka Cruise Terminal",
+    "country": "Japan",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Tempozan / Sakishima Cruise Center",
+    "id": 92
+  },
+  {
+    "name": "Nagasaki Cruise Port",
+    "country": "Japan",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Matsugae Terminal",
+    "id": 93
+  },
+  {
+    "name": "Naha Cruise Terminal",
+    "country": "Japan",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Naha Port, Tomari area",
+    "id": 94
+  },
+  {
+    "name": "Keelung Cruise Terminal",
+    "country": "Taiwan",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Keelung Port Cruise Center",
+    "id": 95
+  },
+  {
+    "name": "Kaohsiung Cruise Terminal",
+    "country": "Taiwan",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Pier 1 – Cruise Center",
+    "id": 96
+  },
+  {
+    "name": "Incheon Cruise Terminal",
+    "country": "South Korea",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Incheon Port International Passenger Terminal",
+    "id": 97
+  },
+  {
+    "name": "Busan Cruise Terminal",
+    "country": "South Korea",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Busan International Passenger Terminal",
+    "id": 98
+  },
+  {
+    "name": "Tianjin (Beijing) Cruise Terminal",
+    "country": "China",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Tianjin International Cruise Home Port",
+    "id": 99
+  },
+  {
+    "name": "Guangzhou (Nansha) Cruise Terminal",
+    "country": "China",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Nansha International Cruise Terminal",
+    "id": 100
+  },
+  {
+    "name": "Qingdao Cruise Terminal",
+    "country": "China",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Qingdao Cruise Center",
+    "id": 101
+  },
+  {
+    "name": "Ho Chi Minh City Cruise Port",
+    "country": "Vietnam",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Nha Rong – Khanh Hoi Port",
+    "id": 102
+  },
+  {
+    "name": "Da Nang Cruise Port",
+    "country": "Vietnam",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Tien Sa Port",
+    "id": 103
+  },
+  {
+    "name": "Ha Long Bay Cruise Terminal",
+    "country": "Vietnam",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Hon Gai International Passenger Port",
+    "id": 104
+  },
+  {
+    "name": "Laem Chabang Cruise Port",
+    "country": "Thailand",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Laem Chabang Deep Sea Port, Pattaya area",
+    "id": 105
+  },
+  {
+    "name": "Phuket Cruise Terminal",
+    "country": "Thailand",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Phuket Cruise Terminal, Ao Makham",
+    "id": 106
+  },
+  {
+    "name": "Penang Cruise Terminal",
+    "country": "Malaysia",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Swettenham Pier Cruise Terminal",
+    "id": 107
+  },
+  {
+    "name": "Benoa (Bali) Cruise Port",
+    "country": "Indonesia",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Benoa Harbour Cruise Terminal",
+    "id": 108
+  },
+  {
+    "name": "Colombo Cruise Terminal",
+    "country": "Sri Lanka",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Colombo Port Cruise Terminal",
+    "id": 109
+  },
+  {
+    "name": "Mumbai Cruise Terminal",
+    "country": "India",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Indira Dock, BPT Cruise Terminal",
+    "id": 110
+  },
+  {
+    "name": "Cochin Cruise Terminal",
+    "country": "India",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Kochi International Cruise Terminal",
+    "id": 111
+  },
+  {
+    "name": "Melbourne Cruise Terminal",
+    "country": "Australia",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Station Pier, Port Melbourne",
+    "id": 112
+  },
+  {
+    "name": "Fremantle (Perth) Cruise Terminal",
+    "country": "Australia",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "A Shed / B Shed, Victoria Quay",
+    "id": 113
+  },
+  {
+    "name": "Brisbane Cruise Terminal",
+    "country": "Australia",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Brisbane International Cruise Terminal, Portside",
+    "id": 114
+  },
+  {
+    "name": "Cairns Cruise Terminal",
+    "country": "Australia",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Cairns Cruise Liner Terminal, Wharf St",
+    "id": 115
+  },
+  {
+    "name": "Hobart Cruise Terminal",
+    "country": "Australia",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Macquarie Wharf, Constitution Dock",
+    "id": 116
+  },
+  {
+    "name": "Auckland Cruise Port",
+    "country": "New Zealand",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Queens Wharf / Princes Wharf",
+    "id": 117
+  },
+  {
+    "name": "Wellington Cruise Terminal",
+    "country": "New Zealand",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Aotea Quay, Wellington",
+    "id": 118
+  },
+  {
+    "name": "Tauranga Cruise Terminal",
+    "country": "New Zealand",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Sulphur Point Cruise Facility",
+    "id": 119
+  },
+  {
+    "name": "Nadi Cruise Port",
+    "country": "Fiji",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Port Denarau Marina",
+    "id": 120
+  },
+  {
+    "name": "Papeete Cruise Terminal",
+    "country": "French Polynesia",
+    "shuttle_bus": false,
+    "taxi": true,
+    "meeting_point": "Motu Uta International Port",
+    "id": 121
+  },
+  {
+    "name": "Nouméa Cruise Terminal",
+    "country": "New Caledonia",
+    "shuttle_bus": true,
+    "taxi": true,
+    "meeting_point": "Quai des Paquebots, Baie de la Moselle",
+    "id": 122
+  }
+]

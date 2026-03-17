@@ -1,0 +1,72 @@
+[
+  {
+    "id": "00000000-0000-0000-0000-00000000a001",
+    "name": "Marina Bay Cruise Centre",
+    "lat": 1.2667383,
+    "lng": 103.8602571,
+    "radius_m": 200,
+    "messages": {
+      "ko-KR": "마리나 베이 크루즈 센터입니다. 수하물은 1층 드롭존에서 내리시고, 2층 체크인 카운터로 이동하세요.",
+      "en-US": "You are approaching Marina Bay Cruise Centre. Drop luggage on level 1, then proceed to level 2 check-in.",
+      "ja-JP": "マリーナベイクルーズセンターです。1階で荷物を降ろし、2階のチェックインへお進みください。"
+    },
+    "tags": ["singapore", "cruise"],
+    "active": true
+  },
+  {
+    "id": "00000000-0000-0000-0000-00000000a002",
+    "name": "Gardens by the Bay",
+    "lat": 1.2815683,
+    "lng": 103.8636132,
+    "radius_m": 180,
+    "messages": {
+      "ko-KR": "가든스 바이 더 베이에 도착했습니다. 플라워 돔과 클라우드 포레스트 입구가 앞에 있습니다.",
+      "en-US": "Welcome to Gardens by the Bay. Flower Dome and Cloud Forest entrances are ahead.",
+      "ja-JP": "ガーデンズ・バイ・ザ・ベイに到着しました。フラワードームとクラウドフォレストの入口があります。"
+    },
+    "tags": ["singapore", "garden"],
+    "active": true
+  },
+  {
+    "id": "00000000-0000-0000-0000-00000000a003",
+    "name": "Merlion Park",
+    "lat": 1.2867449,
+    "lng": 103.8543872,
+    "radius_m": 150,
+    "messages": {
+      "ko-KR": "멀라이언 파크입니다. 단체 사진 포인트는 분수 정면 좌측 데크입니다.",
+      "en-US": "Merlion Park ahead. Best group photo spot is on the left deck facing the fountain.",
+      "ja-JP": "マーライオンパークです。噴水を正面にして左側デッキが写真スポットです。"
+    },
+    "tags": ["singapore", "iconic"],
+    "active": true
+  },
+  {
+    "id": "00000000-0000-0000-0000-00000000a004",
+    "name": "Raffles Hotel",
+    "lat": 1.294889,
+    "lng": 103.854483,
+    "radius_m": 120,
+    "messages": {
+      "ko-KR": "래플스 호텔입니다. 체크인 로비는 메인 아치 안쪽에 있습니다.",
+      "en-US": "Arriving at Raffles Hotel. Check-in lobby is through the main arch.",
+      "ja-JP": "ラッフルズホテル到着。チェックインロビーはメインアーチの奥です。"
+    },
+    "tags": ["singapore", "hotel"],
+    "active": true
+  },
+  {
+    "id": "00000000-0000-0000-0000-00000000a005",
+    "name": "Chinatown Heritage Centre",
+    "lat": 1.2835298,
+    "lng": 103.8442036,
+    "radius_m": 150,
+    "messages": {
+      "ko-KR": "차이나타운 헤리티지 센터입니다. 투어 동선은 2층 전시부터 시작하세요.",
+      "en-US": "Chinatown Heritage Centre. Start the group on level 2 exhibits.",
+      "ja-JP": "チャイナタウン・ヘリテージセンターです。2階展示からご案内ください。"
+    },
+    "tags": ["singapore", "museum"],
+    "active": true
+  }
+]

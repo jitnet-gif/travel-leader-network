@@ -1,0 +1,22 @@
+[
+  {
+    "id": "emb1",
+    "country_id": "JP",
+    "name": "US Embassy Tokyo",
+    "address": "1-10-5 Akasaka, Minato-ku, Tokyo",
+    "phone": "+81 3-3224-5000",
+    "email": "tokyoacs@state.gov",
+    "lat": 35.673343,
+    "lng": 139.751389
+  },
+  {
+    "id": "emb2",
+    "country_id": "PH",
+    "name": "US Embassy Manila",
+    "address": "1201 Roxas Blvd, Ermita, Manila",
+    "phone": "+63 2 5301 2000",
+    "email": "acsmnl@state.gov",
+    "lat": 14.579444,
+    "lng": 120.977222
+  }
+]
