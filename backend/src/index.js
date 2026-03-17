@@ -117,6 +117,12 @@ const rolePermissions = {
   }
 };
 
+
+// Root route for Railway health check and root access
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', service: 'travel-leader-network-api', message: 'Welcome to the Travel Leader Network API!' });
+});
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'travel-leader-network-api' });
 });
