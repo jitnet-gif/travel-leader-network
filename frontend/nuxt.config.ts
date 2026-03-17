@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
-  modules: ['@pinia/nuxt', '@vite-pwa/nuxt'],
+  modules: ['@pinia/nuxt', ...(process.env.RAILWAY_ENVIRONMENT ? [] : ['@vite-pwa/nuxt'])],
   css: ['~/assets/css/tailwind.css', 'leaflet/dist/leaflet.css'],
   postcss: {
     plugins: {
@@ -95,6 +95,9 @@ export default defineNuxtConfig({
         { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
       ],
     },
-    devOptions: { enabled: false },
+    devOptions: { 
+      enabled: process.env.NODE_ENV !== 'production',
+      type: 'module'
+    },
   },
 });
