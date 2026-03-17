@@ -33,6 +33,90 @@ const readJson = (file, fallbackValue) => {
 app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
 
+// 역할별 메뉴 및 기능 권한 설정
+const rolePermissions = {
+  admin: {
+    menus: [
+      'dashboard',
+      'airports',
+      'cruise-lines',
+      'cruise-ships',
+      'cruise-ports',
+      'countries',
+      'users',
+      'community-posts',
+      'tour-jobs',
+      'applications',
+      'settings'
+    ],
+    features: [
+      'create_airports',
+      'edit_airports',
+      'delete_airports',
+      'create_cruise_lines',
+      'edit_cruise_lines',
+      'delete_cruise_lines',
+      'create_cruise_ships',
+      'edit_cruise_ships',
+      'delete_cruise_ships',
+      'create_cruise_ports',
+      'edit_cruise_ports',
+      'delete_cruise_ports',
+      'create_countries',
+      'edit_countries',
+      'delete_countries',
+      'manage_users',
+      'create_posts',
+      'edit_posts',
+      'delete_posts',
+      'create_jobs',
+      'edit_jobs',
+      'delete_jobs',
+      'view_applications',
+      'manage_applications'
+    ]
+  },
+  agency: {
+    menus: [
+      'dashboard',
+      'tour-jobs',
+      'applications',
+      'community-posts'
+    ],
+    features: [
+      'create_jobs',
+      'edit_jobs',
+      'delete_jobs',
+      'view_applications',
+      'manage_applications',
+      'create_posts',
+      'edit_posts'
+    ]
+  },
+  leader: {
+    menus: [
+      'dashboard',
+      'airports',
+      'cruise-lines',
+      'cruise-ships',
+      'cruise-ports',
+      'countries',
+      'community-posts',
+      'applications'
+    ],
+    features: [
+      'view_airports',
+      'view_cruise_lines',
+      'view_cruise_ships',
+      'view_cruise_ports',
+      'view_countries',
+      'create_posts',
+      'edit_posts',
+      'view_applications'
+    ]
+  }
+};
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'travel-leader-network-api' });
 });
@@ -539,6 +623,97 @@ app.get('/api/applications', requireAuth, async (req, res) => {
   let query = supabase.from('tour_applications').select('*').order('created_at', { ascending: false });
   if (userId) query = query.eq('user_id', userId);
   return handleList(res, query);
+});
+
+// Auth routes
+app.post('/api/auth/signup', async (req, res) => {
+  if (!supabaseReady) return res.status(501).json({ error: 'Supabase not configured' });
+  const { email, password, role = 'leader' } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'Email and password are required' });
+  
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { role }
+    }
+  });
+  if (error) return res.status(400).json({ error: error.message });
+  return res.status(201).json({ user: data.user, session: data.session });
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  if (!supabaseReady) return res.status(501).json({ error: 'Supabase not configured' });
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'Email and password are required' });
+  
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+  if (error) return res.status(400).json({ error: error.message });
+  return res.status(200).json({ user: data.user, session: data.session });
+});
+
+app.post('/api/auth/logout', requireAuth, async (req, res) => {
+  if (!supabaseReady) return res.status(501).json({ error: 'Supabase not configured' });
+  const { error } = await supabase.auth.signOut();
+  if (error) return res.status(400).json({ error: error.message });
+  return res.status(200).json({ message: 'Logged out successfully' });
+});
+
+app.get('/api/auth/me', requireAuth, async (req, res) => {
+  return res.json({ user: req.user });
+});
+
+// 권한 및 메뉴 설정 API
+app.get('/api/permissions', requireAuth, async (req, res) => {
+  const userRole = req.user?.role;
+  if (!userRole || !rolePermissions[userRole]) {
+    return res.status(403).json({ error: 'Invalid user role' });
+  }
+  
+  const permissions = rolePermissions[userRole];
+  return res.json({
+    role: userRole,
+    menus: permissions.menus,
+    features: permissions.features
+  });
+});
+
+app.get('/api/permissions/:role', requireAuth, requireRole('admin'), async (req, res) => {
+  const { role } = req.params;
+  if (!rolePermissions[role]) {
+    return res.status(404).json({ error: 'Role not found' });
+  }
+  
+  return res.json({
+    role,
+    menus: rolePermissions[role].menus,
+    features: rolePermissions[role].features
+  });
+});
+
+app.put('/api/permissions/:role', requireAuth, requireRole('admin'), async (req, res) => {
+  const { role } = req.params;
+  const { menus, features } = req.body;
+  
+  if (!rolePermissions[role]) {
+    return res.status(404).json({ error: 'Role not found' });
+  }
+  
+  // 권한 업데이트 (실제로는 데이터베이스에 저장)
+  rolePermissions[role] = {
+    menus: menus || rolePermissions[role].menus,
+    features: features || rolePermissions[role].features
+  };
+  
+  return res.json({
+    role,
+    menus: rolePermissions[role].menus,
+    features: rolePermissions[role].features,
+    message: 'Permissions updated successfully'
+  });
 });
 
 app.listen(port, '0.0.0.0', () => {
