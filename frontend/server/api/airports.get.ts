@@ -3,7 +3,7 @@ import localAirports from '../data/airports';
 
 // Build a lat/lng lookup from local data
 const latLngMap = new Map<string, { lat: number; lng: number }>(
-  (localAirports as any[])
+  (localAirports as unknown as any[])
     .filter(a => a.lat != null && a.lng != null)
     .map(a => [a.iata, { lat: a.lat, lng: a.lng }])
 );
@@ -31,10 +31,10 @@ export default defineEventHandler(async (event) => {
       }));
     } catch (e) {
       console.warn('[airports] Supabase fetch failed, falling back to local data:', e);
-      airports = localAirports as any[];
+      airports = localAirports as unknown as any[];
     }
   } else {
-    airports = localAirports as any[];
+    airports = localAirports as unknown as any[];
   }
 
   if (!q) return airports;

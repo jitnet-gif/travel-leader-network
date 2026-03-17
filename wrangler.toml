@@ -1,3 +1,7 @@
 name = "travel-leader-network"
 pages_build_output_dir = "frontend/dist"
 
+# Cloudflare API Token (Cloudflare Dashboard에서 생성)
+# https://dash.cloudflare.com/profile/api-tokens
+api_token = "YOUR_CLOUDFLARE_API_TOKEN_HERE"
+

@@ -1,5 +1,3 @@
-import Anthropic from '@anthropic-ai/sdk';
-
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
   const apiKey = config.anthropicApiKey;
@@ -15,155 +13,88 @@ export default defineEventHandler(async (event) => {
 
   const isCruise = tripType === 'cruise';
   const isKo = language === 'ko';
+  const days = duration || 1;
+  const pax = passengerCount || 20;
 
-  const tripTypeLabel: Record<string, string> = {
-    land_tour: isKo ? '육상 투어' : 'Land Tour',
-    cruise: isKo ? '크루즈' : 'Cruise',
-    city_tour: isKo ? '시티 투어' : 'City Tour',
-    airport_transfer: isKo ? '공항 이동' : 'Airport Transfer',
+  const tripLabels: Record<string, [string, string]> = {
+    land_tour:       ['육상 투어',  'Land Tour'],
+    cruise:          ['크루즈',     'Cruise'],
+    city_tour:       ['시티 투어',  'City Tour'],
+    airport_transfer:['공항 이동',  'Airport Transfer'],
   };
-  const shoreLabels: Record<string, string> = {
-    guided: isKo ? '가이드 투어 포함' : 'Guided Tour',
-    free: isKo ? '자유여행' : 'Free Time',
-    mixed: isKo ? '혼합 (오전 투어 + 오후 자유)' : 'Mixed (Morning Tour + Afternoon Free)',
+  const shoreLabels: Record<string, [string, string]> = {
+    guided: ['가이드 투어', 'Guided Tour'],
+    free:   ['자유여행',    'Free Time'],
+    mixed:  ['혼합형',      'Mixed'],
   };
 
-  const tripLabel = tripTypeLabel[tripType] || tripType || (isKo ? '투어' : 'Tour');
-  const shoreLabel = shoreLabels[shoreExcursion] || '';
+  const tripLabel  = tripLabels[tripType]?.[isKo ? 0 : 1]  || tripType || (isKo ? '투어' : 'Tour');
+  const shoreLabel = shoreLabels[shoreExcursion]?.[isKo ? 0 : 1] || '';
 
-  const systemPrompt = isKo
-    ? '당신은 전문 투어 리더 운영 어시스턴트입니다. 실제 현지 물가와 운영 비용에 기반한 정확한 예산을 포함한 여행 일정을 JSON 형식으로 생성합니다. 반드시 유효한 JSON만 응답하고, 마크다운 코드블록 없이 순수 JSON만 반환하세요.'
-    : 'You are a professional tour leader operations assistant. You generate travel schedules with accurate budgets based on real local pricing. Always respond with valid JSON only, no markdown code blocks.';
+  const budgetLine = isKo
+    ? (budgetPerPax ? `1인 예산 ${budgetPerPax} ${currency}` : '예산 미지정')
+    : (budgetPerPax ? `Budget ${budgetPerPax} ${currency} per person` : 'Budget not specified');
 
-  const budgetSection = isKo
-    ? (budgetPerPax
-      ? `- 1인 예산: ${budgetPerPax} ${currency}\n- 단체 총 예산: ${(Number(budgetPerPax) * (passengerCount || 20)).toLocaleString()} ${currency}`
-      : '- 예산: 미지정 (적정 예산 추천)')
-    : (budgetPerPax
-      ? `- Budget per person: ${budgetPerPax} ${currency}\n- Group total budget: ${(Number(budgetPerPax) * (passengerCount || 20)).toLocaleString()} ${currency}`
-      : '- Budget: Not specified (recommend appropriate budget)');
-
-  const shoreSection = isCruise && shoreLabel
-    ? (isKo ? `- 기항지 관광 방식: ${shoreLabel}` : `- Shore excursion type: ${shoreLabel}`)
+  const shoreLine = isCruise && shoreLabel
+    ? (isKo ? `기항지 관광: ${shoreLabel}` : `Shore excursion: ${shoreLabel}`)
     : '';
 
-  const shoreExcursionTemplate = isCruise
-    ? `[{ "port": "${isKo ? '기항지명' : 'port name'}", "option": "guided|free|mixed", "label": "${isKo ? '옵션 설명' : 'option description'}", "perPax": 0, "included": [] }]`
-    : 'null';
+  const noteLine = notes && notes !== '없음'
+    ? (isKo ? `특이사항: ${notes}` : `Notes: ${notes}`)
+    : '';
+
+  const parts = [
+    isKo ? `목적지: ${destination}` : `Destination: ${destination}`,
+    isKo ? `유형: ${tripLabel}` : `Type: ${tripLabel}`,
+    isKo ? `기간: ${days}일, 승객 ${pax}명` : `Duration: ${days} days, ${pax} pax`,
+    budgetLine,
+    shoreLine,
+    noteLine,
+  ].filter(Boolean).join('\n');
+
+  const systemPrompt = isKo
+    ? '전문 투어 리더 어시스턴트입니다. 실제 현지 물가 기반 여행 일정을 JSON으로 생성합니다. 순수 JSON만 반환하고 마크다운 코드블록을 사용하지 마세요.'
+    : 'You are a professional tour leader assistant. Generate travel itineraries with real local pricing as JSON. Return pure JSON only, no markdown.';
 
   const userPrompt = isKo
-    ? `다음 조건으로 투어 리더용 운영 일정과 예산 계획표를 생성해 주세요:
-- 목적지: ${destination}
-- 투어 유형: ${tripLabel}
-- 기간: ${duration || 1}일
-- 승객 수: ${passengerCount || 20}명
-${budgetSection}
-${shoreSection}
-${notes ? `- 특이사항: ${notes}` : ''}
+    ? `다음 조건으로 투어 리더 운영 일정과 예산을 JSON으로 생성해주세요.\n\n${parts}\n\n반환 필드: destination, duration, schedule(day별 title과 items 배열), budget(currency, perPax, groupTotal, breakdown 배열, savingTips 배열), tips 배열, checklist 배열\nschedule items 필드: time, activity, location, activityType(이동/식사/관광/숙박 중 하나), durationMin, cost, description, notes\nbreakdown 필드: item, perPax, groupTotal, note`
+    : `Generate a tour leader schedule and budget as JSON for the following:\n\n${parts}\n\nReturn fields: destination, duration, schedule(array of days with title and items), budget(currency, perPax, groupTotal, breakdown array, savingTips array), tips array, checklist array\nItem fields: time, activity, location, activityType(transport/meal/sightseeing/accommodation), durationMin, cost, description, notes\nBreakdown fields: item, perPax, groupTotal, note`;
 
-실제 현지 물가를 기반으로 정확한 숫자를 제공하세요.
-
-다음 JSON 구조로 정확히 응답하세요:
-{
-  "destination": "목적지명",
-  "duration": 숫자,
-  "schedule": [
-    {
-      "day": 1,
-      "title": "1일차 제목",
-      "items": [
-        {
-          "time": "HH:MM",
-          "activity": "활동명",
-          "location": "장소명 (구체적 주소 또는 랜드마크)",
-          "type": "transport|activity|meal|accommodation",
-          "duration": "소요시간 (예: 2시간, 45분)",
-          "cost": 숫자,
-          "description": "활동에 대한 구체적 설명 (2-3문장)",
-          "notes": "투어 리더 운영 메모"
-        }
-      ]
-    }
-  ],
-  "budget": {
-    "currency": "${currency}",
-    "perPax": 숫자,
-    "groupTotal": 숫자,
-    "breakdown": [
-      { "item": "항목명", "perPax": 숫자, "groupTotal": 숫자, "note": "비고", "category": "transport|activity|meal|accommodation|entrance|guide|misc" }
-    ],
-    "shoreExcursionOptions": ${shoreExcursionTemplate},
-    "savingTips": ["절약 팁1", "절약 팁2"]
-  },
-  "tips": ["팁1", "팁2"],
-  "checklist": ["체크항목1", "체크항목2"]
-}`
-    : `Generate a tour leader operations schedule and budget breakdown for:
-- Destination: ${destination}
-- Tour type: ${tripLabel}
-- Duration: ${duration || 1} day(s)
-- Passenger count: ${passengerCount || 20}
-${budgetSection}
-${shoreSection}
-${notes ? `- Notes: ${notes}` : ''}
-
-Provide accurate numbers based on real local pricing.
-
-Respond with exactly this JSON structure:
-{
-  "destination": "destination name",
-  "duration": number,
-  "schedule": [
-    {
-      "day": 1,
-      "title": "Day 1 title",
-      "items": [
-        {
-          "time": "HH:MM",
-          "activity": "activity name",
-          "location": "specific location",
-          "type": "transport|activity|meal|accommodation",
-          "duration": "time required",
-          "cost": number,
-          "description": "2-3 sentence description",
-          "notes": "tour leader operational note"
-        }
-      ]
-    }
-  ],
-  "budget": {
-    "currency": "${currency}",
-    "perPax": number,
-    "groupTotal": number,
-    "breakdown": [
-      { "item": "item name", "perPax": number, "groupTotal": number, "note": "note", "category": "transport|activity|meal|accommodation|entrance|guide|misc" }
-    ],
-    "shoreExcursionOptions": ${shoreExcursionTemplate},
-    "savingTips": ["tip1", "tip2"]
-  },
-  "tips": ["tip1", "tip2"],
-  "checklist": ["item1", "item2"]
-}`;
-
-  const client = new Anthropic({ apiKey });
-  const message = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 4096,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }],
-  });
-
-  const rawText = (message.content[0] as { text: string })?.text || '';
-  let parsed: unknown;
+  let rawText = '';
   try {
-    parsed = JSON.parse(rawText);
-  } catch {
-    const match = rawText.match(/\{[\s\S]*\}/);
-    if (match) {
-      parsed = JSON.parse(match[0]);
-    } else {
-      throw createError({ statusCode: 502, message: 'Failed to parse AI response' });
-    }
+    const response = await $fetch<any>('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json'
+      },
+      body: {
+        model: 'claude-3-5-haiku-20241022',
+        max_tokens: 3000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userPrompt }],
+      },
+    });
+    rawText = (response.content[0] as { text: string })?.text || '';
+  } catch (err: any) {
+    console.error('[schedule-ai] Anthropic API Error:', err);
+    throw createError({
+      statusCode: err?.status || 502,
+      statusMessage: `Anthropic API Error: ${err?.data?.error?.message || err?.message || 'Unknown error'}`,
+      data: { originalError: err?.data || err }
+    });
   }
-  return parsed;
+
+  // JSON 파싱: 코드블록 제거 후 시도
+  const cleaned = rawText.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim();
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    const match = cleaned.match(/\{[\s\S]*\}/);
+    if (match) {
+      try { return JSON.parse(match[0]); } catch { /* fall through */ }
+    }
+    throw createError({ statusCode: 502, message: `AI 응답 파싱 실패: ${cleaned.slice(0, 100)}` });
+  }
 });

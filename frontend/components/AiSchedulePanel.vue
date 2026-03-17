@@ -50,19 +50,42 @@
     <!-- Input row -->
     <div v-if="currentStep && !generating" class="flex gap-2">
       <input
+        v-if="currentStep.inputType === 'number'"
+        :key="currentStep.field + '-num'"
         ref="inputEl"
-        v-model="userInput"
+        v-model.number="userInput"
+        type="number"
         :placeholder="currentStep.placeholder"
-        :type="currentStep.inputType || 'text'"
         :min="currentStep.min"
         class="flex-1 rounded-full border border-black/10 bg-white px-4 py-2.5 text-sm placeholder:text-black/30 focus:border-ocean focus:outline-none focus:ring-2 focus:ring-ocean/20 dark:border-white/10 dark:bg-slate-800 dark:text-white dark:placeholder:text-white/30"
         @keydown.enter="submitInput"
       />
+      <input
+        v-else
+        :key="currentStep.field + '-text'"
+        ref="inputEl"
+        v-model="userInput"
+        type="text"
+        :placeholder="currentStep.placeholder"
+        class="flex-1 rounded-full border border-black/10 bg-white px-4 py-2.5 text-sm placeholder:text-black/30 focus:border-ocean focus:outline-none focus:ring-2 focus:ring-ocean/20 dark:border-white/10 dark:bg-slate-800 dark:text-white dark:placeholder:text-white/30"
+        @keydown.enter="submitInput"
+      />
       <button
-        :disabled="!userInput.trim()"
-        class="rounded-full bg-ocean px-4 py-2.5 text-sm font-semibold text-white shadow transition hover:bg-ocean/90 disabled:opacity-40 active:scale-95"
+        v-if="speechSupported"
+        type="button"
+        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition"
+        :class="isListening ? 'bg-red-500 animate-pulse text-white' : 'border border-black/10 bg-white text-black/40 hover:bg-ocean/10 hover:text-ocean dark:border-white/10 dark:bg-slate-800'"
+        @click="toggleListen"
+      >
+        <svg v-if="isListening" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="2"/><rect x="14" y="4" width="4" height="16" rx="2"/></svg>
+        <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <button
+        :disabled="!String(userInput || '').trim()"
+        class="rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow transition disabled:opacity-40 active:scale-95"
+        :class="voiceCountdown > 0 ? 'bg-amber-500 animate-pulse' : 'bg-ocean hover:bg-ocean/90'"
         @click="submitInput"
-      >전송</button>
+      >{{ voiceCountdown > 0 ? `${voiceCountdown}초` : '전송' }}</button>
     </div>
 
     <!-- Result: schedule + budget -->
@@ -291,6 +314,49 @@ const answers = computed(() => userAnswers.value);
 const userInput = ref('');
 const stepIdx = ref(0);
 const thinking = ref(false);
+
+// ── Voice input ──────────────────────────────────────────────────────────────
+const speechSupported = ref(false);
+const isListening = ref(false);
+const voiceCountdown = ref(0);
+let recognition: any = null;
+let voiceAutoSendTimer: ReturnType<typeof setTimeout> | null = null;
+
+onMounted(() => {
+  if (!process.client) return;
+  const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+  if (SR) {
+    speechSupported.value = true;
+    recognition = new SR();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.onresult = (e: any) => {
+      const text = e.results[0]?.[0]?.transcript || '';
+      const step = STEPS[stepIdx.value];
+      if (text.trim() && step?.inputType !== 'number') {
+        userInput.value = text.trim();
+        voiceCountdown.value = 1;
+        if (voiceAutoSendTimer) clearTimeout(voiceAutoSendTimer);
+        voiceAutoSendTimer = setTimeout(() => {
+          voiceCountdown.value = 0;
+          submitInput();
+        }, 1000);
+      }
+      isListening.value = false;
+    };
+    recognition.onend = () => { isListening.value = false; };
+    recognition.onerror = () => { isListening.value = false; voiceCountdown.value = 0; };
+  }
+});
+
+const toggleListen = () => {
+  if (!recognition) return;
+  if (voiceAutoSendTimer) { clearTimeout(voiceAutoSendTimer); voiceAutoSendTimer = null; voiceCountdown.value = 0; }
+  if (isListening.value) { recognition.stop(); return; }
+  recognition.lang = 'ko-KR';
+  recognition.start();
+  isListening.value = true;
+};
 const generating = ref(false);
 const result = ref<AiResult | null>(null);
 
@@ -310,7 +376,11 @@ const currentStep = computed<Step | null>(() => {
 
 // ── Scroll helper ──────────────────────────────────────────────────────────
 const scrollBottom = () => nextTick(() => {
-  if (chatEl.value) chatEl.value.scrollTop = chatEl.value.scrollHeight;
+  if (!chatEl.value) return;
+  // 채팅창 내부 스크롤을 아래로
+  chatEl.value.scrollTop = chatEl.value.scrollHeight;
+  // 페이지가 채팅창 밖으로 스크롤됐을 경우 채팅창이 보이도록 뷰포트로 이동
+  chatEl.value.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 
 // ── Advance to next step ───────────────────────────────────────────────────
@@ -347,13 +417,15 @@ const advanceStep = async () => {
 // ── User submits typed input ───────────────────────────────────────────────
 const submitInput = async () => {
   const step = STEPS[stepIdx.value];
-  if (!step || !userInput.value.trim()) return;
-  const val = userInput.value.trim();
+  if (!step || !(String(userInput.value)).trim()) return;
+  if (recognition && isListening.value) { recognition.stop(); isListening.value = false; }
+  const val = String(userInput.value).trim();
   userAnswers.value[step.field] = val;
   messages.value.push({ role: 'user', content: val });
-  userInput.value = '';
+  userInput.value = ''; // Reset input value immediately
   scrollBottom();
   await advanceStep();
+
 };
 
 // ── User clicks a chip ─────────────────────────────────────────────────────
@@ -381,6 +453,10 @@ const generateSchedule = async () => {
     const budgetRaw = a.budgetPerPax?.replace(/[^0-9]/g, '');
     result.value = await $fetch<AiResult>('/api/schedule-ai', {
       method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
       body: {
         destination: a.destination,
         tripType: a.tripType || props.defaultTripType,
@@ -401,11 +477,12 @@ const generateSchedule = async () => {
     });
   } catch (err: unknown) {
     thinking.value = false;
-    const e = err as { data?: { error?: string }; message?: string };
+    const e = err as { data?: { message?: string; statusCode?: number }; message?: string; statusCode?: number };
+    const errMsg = e?.data?.message || e?.message || (e?.statusCode ? `오류 ${e.statusCode}` : '알 수 없는 오류');
     messages.value.push({
       role: 'ai',
       type: 'text',
-      content: `❌ 일정 생성에 실패했습니다: ${e?.data?.error || e?.message || '알 수 없는 오류'}`,
+      content: `❌ 일정 생성에 실패했습니다: ${errMsg}\n\n잠시 후 다시 시도하거나 목적지를 영문으로 입력해보세요.`,
     });
   } finally {
     generating.value = false;
@@ -431,7 +508,7 @@ const typeLabel = (t: string) => ({ transport: '이동', activity: '활동', mea
 const typeColor = (t: string) => ({ transport: 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300', activity: 'bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-300', meal: 'bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-300', accommodation: 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-300' }[t] || 'bg-gray-50 text-gray-600');
 const typeBadgeColor = (t: string) => ({ transport: 'bg-blue-100 text-blue-700', activity: 'bg-green-100 text-green-700', meal: 'bg-orange-100 text-orange-700', accommodation: 'bg-purple-100 text-purple-700' }[t] || 'bg-gray-100 text-gray-600');
 const categoryIcon = (c: string) => ({ transport: '🚌', activity: '🎯', meal: '🍽️', accommodation: '🏨', entrance: '🎫', guide: '👤', misc: '📦' }[c] || '📌');
-const fmt = (amount: number, currency: string) => {
+const fmt = (amount: number | undefined, currency: string) => {
   if (amount == null) return '-';
   const s: Record<string, string> = { USD: '$', KRW: '₩', EUR: '€', JPY: '¥', SGD: 'S$' };
   return (s[currency] || currency + ' ') + Number(amount).toLocaleString();
@@ -460,4 +537,13 @@ const startChat = async () => {
 };
 
 onMounted(startChat);
+
+// 메시지가 추가될 때마다 스크롤 + 포커스 보장
+watch(
+  () => messages.value.length,
+  () => {
+    scrollBottom();
+    nextTick(() => { if (!generating.value) inputEl.value?.focus(); });
+  }
+);
 </script>

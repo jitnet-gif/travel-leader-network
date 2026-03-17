@@ -1,4 +1,5 @@
 import { ref, computed } from 'vue';
+import type { GpsStatus } from '~/types/gps';
 
 export type Poi = {
   id: string;
@@ -18,8 +19,6 @@ type Options = {
   gapMs?: number; // pause between simulated clips
   useLongForm?: boolean; // choose long script when available
 };
-
-export type GpsStatus = 'idle' | 'checking' | 'ok' | 'denied' | 'error' | 'unsupported';
 
 const haversine = (lat1: number, lon1: number, lat2: number, lon2: number) => {
   const toRad = (v: number) => (v * Math.PI) / 180;

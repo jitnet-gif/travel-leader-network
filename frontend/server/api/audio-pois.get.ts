@@ -5,7 +5,7 @@ export default defineEventHandler((event) => {
   const { q } = getQuery(event);
   if (!q) return audioPois;
   const needle = String(q).toLowerCase();
-  return (audioPois as any[]).filter((p) =>
+  return (audioPois as unknown as any[]).filter((p) =>
     String(p.name || '').toLowerCase().includes(needle)
   );
 });

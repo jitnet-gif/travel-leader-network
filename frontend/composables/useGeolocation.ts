@@ -1,6 +1,5 @@
 import type { Airport } from '~/types/airport';
-
-export type GpsStatus = 'idle' | 'checking' | 'ok' | 'denied' | 'error' | 'unsupported';
+import type { GpsStatus } from '~/types/gps';
 
 export function haversineMeters(lat1: number, lng1: number, lat2: number, lng2: number): number {
   const R = 6_371_000;

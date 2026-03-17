@@ -8,6 +8,14 @@ type SupabaseStub = {
     getUser: () => Promise<{ data: { user: null }; error: null }>;
     getSession: () => Promise<{ data: { session: null }; error: null }>;
     onAuthStateChange: (cb: (event: string, session: null) => void) => { data: { subscription: { unsubscribe: () => void } } };
+    exchangeCodeForSession: (code: string) => Promise<{ data: { session: null; user: null }; error: Error | null }>;
+  };
+  from: (table: string) => {
+    select: (columns?: string) => any;
+    insert: (values: any) => any;
+    update: (values: any) => any;
+    delete: () => any;
+    upsert: (values: any) => any;
   };
   storage: {
     from: (bucket: string) => {
@@ -16,30 +24,35 @@ type SupabaseStub = {
   };
 };
 
-const createSupabaseStub = (): SupabaseStub => ({
-  auth: {
-    signInWithPassword: async () => ({
-      data: null,
-      error: new Error('Supabase is not configured. Set NUXT_PUBLIC_SUPABASE_URL and NUXT_PUBLIC_SUPABASE_ANON_KEY.')
-    }),
-    signUp: async () => ({
-      data: null,
-      error: new Error('Supabase is not configured. Set NUXT_PUBLIC_SUPABASE_URL and NUXT_PUBLIC_SUPABASE_ANON_KEY.')
-    }),
-    signOut: async () => ({ error: null }),
-    getUser: async () => ({ data: { user: null }, error: null }),
-    getSession: async () => ({ data: { session: null }, error: null }),
-    onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
-  },
-  storage: {
-    from: () => ({
-      upload: async () => ({
-        data: null,
-        error: new Error('Supabase is not configured. Set NUXT_PUBLIC_SUPABASE_URL and NUXT_PUBLIC_SUPABASE_ANON_KEY.')
+const createSupabaseStub = (): SupabaseStub => {
+  const errorObj = { data: null, error: new Error('Supabase is not configured. Set NUXT_PUBLIC_SUPABASE_URL and NUXT_PUBLIC_SUPABASE_ANON_KEY.') };
+  const chainable = {
+    select: () => Promise.resolve(errorObj),
+    insert: () => Promise.resolve(errorObj),
+    update: () => Promise.resolve(errorObj),
+    delete: () => Promise.resolve(errorObj),
+    upsert: () => Promise.resolve(errorObj),
+  };
+
+  return {
+    auth: {
+      signInWithPassword: async () => errorObj,
+      signUp: async () => errorObj,
+      signOut: async () => ({ error: null }),
+      getUser: async () => ({ data: { user: null }, error: null }),
+      getSession: async () => ({ data: { session: null }, error: null }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+      exchangeCodeForSession: async () => ({ data: { session: null, user: null }, error: null })
+    },
+    from: () => chainable as any,
+    storage: {
+      from: () => ({
+        upload: async () => errorObj
       })
-    })
-  }
-});
+    }
+  };
+};
+
 
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig();

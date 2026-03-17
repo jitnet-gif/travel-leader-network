@@ -26,7 +26,7 @@ onMounted(() => {
   import('mapbox-gl')
     .then((module) => {
       const mapboxgl = module.default;
-      mapboxgl.accessToken = config.public.mapboxToken;
+      mapboxgl.accessToken = config.public.mapboxToken as string;
       map = new mapboxgl.Map({
         container: mapContainer.value as HTMLElement,
         style: 'mapbox://styles/mapbox/streets-v12',

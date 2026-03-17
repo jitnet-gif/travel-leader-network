@@ -1,2 +1,0 @@
-import{d as e,u as t,g as a}from"../../nitro/nitro.mjs";const r=e(async e=>{const r=t(e).public.apiBase||"http://localhost:4000",s=a(e),i=new URL("/api/leader-settings",r);Object.entries(s).forEach(([e,t])=>{null!=t&&i.searchParams.set(e,String(t))});try{return await $fetch(i.toString())}catch(e){return console.error("[proxy] GET /api/leader-settings failed",(null==e?void 0:e.message)||e),{user_id:s.user_id||null,language:"ko-KR",radius_m:200,voice:"default",repeat:!1}}});export{r as default};
-//# sourceMappingURL=leader-settings.get.mjs.map

@@ -609,5 +609,18 @@ export default {
     createAccount: '계정 만들기',
     confirmEmail: '가입 확인을 위해 이메일을 확인하세요.',
     emailPasswordRequired: '이메일과 비밀번호를 입력해주세요.'
+  },
+  chatbot: {
+    name: '투어지니',
+    title: '투어지니 AI 어시스턴트',
+    welcome: '안녕하세요!',
+    subtitle: '공항, 입국, 크루즈, 투어 관련 무엇이든 물어보세요.<br>마이크 버튼을 눌러 음성으로 대화하세요.',
+    placeholder: '메시지 입력...',
+    ready: '지니',
+    masterResponse: '네 주인님',
+    listening: '듣는 중',
+    speaking: '말하는 중',
+    voiceTts: '음성 읽기',
+    close: '닫기'
   }
 };

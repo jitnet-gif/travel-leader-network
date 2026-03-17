@@ -7,6 +7,7 @@
 
 // ─── Multilingual alias map ────────────────────────────────────────────────
 // Format: 'native term' → ['english', 'aliases', ...]
+// Also includes common typos/alternate spellings
 const ALIASES: Record<string, string[]> = {
   // ── Korea ──
   '인천': ['incheon', 'icn'],
@@ -117,6 +118,19 @@ const ALIASES: Record<string, string[]> = {
   // ── Africa ──
   '나이로비': ['nairobi', 'nbo'],
   '요하네스버그': ['johannesburg', 'jnb'],
+  // ── Common typos & alternate spellings ──
+  '싱가폴': ['singapore', 'sin', '싱가포르'],
+  '싱가프': ['singapore', 'sin'],
+  '방곡': ['bangkok', 'bkk', '방콕'],
+  '도쿄도': ['tokyo', 'nrt', 'hnd', '도쿄'],
+  '뉴욕시': ['new york', 'jfk', '뉴욕'],
+  '엘에이공항': ['los angeles', 'lax'],
+  '쿠알라': ['kuala lumpur', 'kul'],
+  '이스탄블': ['istanbul', 'ist', '이스탄불'],
+  '프랑크푸르': ['frankfurt', 'fra'],
+  '암스테르': ['amsterdam', 'ams'],
+  '바르셀': ['barcelona', 'bcn'],
+  '코펜': ['copenhagen', 'cph'],
   // ── Cruise lines & ships ──
   '크루즈': ['cruise'],
   '항구': ['port', 'harbor', 'harbour'],
@@ -166,22 +180,40 @@ const ALIASES: Record<string, string[]> = {
   '曼谷': ['bangkok', 'bkk'],
 };
 
-/**
- * Expand a query word using the multilingual alias map.
- * Returns the original word plus any English aliases found.
- */
-function expandWord(word: string): string[] {
-  const result = [word];
-  const aliases = ALIASES[word];
-  if (aliases) result.push(...aliases);
-  return result;
+// ─── Reverse alias map (auto-built): English/IATA → Korean ────────────────
+const REVERSE_ALIASES: Record<string, string[]> = {};
+for (const [native, enList] of Object.entries(ALIASES)) {
+  for (const en of enList) {
+    if (!REVERSE_ALIASES[en]) REVERSE_ALIASES[en] = [];
+    if (!REVERSE_ALIASES[en].includes(native)) REVERSE_ALIASES[en].push(native);
+  }
 }
 
 /**
- * matchesQuery – multi-word partial search helper with multilingual support
+ * Expand a query word bidirectionally: Korean→English and English→Korean.
+ * Returns the original word plus all found aliases.
  */
-export function matchesQuery(rawQuery: string, fields: (string | null | undefined)[]): boolean {
-  const q = rawQuery.trim().toLowerCase();
+function expandWord(word: string): string[] {
+  const result = new Set<string>([word]);
+  (ALIASES[word] || []).forEach(a => result.add(a));
+  (REVERSE_ALIASES[word] || []).forEach(a => result.add(a));
+  return [...result];
+}
+
+/**
+ * Prefix match: check if any whitespace-separated token in haystack starts with token.
+ * Only applied for tokens ≥ 2 chars to avoid noise.
+ */
+function prefixMatch(token: string, haystack: string): boolean {
+  if (token.length < 2) return false;
+  return haystack.split(/[\s,.\-/()[\]]+/).some(word => word.startsWith(token));
+}
+
+/**
+ * matchesQuery – multi-word partial search with multilingual + prefix fuzzy support
+ */
+export function matchesQuery(rawQuery: unknown, fields: (string | null | undefined)[]): boolean {
+  const q = (typeof rawQuery === 'string' ? rawQuery : '').trim().toLowerCase();
   if (!q) return true;
 
   const haystack = fields
@@ -189,8 +221,9 @@ export function matchesQuery(rawQuery: string, fields: (string | null | undefine
     .map((f) => (f as string).toLowerCase())
     .join(' ');
 
-  // Split query into words, expand each with aliases, then check if ANY expanded word matches
-  return q.split(/\s+/).some((word) =>
-    expandWord(word).some((expanded) => haystack.includes(expanded))
-  );
+  // Each query word must produce at least one match (AND between words)
+  return q.split(/\s+/).every((word) => {
+    const expanded = expandWord(word);
+    return expanded.some(e => haystack.includes(e)) || prefixMatch(word, haystack);
+  });
 }

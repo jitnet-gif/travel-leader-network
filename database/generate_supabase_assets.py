@@ -162,6 +162,42 @@ POST_AUTHORS = [
     "Noah Chen",
 ]
 
+CRUISE_NEWS_TITLES = [
+    "Royal Caribbean Unveils New Ship Design",
+    "MSC Cruises Expands Mediterranean Routes",
+    "Norwegian Cruise Line Adds New Ports",
+    "Carnival Celebrates Record Bookings",
+    "Celebrity Cruises Launches Luxury Itinerary",
+    "Princess Cruises Updates Dining Options",
+    "Holland America Line Enhances Entertainment",
+    "Costa Cruises Opens New Destinations",
+    "Disney Cruise Line Adds Family Activities",
+    "MSC World Europa Sets Sail",
+    "Royal Caribbean Icon of the Seas Review",
+    "Princess Cruises Safety Protocols",
+    "Norwegian Prima Itinerary Changes",
+    "Costa Toscana Inaugural Voyage",
+    "Disney Wish Guest Experience",
+]
+
+CRUISE_NEWS_SUMMARIES = [
+    "The latest ship features innovative amenities and sustainable technology.",
+    "New routes offer extended stays in popular European destinations.",
+    "Additional ports provide more options for adventure seekers.",
+    "Strong demand reflects recovery in the cruise industry.",
+    "Exclusive experiences for discerning travelers.",
+    "Enhanced menus with local and international cuisines.",
+    "Upgraded shows and performances for all ages.",
+    "Exploring lesser-known gems in the cruise world.",
+    "Magical experiences tailored for families.",
+    "State-of-the-art vessel begins global journey.",
+    "Passengers rave about the ship's unique attractions.",
+    "Commitment to health and safety standards.",
+    "Revised schedules to optimize travel experience.",
+    "Celebrating the launch with special events.",
+    "Creating unforgettable memories for all guests.",
+]
+
 COUNTRY_NAMES = [
     "Japan",
     "Philippines",
@@ -433,6 +469,16 @@ content TEXT,
 author TEXT,
 created_at TIMESTAMP DEFAULT NOW()
 );
+
+CREATE TABLE IF NOT EXISTS cruise_news (
+id SERIAL PRIMARY KEY,
+title TEXT,
+summary TEXT,
+source TEXT,
+url TEXT,
+published_at TIMESTAMP,
+cruise_line TEXT
+);
 """.strip()
 
 
@@ -539,6 +585,25 @@ def generate_community_posts(count: int) -> list[dict]:
             }
         )
     return posts
+
+
+def generate_cruise_news(count: int) -> list[dict]:
+    news = []
+    for i in range(count):
+        published_at = BASE_POST_DATE - timedelta(days=random.randint(0, 30))
+        cruise_line = random.choice(CRUISE_LINES)
+        news.append(
+            {
+                "id": i + 1,
+                "title": random.choice(CRUISE_NEWS_TITLES),
+                "summary": random.choice(CRUISE_NEWS_SUMMARIES),
+                "source": "CruiseMapper",
+                "url": f"https://www.cruisemapper.com/news/article-{i+1}",
+                "published_at": published_at.isoformat(),
+                "cruise_line": cruise_line,
+            }
+        )
+    return news
 
 
 def generate_countries(count: int) -> list[dict]:
@@ -659,6 +724,14 @@ def key_community_post(record: dict) -> tuple:
         record.get("title"),
         record.get("author"),
         normalize_date(record.get("created_at")),
+    )
+
+
+def key_cruise_news(record: dict) -> tuple:
+    return (
+        record.get("title"),
+        record.get("cruise_line"),
+        normalize_date(record.get("published_at")),
     )
 
 
@@ -810,6 +883,44 @@ def upload_to_supabase(
             ["title", "author", "created_at"],
         )
 
+    news_path = out_dir / "cruise_news.json"
+    if news_path.exists():
+        news = json.loads(news_path.read_text(encoding="utf-8"))
+        upload_records(
+            "cruise_news",
+            news,
+            key_cruise_news,
+            ["title", "cruise_line", "published_at"],
+        )
+
+
+def upload_cruise_news_to_supabase(out_dir: Path, chunk_size: int, only_missing: bool = False) -> None:
+    url = os.getenv("SUPABASE_URL")
+    key = os.getenv("SUPABASE_KEY")
+    if not url or not key:
+        raise RuntimeError("Missing SUPABASE_URL or SUPABASE_KEY.")
+
+    try:
+        from supabase import create_client
+    except Exception as exc:
+        raise RuntimeError("Missing supabase package. Install with: pip install supabase") from exc
+
+    client = create_client(url, key)
+
+    news_path = out_dir / "cruise_news.json"
+    if news_path.exists():
+        news = json.loads(news_path.read_text(encoding="utf-8"))
+        if only_missing:
+            existing = fetch_existing_keys(client, "cruise_news", ["title", "cruise_line", "published_at"], key_cruise_news)
+            filtered = filter_missing(news, existing, key_cruise_news)
+            news = filtered
+        else:
+            news = [strip_id(record) for record in news]
+
+        for idx, batch in enumerate(chunked(news, chunk_size), start=1):
+            client.table("cruise_news").insert(batch).execute()
+            print(f"cruise_news uploaded: batch {idx}/{(len(news) - 1) // chunk_size + 1}")
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -824,6 +935,7 @@ def main() -> None:
     parser.add_argument("--itinerary-days", type=int, default=7)
     parser.add_argument("--countries", type=int, default=80)
     parser.add_argument("--users", type=int, default=30)
+    parser.add_argument("--news", type=int, default=50)
     parser.add_argument("--basic", action="store_true", default=False)
     parser.add_argument("--extras-only", action="store_true", default=False)
     parser.add_argument("--only-missing", action="store_true", default=False)
@@ -869,6 +981,7 @@ def main() -> None:
             ensure_json(out_dir / "countries.json", generate_countries, args.countries)
             ensure_json(out_dir / "cruise_lines.json", generate_cruise_lines)
             ensure_json(out_dir / "users.json", generate_users, args.users)
+            ensure_json(out_dir / "cruise_news.json", generate_cruise_news, args.news)
         else:
             ports = generate_cruise_ports(args.ports)
             jobs = generate_tour_jobs(args.jobs)
@@ -877,6 +990,7 @@ def main() -> None:
             countries = generate_countries(args.countries)
             cruise_lines = generate_cruise_lines()
             users = generate_users(args.users)
+            news = generate_cruise_news(args.news)
 
             write_json(out_dir / "cruise_ports_400.json", ports)
             write_json(out_dir / "tour_jobs.json", jobs)
@@ -885,6 +999,7 @@ def main() -> None:
             write_json(out_dir / "countries.json", countries)
             write_json(out_dir / "cruise_lines.json", cruise_lines)
             write_json(out_dir / "users.json", users)
+            write_json(out_dir / "cruise_news.json", news)
 
     if args.write_schema:
         write_schema(out_dir / "supabase_schema.sql")
@@ -900,6 +1015,7 @@ def main() -> None:
         print("countries.json created")
         print("cruise_lines.json created")
         print("users.json created")
+        print("cruise_news.json created")
     if args.write_schema:
         print("supabase_schema.sql created")
 

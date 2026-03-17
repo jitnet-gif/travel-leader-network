@@ -79,7 +79,7 @@
           </div>
 
           <!-- ── Location map tab ── -->
-          <div v-if="activeTab === 'location'" class="flex flex-col lg:flex-row lg:flex-1 lg:min-h-0 gap-4 overflow-y-auto lg:overflow-hidden p-4 sm:gap-6 sm:p-6">
+          <div ref="locationScrollEl" v-if="activeTab === 'location'" class="flex flex-col lg:flex-row lg:flex-1 lg:min-h-0 gap-4 overflow-y-auto lg:overflow-hidden p-4 sm:gap-6 sm:p-6">
             <!-- Left: Map (fixed, no independent scroll) -->
             <div class="space-y-3 lg:w-[55%] lg:shrink-0">
               <div class="flex items-center justify-between">
@@ -103,6 +103,7 @@
                     :open-time="airport.open_time"
                     :close-time="airport.close_time"
                     :show-marker="false"
+                    :show-user-location="true"
                   />
                   <div v-else class="flex h-72 items-center justify-center bg-slate-50 text-sm text-black/50 dark:bg-slate-800 dark:text-white/50">
                     <span v-if="coordsLoading">{{ t('airport.loadingMap') }}</span>
@@ -113,7 +114,7 @@
             </div>
 
             <!-- Right: Info cards — independently scrollable -->
-            <div class="space-y-3 lg:flex-1 lg:overflow-y-auto lg:pr-1">
+            <div ref="detailScrollEl" class="space-y-3 lg:flex-1 lg:overflow-y-auto lg:pr-1">
               <!-- Live flight lookup -->
               <div class="rounded-xl border border-black/10 bg-white p-4 text-sm text-black/70 shadow-sm dark:border-white/10 dark:bg-slate-800/80 dark:text-white/70">
                 <div class="flex items-center justify-between">
@@ -193,12 +194,18 @@ type FacilityMarker = {
   category?: string;
 };
 
-const props = defineProps<{
-  airport: Airport;
-  open: boolean;
-  currentIndex?: number;
-  total?: number;
-}>();
+const props = withDefaults(
+  defineProps<{
+    airport: Airport;
+    open: boolean;
+    currentIndex?: number;
+    total?: number;
+  }>(),
+  {
+    currentIndex: 0,
+    total: 0
+  }
+);
 const emit = defineEmits<{
   (e: 'close'): void;
   (e: 'prev'): void;
@@ -337,11 +344,31 @@ onMounted(() => {
   if (props.open) fetchCoords();
 });
 
-// Keyboard arrow navigation
+// ── Keyboard: 방향키 = 상세 안내 카드 페이지 업/다운 ──────────────────────────
+const detailScrollEl = ref<HTMLDivElement | null>(null);
+const locationScrollEl = ref<HTMLDivElement | null>(null);
+
+const scrollDetailPage = (direction: 'up' | 'down') => {
+  // 실제로 스크롤 가능한 요소 선택: 우측 패널(lg) → location 전체(모바일) → 다른 탭 내부
+  const candidates = [
+    detailScrollEl.value,
+    locationScrollEl.value,
+    document.querySelector('.fixed.inset-0.z-40 .overflow-y-auto') as HTMLElement | null,
+  ];
+  const el = candidates.find(c => c && c.scrollHeight > c.clientHeight) ?? null;
+  if (el) {
+    const amount = el.clientHeight * 0.8;
+    el.scrollBy({ top: direction === 'down' ? amount : -amount, behavior: 'smooth' });
+  }
+};
+
 const onKeyDown = (e: KeyboardEvent) => {
   if (!props.open) return;
-  if (e.key === 'ArrowUp')   { e.preventDefault(); emit('prev'); }
-  if (e.key === 'ArrowDown') { e.preventDefault(); emit('next'); }
+  // 입력 필드 포커스 중에는 방향키로 스크롤 방해하지 않음
+  const tag = (e.target as HTMLElement)?.tagName;
+  const isInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+  if (e.key === 'ArrowUp')   { if (!isInput) { e.preventDefault(); scrollDetailPage('up'); } }
+  if (e.key === 'ArrowDown') { if (!isInput) { e.preventDefault(); scrollDetailPage('down'); } }
   if (e.key === 'Escape')    emit('close');
 };
 onMounted(()        => window.addEventListener('keydown', onKeyDown));

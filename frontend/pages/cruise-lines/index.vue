@@ -59,7 +59,7 @@
         <BaseButton variant="outline" to="/cruise-ports">{{ t('cruise.viewPorts') }}</BaseButton>
       </div>
       <div v-if="filteredShips.length" class="mt-4 grid gap-4 md:grid-cols-2">
-        <CruiseCard v-for="ship in filteredShips" :key="ship.ship_name" :cruise="ship" />
+        <CruiseCard v-for="ship in filteredShips" :key="ship.ship" :cruise="ship" />
       </div>
       <p v-else class="mt-4 text-sm text-black/50 dark:text-white/40">{{ t('common.noResults') }}</p>
     </section>
@@ -84,7 +84,7 @@ import { matchesQuery } from '~/composables/useSearch';
 type CruiseLine = { name: string; country: string };
 type CruiseShip = {
   cruise_line: string;
-  ship_name: string;
+  ship: string;
   capacity: number;
   service_charge: number;
   wifi_price: number;
@@ -110,12 +110,12 @@ const fallbackLines = computed<CruiseLine[]>(() =>
 const fallbackShips = computed<CruiseShip[]>(() =>
   lang.value === 'ko'
     ? [
-        { cruise_line: '로열 캐리비안', ship_name: '원더 오브 더 씨즈', capacity: 6988, service_charge: 18, wifi_price: 20, drink_package: 85, specialty_dining: 60 },
-        { cruise_line: 'MSC 크루즈', ship_name: 'MSC 월드 유로파', capacity: 6762, service_charge: 16, wifi_price: 18, drink_package: 75, specialty_dining: 50 }
+        { cruise_line: '로열 캐리비안', ship: '원더 오브 더 씨즈', capacity: 6988, service_charge: 18, wifi_price: 20, drink_package: 85, specialty_dining: 60 },
+        { cruise_line: 'MSC 크루즈', ship: 'MSC 월드 유로파', capacity: 6762, service_charge: 16, wifi_price: 18, drink_package: 75, specialty_dining: 50 }
       ]
     : [
-        { cruise_line: 'Royal Caribbean', ship_name: 'Wonder of the Seas', capacity: 6988, service_charge: 18, wifi_price: 20, drink_package: 85, specialty_dining: 60 },
-        { cruise_line: 'MSC Cruises', ship_name: 'MSC World Europa', capacity: 6762, service_charge: 16, wifi_price: 18, drink_package: 75, specialty_dining: 50 }
+        { cruise_line: 'Royal Caribbean', ship: 'Wonder of the Seas', capacity: 6988, service_charge: 18, wifi_price: 20, drink_package: 85, specialty_dining: 60 },
+        { cruise_line: 'MSC Cruises', ship: 'MSC World Europa', capacity: 6762, service_charge: 16, wifi_price: 18, drink_package: 75, specialty_dining: 50 }
       ]
 );
 
@@ -129,7 +129,7 @@ const { data: cruiseLines } = useSupabaseI18nTable<CruiseLine>({
 const { data: cruiseShips } = useSupabaseI18nTable<CruiseShip>({
   table: 'cruise_ships',
   i18nTable: 'cruise_ships_i18n',
-  fields: ['cruise_line', 'ship_name'],
+  fields: ['cruise_line', 'ship'],
   fallback: fallbackShips
 });
 
@@ -138,6 +138,6 @@ const filteredLines = computed(() =>
 );
 
 const filteredShips = computed(() =>
-  (cruiseShips.value || []).filter((s) => matchesQuery(query.value, [s.cruise_line, s.ship_name]))
+  (cruiseShips.value || []).filter((s) => matchesQuery(query.value, [s.cruise_line, s.ship]))
 );
 </script>

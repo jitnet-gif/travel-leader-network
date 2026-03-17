@@ -2,22 +2,36 @@
 const open = defineModel<boolean>('open', { default: false });
 const { t } = useI18n();
 const { user, init, signOut } = useAuth();
+const { isEnabled, load } = useFeatureFlags();
+const { hasMenu, canAccess } = usePermissions();
 
-onMounted(() => init());
+onMounted(() => { init(); load(); });
 
-const navItems = computed(() => [
-  { label: t('nav.home'), to: '/', icon: 'home' },
-  { label: t('nav.dashboard'), to: '/dashboard', icon: 'dashboard' },
-  { label: t('nav.countries'), to: '/countries', icon: 'public' },
-  { label: t('nav.airports'), to: '/airports', icon: 'flight_takeoff' },
-  { label: t('nav.cruiseLines'), to: '/cruise-lines', icon: 'directions_boat' },
-  { label: t('nav.cruisePorts'), to: '/cruise-ports', icon: 'anchor' },
-  { label: 'Audio Guide', to: '/guide/audio', icon: 'headphones' },
-  { label: t('nav.jobs'), to: '/jobs', icon: 'work' },
-  { label: t('nav.community'), to: '/community', icon: 'forum' },
-  { label: t('nav.leaderTools'), to: '/leader-tools', icon: 'construction' },
-  { label: t('nav.admin'), to: '/admin', icon: 'admin_panel_settings' }
+const allNavItems = computed(() => [
+  { label: t('nav.home'),        to: '/',            icon: 'home',                 menu: 'dashboard', feature: null },
+  { label: t('nav.dashboard'),   to: '/dashboard',   icon: 'dashboard',            menu: 'dashboard', feature: null },
+  { label: t('nav.countries'),   to: '/countries',   icon: 'public',               menu: 'countries', feature: null },
+  { label: t('nav.airports'),    to: '/airports',    icon: 'flight_takeoff',       menu: 'airports', feature: null },
+  { label: t('nav.cruiseLines'), to: '/cruise-lines',icon: 'directions_boat',      menu: 'cruise-lines', feature: null },
+  { label: t('nav.cruisePorts'), to: '/cruise-ports',icon: 'anchor',               menu: 'cruise-ports', feature: null },
+  { label: 'Audio Guide',        to: '/guide/audio', icon: 'headphones',           menu: 'audio-guide', feature: null },
+  { label: t('nav.jobs'),        to: '/jobs',        icon: 'work',                 menu: 'tour-jobs', feature: null },
+  { label: t('nav.community'),   to: '/community',   icon: 'forum',                menu: 'community-posts', feature: null },
+  { label: t('nav.leaderTools'), to: '/leader-tools',icon: 'construction',         menu: 'leader-tools', feature: null },
+  { label: t('nav.admin'),       to: '/admin',       icon: 'admin_panel_settings', menu: 'admin', feature: null },
 ]);
+
+const navItems = computed(() =>
+  allNavItems.value.filter(item => {
+    // 로그인하지 않은 경우 기본 메뉴만 표시
+    if (!user.value) {
+      return ['dashboard', 'countries', 'airports', 'cruise-lines', 'cruise-ports', 'community-posts'].includes(item.menu);
+    }
+    
+    // 권한에 따라 메뉴 필터링
+    return hasMenu(item.menu) && (item.feature === null || canAccess(item.menu, item.feature));
+  })
+);
 
 const close = () => {
   open.value = false;

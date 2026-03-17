@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import { useGeolocation } from '~/composables/useGeolocation';
 type Facility = { name: string; lat: number; lng: number; icon: string; color: string; category?: string };
 
 const props = withDefaults(defineProps<{
@@ -37,6 +38,7 @@ const props = withDefaults(defineProps<{
   closeTime?: string;
   facilities?: Facility[];
   showMarker?: boolean;
+  showUserLocation?: boolean;
 }>(), {
   center: () => [139.734, 35.666],
   zoom: 13,
@@ -45,6 +47,7 @@ const props = withDefaults(defineProps<{
   closeTime: '',
   facilities: () => [],
   showMarker: true,
+  showUserLocation: false,
 });
 
 const mapContainer = ref<HTMLDivElement | null>(null);
@@ -53,9 +56,12 @@ const showHint = ref(false);
 let L: any = null;
 let map: any = null;
 let mainMarker: any = null;
+let userMarker: any = null;
 let facilityMarkers: any[] = [];
 let hintTimer: ReturnType<typeof setTimeout> | null = null;
 let resizeObserver: ResizeObserver | null = null;
+
+const { position, start: startGps, stop: stopGps } = useGeolocation();
 
 // Leaflet uses [lat, lng]; our props use [lng, lat]
 const toLL = (c: [number, number]): [number, number] => [c[1], c[0]];
@@ -196,11 +202,30 @@ const initMap = async () => {
   }
 };
 
-onMounted(initMap);
+onMounted(() => {
+  initMap();
+  if (props.showUserLocation) startGps();
+});
+
+// Watch GPS position → show/update blue dot
+watch(position, (pos) => {
+  if (!process.client || !props.showUserLocation || !L || !map) return;
+  if (!pos) { userMarker?.remove(); userMarker = null; return; }
+  if (!userMarker) {
+    userMarker = L.circleMarker([pos.lat, pos.lng], {
+      radius: 9, weight: 3, color: '#fff',
+      fillColor: '#3b82f6', fillOpacity: 1,
+    }).addTo(map).bindTooltip('내 위치', { permanent: false, direction: 'top' });
+  } else {
+    userMarker.setLatLng([pos.lat, pos.lng]);
+  }
+});
 
 onBeforeUnmount(() => {
+  if (props.showUserLocation) stopGps();
   if (hintTimer) clearTimeout(hintTimer);
   resizeObserver?.disconnect();
+  userMarker?.remove();
   facilityMarkers.forEach(m => m.remove());
   if (map) { map.remove(); map = null; mainMarker = null; }
 });

@@ -19,10 +19,10 @@ export default defineEventHandler(async (event) => {
       });
     } catch (e) {
       console.warn('[countries] Supabase fetch failed, falling back to local data:', e);
-      countries = localCountries as any[];
+      countries = localCountries as unknown as any[];
     }
   } else {
-    countries = localCountries as any[];
+    countries = localCountries as unknown as any[];
   }
 
   if (!q) return countries;

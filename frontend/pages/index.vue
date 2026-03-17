@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t, ta } = useI18n();
+const showDebug = ref(false);
 
 const modules = computed(() => [
   {
@@ -42,8 +43,116 @@ const modules = computed(() => [
 </script>
 
 <template>
-  <div class="space-y-10 pb-10">
-    <!-- Hero Section -->
+  <div>
+    <!-- Mobile Dashboard (Matches UI screenshots) -->
+    <div class="md:hidden pt-2 pb-20 space-y-8">
+      <!-- Quick Access -->
+      <section>
+        <div class="flex items-center gap-2 mb-4 px-1">
+          <span class="material-symbols-outlined text-sky-500 rounded text-xl" style="font-variation-settings: 'FILL' 1">grid_view</span>
+          <h2 class="text-lg font-bold text-slate-900 dark:text-white">Quick Access</h2>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3">
+          <!-- Travel -->
+          <NuxtLink to="/countries" class="bg-white dark:bg-white/5 rounded-2xl p-5 shadow-sm border border-slate-100 dark:border-white/10 flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform">
+            <div class="w-12 h-12 rounded-full bg-sky-50 dark:bg-sky-500/20 flex items-center justify-center">
+              <span class="material-symbols-outlined text-sky-500" style="font-variation-settings: 'FILL' 1">public</span>
+            </div>
+            <span class="text-[13px] font-bold text-slate-900 dark:text-white">Travel</span>
+          </NuxtLink>
+          
+          <!-- Cruise -->
+          <NuxtLink to="/cruise-lines" class="bg-white dark:bg-white/5 rounded-2xl p-5 shadow-sm border border-slate-100 dark:border-white/10 flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform">
+            <div class="w-12 h-12 rounded-full bg-teal-50 dark:bg-teal-500/20 flex items-center justify-center">
+              <span class="material-symbols-outlined text-teal-400" style="font-variation-settings: 'FILL' 1">directions_boat</span>
+            </div>
+            <span class="text-[13px] font-bold text-slate-900 dark:text-white">Cruise</span>
+          </NuxtLink>
+          
+          <!-- Airport -->
+          <NuxtLink to="/airports" class="bg-white dark:bg-white/5 rounded-2xl p-5 shadow-sm border border-slate-100 dark:border-white/10 flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform">
+            <div class="w-12 h-12 rounded-full bg-indigo-50 dark:bg-indigo-500/20 flex items-center justify-center">
+              <span class="material-symbols-outlined text-indigo-400" style="font-variation-settings: 'FILL' 1">flight_takeoff</span>
+            </div>
+            <span class="text-[13px] font-bold text-slate-900 dark:text-white">Airport</span>
+          </NuxtLink>
+          
+          <!-- Emergency -->
+          <NuxtLink to="/emergency" class="bg-white dark:bg-white/5 rounded-2xl p-5 shadow-sm border border-slate-100 dark:border-white/10 flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform">
+            <div class="w-12 h-12 rounded-full bg-red-50 dark:bg-red-500/20 flex items-center justify-center">
+              <span class="material-symbols-outlined text-red-400" style="font-variation-settings: 'FILL' 1">medical_services</span>
+            </div>
+            <span class="text-[13px] font-bold text-slate-900 dark:text-white">Emergency</span>
+          </NuxtLink>
+
+          <!-- Community -->
+          <NuxtLink to="/community" class="col-span-2 bg-white dark:bg-white/5 rounded-2xl p-5 shadow-sm border border-slate-100 dark:border-white/10 flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform">
+            <div class="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-500/20 flex items-center justify-center">
+              <span class="material-symbols-outlined text-emerald-400" style="font-variation-settings: 'FILL' 1">groups</span>
+            </div>
+            <span class="text-[13px] font-bold text-slate-900 dark:text-white">Community</span>
+          </NuxtLink>
+        </div>
+      </section>
+
+      <!-- Travel Alerts -->
+      <section>
+        <div class="flex items-center justify-between mb-4 px-1">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sky-500 text-xl" style="font-variation-settings: 'FILL' 1">warning</span>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white">Travel Alerts</h2>
+          </div>
+          <NuxtLink to="/alerts" class="text-sky-500 text-xs font-bold hover:underline">See all</NuxtLink>
+        </div>
+        
+        <div class="space-y-3">
+          <!-- Alert 1 -->
+          <div class="bg-white dark:bg-white/5 rounded-2xl p-4 shadow-sm border border-slate-100 dark:border-white/10 flex gap-4 overflow-hidden relative">
+            <div class="absolute left-0 top-0 bottom-0 w-1 bg-sky-500"></div>
+            
+            <div class="flex-shrink-0 mt-0.5">
+              <div class="w-[22px] h-[22px] rounded-full bg-sky-500 text-white flex items-center justify-center">
+                <span class="material-symbols-outlined text-[14px] font-bold">info</span>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex justify-between items-start">
+                <h3 class="text-[14px] font-bold text-slate-900 dark:text-white leading-tight pr-2">New York (JFK) - Weather Delay</h3>
+                <span class="text-[9px] text-slate-400 font-bold whitespace-nowrap uppercase tracking-widest mt-0.5">2M AGO</span>
+              </div>
+              <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-1.5 leading-snug">
+                High winds may affect afternoon departures. Monitor terminal statuses.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Alert 2 -->
+          <div class="bg-white dark:bg-white/5 rounded-2xl p-4 shadow-sm border border-slate-100 dark:border-white/10 flex gap-4 overflow-hidden relative">
+            <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
+            
+            <div class="flex-shrink-0 mt-0.5">
+              <div class="w-[22px] h-[22px] text-amber-500 flex items-center justify-center">
+                <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1">security_update_warning</span>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex justify-between items-start">
+                <h3 class="text-[14px] font-bold text-slate-900 dark:text-white leading-tight pr-2">Europe - Border Policy Update</h3>
+                <span class="text-[9px] text-slate-400 font-bold whitespace-nowrap uppercase tracking-widest mt-0.5">1H AGO</span>
+              </div>
+              <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-1.5 leading-snug">
+                Updated entry requirements for non-EU travelers effective immediately.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Desktop content wrapped in hidden md:block -->
+    <div class="hidden md:block space-y-10 pb-10">
+      <!-- Hero Section -->
     <section class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] items-center pt-2">
       <div class="space-y-5">
         <div class="flex items-center gap-2">
@@ -130,6 +239,18 @@ const modules = computed(() => [
       </div>
     </section>
 
+    <!-- Debug Panel -->
+    <section>
+      <button
+        class="flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-slate-600 dark:hover:text-white/60 transition mb-3"
+        @click="showDebug = !showDebug"
+      >
+        <span class="h-2 w-2 rounded-full" :class="showDebug ? 'bg-emerald-400' : 'bg-slate-400'" />
+        {{ showDebug ? '▼' : '▶' }} Debug Panel
+      </button>
+      <DebugPanel v-if="showDebug" />
+    </section>
+
     <!-- Bottom Info -->
     <section class="grid gap-5 lg:grid-cols-2">
       <div class="p-7 rounded-[2rem] bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
@@ -151,5 +272,6 @@ const modules = computed(() => [
         </div>
       </div>
     </section>
+    </div>
   </div>
 </template>

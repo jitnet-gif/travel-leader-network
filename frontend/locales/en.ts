@@ -609,5 +609,18 @@ export default {
     createAccount: 'Create Account',
     confirmEmail: 'Check your email to confirm sign-up.',
     emailPasswordRequired: 'Please enter email and password.'
+  },
+  chatbot: {
+    name: 'Tour Genie',
+    title: 'Tour Genie AI Assistant',
+    welcome: 'Hello!',
+    subtitle: 'Ask anything about airports, immigration, cruises, or tours.<br>Press the mic to talk with voice.',
+    placeholder: 'Type a message...',
+    ready: 'Genie',
+    masterResponse: 'Yes, Master',
+    listening: 'Listening',
+    speaking: 'Speaking',
+    voiceTts: 'Voice TTS',
+    close: 'Close'
   }
 };

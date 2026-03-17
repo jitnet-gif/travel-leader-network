@@ -83,7 +83,7 @@
 
 <script setup lang="ts">
 const { t } = useI18n();
-const supabase = useSupabase();
+const api = useApiClient();
 const { init } = useAuth();
 
 const email = ref('');
@@ -124,25 +124,20 @@ const onLogin = async () => {
 
   loading.value = true;
   try {
-    const { error, data } = await supabase.auth.signInWithPassword({
-      email: email.value,
-      password: password.value
-    });
-
-    if (error) {
-      errorMsg.value = error.message;
-      console.error('[Login] SignIn error:', error);
-      return;
-    }
-
-    if (data?.user) {
+    const response = await api.auth.login(email.value, password.value);
+    
+    if (response?.session?.access_token) {
+      // Store token in localStorage or cookie
+      localStorage.setItem('auth_token', response.session.access_token);
       console.log('[Login] SignIn successful');
       init();
       await navigateTo('/dashboard');
+    } else {
+      errorMsg.value = '로그인에 실패했습니다';
     }
-  } catch (e) {
+  } catch (e: any) {
     console.error('[Login] Unexpected error:', e);
-    errorMsg.value = t('login.unexpectedError') || 'An unexpected error occurred';
+    errorMsg.value = e?.data?.error || '로그인 중 오류가 발생했습니다';
   } finally {
     loading.value = false;
   }
@@ -161,29 +156,18 @@ const onRegister = async () => {
 
   loading.value = true;
   try {
-    const { error, data } = await supabase.auth.signUp({
-      email: email.value,
-      password: password.value,
-      options: {
-        data: { role: role.value },
-        emailRedirectTo: `${window.location.origin}/auth/callback`
-      }
-    });
-
-    if (error) {
-      errorMsg.value = error.message;
-      console.error('[Login] SignUp error:', error);
-      return;
-    }
-
-    if (data?.user) {
+    const response = await api.auth.signup(email.value, password.value, role.value);
+    
+    if (response?.user) {
       console.log('[Login] SignUp successful, showing email confirmation');
       showEmailConfirmation.value = true;
       successMsg.value = t('login.confirmEmail') || '확인 이메일이 전송되었습니다';
+    } else {
+      errorMsg.value = '회원가입에 실패했습니다';
     }
-  } catch (e) {
+  } catch (e: any) {
     console.error('[Login] SignUp error:', e);
-    errorMsg.value = t('login.unexpectedError') || 'An unexpected error occurred';
+    errorMsg.value = e?.data?.error || '회원가입 중 오류가 발생했습니다';
   } finally {
     loading.value = false;
   }
