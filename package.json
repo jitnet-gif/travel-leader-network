@@ -4,8 +4,7 @@
   "workspaces": [
     "frontend",
     "backend",
-    "admin",
-    "mobile"
+    "admin"
   ],
   "scripts": {
     "dev": "concurrently -n frontend,backend \"npm run dev -w frontend\" \"npm run dev -w backend\"",
